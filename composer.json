@@ -1,0 +1,13 @@
+{
+    "name": "vendor/myblog",
+    "description": "Description of project myblog.",
+    "authors": [
+        {
+            "name": "keymener",
+            "email": "keigo.matsunaga@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "2.x-dev"
+    }
+}
