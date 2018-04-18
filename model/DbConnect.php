@@ -23,8 +23,8 @@ abstract class DbConnect {
         $dbuser = self::DBUSER;
         $dbpwd = self::DBPASSWORD;
 
-        $db = new PDO('mysql:dbhost=' . $dbhost . ';dbname=' . $dbname . ';charset=utf8', $dbuser, $dbpwd);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db = new \PDO('mysql:dbhost=' . $dbhost . ';dbname=' . $dbname . ';charset=utf8', $dbuser, $dbpwd);
+        $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->setDb($db);
     }
 

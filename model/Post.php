@@ -13,8 +13,9 @@ class Post {
     private $_title;
     private $_chapeau;
     private $_content;
-    private $_lastdate;
+    private $_lastDate;
     private $_published;
+    private $_adminUser;
 
     public function __construct(array $data) {
         $this->hydrate($data);
@@ -47,12 +48,16 @@ class Post {
         return $this->_content;
     }
 
-    function getLastdate() {
-        return $this->_lastdate;
+    function getLastDate() {
+        return $this->_lastDate;
     }
 
     function getPublished() {
         return $this->_published;
+    }
+
+    function getAdminUser() {
+        return $this->_adminUser;
     }
 
     function setInt($int) {
@@ -71,12 +76,21 @@ class Post {
         $this->_content = $content;
     }
 
-    function setLastdate($lastdate) {
-        $this->_lastdate = $lastdate;
+    function setLastDate($lastDate) {
+
+        if (preg_match('#^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$#', $lastDate)) {
+            $this->_lastDate = $lastDate;
+        }
     }
 
     function setPublished($published) {
-        $this->_published = $published;
+        if (is_bool($published)) {
+            $this->_published = $published;
+        }
+    }
+
+    function setAdminUser($adminUser) {
+        $this->_adminUser = $adminUser;
     }
 
 }

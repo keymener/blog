@@ -1,5 +1,5 @@
 {
-    "name": "vendor/myblog",
+    "name": "keymener/myblog",
     "description": "Description of project myblog.",
     "authors": [
         {
@@ -9,5 +9,8 @@
     ],
     "require": {
         "twig/twig": "2.x-dev"
+    },
+     "autoload": {
+        "psr-4": {"keymener\\myblog\\" : ""}
     }
 }
