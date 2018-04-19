@@ -14,6 +14,7 @@ class __TwigTemplate_45d5b6bb2c6e3354dffcb7ae8ae4862e63aaba8146964dde6476c2d8529
         // line 1
         $this->parent = $this->loadTemplate("homePageTemplate.twig", "allPosts.twig", 1);
         $this->blocks = array(
+            'title' => array($this, 'block_title'),
             'content' => array($this, 'block_content'),
         );
     }
@@ -29,29 +30,35 @@ class __TwigTemplate_45d5b6bb2c6e3354dffcb7ae8ae4862e63aaba8146964dde6476c2d8529
     }
 
     // line 3
+    public function block_title($context, array $blocks = array())
+    {
+        echo "MBP - Les posts ";
+    }
+
+    // line 6
     public function block_content($context, array $blocks = array())
     {
-        // line 4
-        echo "
+        // line 7
+        echo "    
     ";
-        // line 5
+        // line 8
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["posts"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["post"]) {
-            // line 6
+            // line 9
             echo "        <h1>";
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["post"], "title", array()), "html", null, true);
             echo "</h1></br>
         <h2>";
-            // line 7
+            // line 10
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["post"], "chapeau", array()), "html", null, true);
             echo "</h2></br>
         <p>";
-            // line 8
+            // line 11
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["post"], "content", array()), "html", null, true);
             echo "</p>
         <p>écrit par ";
-            // line 9
+            // line 12
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["post"], "adminUser", array()), "html", null, true);
             echo " le ";
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["post"], "lastDate", array()), "html", null, true);
@@ -61,7 +68,7 @@ class __TwigTemplate_45d5b6bb2c6e3354dffcb7ae8ae4862e63aaba8146964dde6476c2d8529
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['post'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 11
+        // line 14
         echo "
 ";
     }
@@ -78,7 +85,7 @@ class __TwigTemplate_45d5b6bb2c6e3354dffcb7ae8ae4862e63aaba8146964dde6476c2d8529
 
     public function getDebugInfo()
     {
-        return array (  65 => 11,  55 => 9,  51 => 8,  47 => 7,  42 => 6,  38 => 5,  35 => 4,  32 => 3,  15 => 1,);
+        return array (  72 => 14,  62 => 12,  58 => 11,  54 => 10,  49 => 9,  45 => 8,  42 => 7,  39 => 6,  33 => 3,  15 => 1,);
     }
 
     public function getSourceContext()

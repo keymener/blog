@@ -1,7 +1,10 @@
 {% extends "homePageTemplate.twig" %}
 
-{% block content %}
+{% block title %}MBP - Les posts {% endblock %}
 
+
+{% block content %}
+    
     {% for post in posts %}
         <h1>{{ post.title }}</h1></br>
         <h2>{{ post.chapeau }}</h2></br>
