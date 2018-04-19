@@ -1,0 +1,15 @@
+{% extends "homePageTemplate.twig" %}
+
+{% block title %}MBP - Les posts {% endblock %}
+
+
+{% block content %}
+    
+    {% for post in posts %}
+        <h1>{{ post.title }}</h1></br>
+        <h2>{{ post.chapeau }}</h2></br>
+        <p>{{ post.content }}</p>
+        <p>écrit par {{ post.adminUser }} le {{ post.lastDate }}</p>
+   {% endfor %}
+
+{% endblock %}
