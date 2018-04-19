@@ -71,12 +71,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "b4758ab49182791fe2d281646b6c165d494eb47f"
+                "reference": "9402071768157c115ebf35195661222bd7ba85cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b4758ab49182791fe2d281646b6c165d494eb47f",
-                "reference": "b4758ab49182791fe2d281646b6c165d494eb47f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9402071768157c115ebf35195661222bd7ba85cf",
+                "reference": "9402071768157c115ebf35195661222bd7ba85cf",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-04-03T16:31:00+00:00"
+            "time": "2018-04-19T08:52:30+00:00"
         }
     ],
     "packages-dev": [],
