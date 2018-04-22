@@ -2,18 +2,13 @@
 
 require 'vendor/autoload.php';
 
-
-
-
 try {
-   
-    $posts = new \keymener\myblog\controller\PostController();
-    $posts->getAllPosts();
+
+    $router = new \keymener\myblog\router\Router($_GET['url']);
+    $router->CallController();
     
     
     
-    
-   
 } catch (Exception $exc) {
     echo $exc->getMessage();
 }

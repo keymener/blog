@@ -11,7 +11,13 @@ namespace keymener\myblog\controller;
 class PostController extends MainController{
 
     
-    public function getAllPosts() {
+    public function __construct(){
+        
+        $this->getAllPosts();
+        
+    }
+    
+    private function getAllPosts() {
 
         $manager = new \keymener\myblog\model\PostManager();
         $allPosts = $manager->getAllPosts();
