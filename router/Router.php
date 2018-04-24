@@ -1,87 +1,64 @@
 <?php
 
-namespace keymener\myblog\router;
+namespace keymener\myBlog\router;
 
 /**
  * Description of Router
  *
  * @author keyme
  */
-class Router {
+class Router
+{
 
     private $_url;
     private $_controller;
-    private $_id;
 
     const CONTROLLER_POSITION = 0;
-    const ID_POSITION = 1;
 
-    public function __construct($url) {
+    public function __construct($url)
+    {
 
-  
         $this->setUrl($url);
-        $this->urlExplode();
-       
-       
+        $this->setController();
     }
 
-    private function urlExplode() {
+    /**
+     * sets the controller from url
+     * @throws \Exception
+     */
+    private function setController()
+    {
 
-        $urlArray = explode("/", $this->_url);
+        $controller = explode('/', $this->_url);
+        $controller = trim($controller[self::CONTROLLER_POSITION]);
+        if (isset($controller)) {
 
-        if (isset($urlArray[self::CONTROLLER_POSITION])) {
+            $fullControllerName = 'keymener\\myblog\\controller\\' . $controller . 'Controller';
 
-            $this->setController($urlArray[self::CONTROLLER_POSITION]);
-        }elseif (isset($urlArray[self::ID_POSITION])) {
+            if (class_exists($fullControllerName)) {
 
-            $this->setId($urlArray[self::ID_POSITION]);
+                $this->_controller = $fullControllerName;
+            } else {
+
+                $fullControllerName = 'keymener\\myblog\\controller\\IndexController';
+                $this->_controller = $fullControllerName;
+            }
         }
     }
 
-    
-    public function CallController() {
+    /**
+     * calls the controller
+     */
+    public function callController()
+    {
 
-        $calledController = $this->getController();
-        
-        $controller = new $calledController();
-        
-       
+        $instance = new $this->_controller();
+
+        return $instance;
     }
 
-    private function getController() {
-        return $this->_controller;
-    }
-
-    function getId() {
-        return $this->_id;
-    }
-
-    private function getUrl() {
-
-        return $this->_url;
-    }
-
-    private function setController($controller) {
-
-        $controller = 'keymener\\myblog\\controller\\' . ucfirst($controller) . 'Controller';
-
-        if (class_exists($controller)) {
-
-            $this->_controller = $controller;
-        } else {
-
-            throw new \Exception('La classe ' . $controller . ' n\'existe pas.');
-        }
-    }
-
-    private function setId($id) {
-        
-        $intId = (int)$id ;
-        
-        $this->_id = $intId;
-    }
-
-    private function setUrl($url) {
+    private function setUrl($url)
+    {
 
 //        check if the url is like this: " /myblog/posts or /myblog/posts "
         if (preg_match('#^[a-z]*\/?[0-9]*$#', $url)) {

@@ -46,6 +46,9 @@ class __TwigTemplate_4583b1bd33b2c8533a512206fc4a8eb3fbd0328e3d397278c7b035b79fe
 
         <!-- Custom styles for this template -->
         <link href=\"public/css/one-page-wonder.min.css\" rel=\"stylesheet\">
+        <link href=\"public/css/style.css\" rel=\"stylesheet\">
+        
+        
 
     </head>
 
@@ -69,13 +72,14 @@ class __TwigTemplate_4583b1bd33b2c8533a512206fc4a8eb3fbd0328e3d397278c7b035b79fe
             </div>
         </nav>
         <!-- Content -->
+        <div class=\"content\">
 
-    ";
-        // line 46
+        ";
+        // line 50
         $this->displayBlock('content', $context, $blocks);
-        // line 47
+        // line 51
         echo "
-
+    </div>
     <!-- Footer -->
     <footer class=\"py-5 bg-black\">
         <div class=\"container\">
@@ -100,7 +104,7 @@ class __TwigTemplate_4583b1bd33b2c8533a512206fc4a8eb3fbd0328e3d397278c7b035b79fe
     {
     }
 
-    // line 46
+    // line 50
     public function block_content($context, array $blocks = array())
     {
     }
@@ -112,7 +116,7 @@ class __TwigTemplate_4583b1bd33b2c8533a512206fc4a8eb3fbd0328e3d397278c7b035b79fe
 
     public function getDebugInfo()
     {
-        return array (  104 => 46,  99 => 11,  77 => 47,  75 => 46,  37 => 11,  25 => 1,);
+        return array (  108 => 50,  103 => 11,  81 => 51,  79 => 50,  37 => 11,  25 => 1,);
     }
 
     public function getSourceContext()

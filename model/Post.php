@@ -7,7 +7,8 @@ namespace keymener\myblog\model;
  *
  * @author keyme
  */
-class Post {
+class Post
+{
 
     private $_int;
     private $_title;
@@ -17,11 +18,13 @@ class Post {
     private $_published;
     private $_adminUser;
 
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
         $this->hydrate($data);
     }
 
-    private function hydrate($data) {
+    private function hydrate($data)
+    {
         foreach ($data as $key => $value) {
 
             $method = 'set' . ucfirst($key);
@@ -32,64 +35,78 @@ class Post {
         }
     }
 
-    function getInt() {
+    function getInt()
+    {
         return $this->_int;
     }
 
-    function getTitle() {
+    function getTitle()
+    {
         return $this->_title;
     }
 
-    function getChapeau() {
+    function getChapeau()
+    {
         return $this->_chapeau;
     }
 
-    function getContent() {
+    function getContent()
+    {
         return $this->_content;
     }
 
-    function getLastDate() {
+    function getLastDate()
+    {
         return $this->_lastDate;
     }
 
-    function getPublished() {
+    function getPublished()
+    {
         return $this->_published;
     }
 
-    function getAdminUser() {
+    function getAdminUser()
+    {
         return $this->_adminUser;
     }
 
-    function setInt($int) {
+    function setInt($int)
+    {
         $this->_int = $int;
     }
 
-    function setTitle($title) {
+    function setTitle($title)
+    {
         $this->_title = $title;
     }
 
-    function setChapeau($chapeau) {
+    function setChapeau($chapeau)
+    {
         $this->_chapeau = $chapeau;
     }
 
-    function setContent($content) {
+    function setContent($content)
+    {
         $this->_content = $content;
     }
 
-    function setLastDate($lastDate) {
+    function setLastDate($lastDate)
+    {
 
         if (preg_match('#^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$#', $lastDate)) {
             $this->_lastDate = $lastDate;
         }
     }
 
-    function setPublished($published) {
+    function setPublished($published)
+    {
         if (is_bool($published)) {
             $this->_published = $published;
         }
     }
 
-    function setAdminUser($adminUser) {
+    function setAdminUser($adminUser)
+    {
         $this->_adminUser = $adminUser;
     }
 

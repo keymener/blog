@@ -3,18 +3,22 @@
 namespace keymener\myblog\model;
 
 require 'DbConnect.php';
+
 /**
  * post manager for database
  *
  * @author keyme
  */
-class PostManager extends DbConnect {
+class PostManager extends DbConnect
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->dblaunch();
     }
 
-    public function getAllPosts() {
+    public function getAllPosts()
+    {
 
         $posts = [];
 
@@ -29,7 +33,8 @@ class PostManager extends DbConnect {
         return $posts;
     }
 
-    public function addPost($data) {
+    public function addPost($data)
+    {
 
         $db = $this->getDb();
         $req = $db->prepare('INSERT INTO post (title, chapeau, content, lastDate, published, adminUser) VALUES (:title, :chapeau, :content, :lastDate, :published, :adminUser)');
@@ -43,7 +48,8 @@ class PostManager extends DbConnect {
         $req->closeCursor();
     }
 
-    public function updatePost($data) {
+    public function updatePost($data)
+    {
 
         $db = $this->getDb();
         $req = $db->prepare('UPDATE post SET title = :title, chapeau = :chapeau, content = :content, lastDate = :lastDate, published = :published, adminUser = :adminUser  ');
@@ -57,7 +63,8 @@ class PostManager extends DbConnect {
         $req->closeCursor();
     }
 
-    public function deletePost($id) {
+    public function deletePost($id)
+    {
 
         $db = $this->getDb();
         $req = $db->prepare('DELETE FROM post WHERE id = :id  ');
@@ -66,14 +73,15 @@ class PostManager extends DbConnect {
         $req->closeCursor();
     }
 
-    public function getPost($id) {
+    public function getPost($id)
+    {
 
         $db = $this->getDb();
         $req = $db->prepare('SELECT * FROM post WHERE id = :id  ');
         $req->bindValue(':id', $id, \PDO::PARAM_INT);
         $req->execute();
 
-        $post = $req->fetch(PDO::FETCH_OBJ);
+        $post = $req->fetch(\PDO::FETCH_OBJ);
 
         $req->closeCursor();
 

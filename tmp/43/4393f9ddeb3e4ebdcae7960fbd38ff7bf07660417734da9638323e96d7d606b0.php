@@ -32,7 +32,7 @@ class __TwigTemplate_45d5b6bb2c6e3354dffcb7ae8ae4862e63aaba8146964dde6476c2d8529
     // line 3
     public function block_title($context, array $blocks = array())
     {
-        echo "MBP - Les posts ";
+        echo "Mon Blog - posts ";
     }
 
     // line 6

@@ -2,29 +2,30 @@
 
 namespace keymener\myblog\controller;
 
-
 /**
  * controller pour post
  *
  * @author keyme
  */
-class PostController extends MainController{
+class PostController
+{
 
-    
-    public function __construct(){
-        
+    public function __construct()
+    {
+
         $this->getAllPosts();
-        
     }
-    
-    private function getAllPosts() {
 
-        $manager = new \keymener\myblog\model\PostManager();
-        $allPosts = $manager->getAllPosts();
-        $this->twig();
-        $twig = $this->twig;
-        $page = $twig->load('allPosts.twig');
-        echo $page->render(array('posts' => $allPosts));
+    private function getAllPosts()
+    {
+
+        $posts = new \keymener\myblog\model\PostManager();
+        $posts = $posts->getAllPosts();
+
+
+        $twig = \keymener\myblog\TwigLaunch::twigLoad();
+
+        echo $twig->render('allPosts.twig', array('posts' => $posts));
     }
 
 }

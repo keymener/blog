@@ -7,7 +7,8 @@ namespace keymener\myblog\model;
  *
  * @author keyme
  */
-abstract class DbConnect {
+abstract class DbConnect
+{
 
     const DBNAME = 'myblog';
     const DBHOST = 'localhost';
@@ -16,7 +17,8 @@ abstract class DbConnect {
 
     protected $db;
 
-    protected function dblaunch() {
+    protected function dblaunch()
+    {
 
         $dbname = self::DBNAME;
         $dbhost = self::DBHOST;
@@ -28,11 +30,13 @@ abstract class DbConnect {
         $this->setDb($db);
     }
 
-    function getDb() {
+    function getDb(): \PDO
+    {
         return $this->db;
     }
 
-    function setDb($db) {
+    function setDb($db)
+    {
         $this->db = $db;
     }
 
