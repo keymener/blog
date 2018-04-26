@@ -10,8 +10,8 @@ namespace keymener\myblog;
 class TwigLaunch
 {
 
-    const TWIGFILES = __DIR__ . '/view';
-    const TWIGTMP = __DIR__ . '/tmp';
+    const TWIGFILES = __DIR__.'/view';
+    const TWIGTMP = __DIR__.'/tmp';
 
     public static function twigLoad()
     {
