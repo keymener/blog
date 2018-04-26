@@ -8,7 +8,7 @@ try {
     $instance = $router->callController();
     $method = $router->getAction();
     $id = $router->getVariable();
-    
+    var_dump($method);
     call_user_func_array(array($instance, $method), array($id));
     
     

@@ -28,24 +28,32 @@ class Router
     {
 
         $this->setUrlArray($url);
-      
-        if (isset($this->_urlArray[self::CONTROLLER_POSITION])) {
+
+        if (!empty($this->_urlArray[self::CONTROLLER_POSITION])) {
             $this->setController($this->_urlArray[self::CONTROLLER_POSITION]);
+        } else {
+            $this->setController('home');
+            
         }
-        if (isset($this->_urlArray[self::ACTION_POSITION])) {
+        if (!empty($this->_urlArray[self::ACTION_POSITION])) {
             $this->setAction($this->_urlArray[self::ACTION_POSITION]);
+        }else{
+            $this->setAction('home');
+         
         }
         if (isset($this->_urlArray[self::VARIABLE_POSITION])) {
             $this->setVariable($this->_urlArray[self::VARIABLE_POSITION]);
+        }else{
+            $this->_urlArray[self::VARIABLE_POSITION] = null;
         }
-        
-        var_dump ($this->_urlArray);
     }
-    
+
     public function callController()
     {
         $controller = new $this->_controller();
         return $controller;
+        
+     
     }
 
     //getters
@@ -53,15 +61,14 @@ class Router
     {
         return $this->_action;
     }
-    
+
     public function getVariable()
     {
         return $this->_variable;
     }
 
-        
     // setters
-    
+
     function setUrlArray($url)
     {
 
@@ -81,9 +88,8 @@ class Router
             $this->_controller = $controllerName;
         } else {
 
-            $this->_controller = 'keymener\\myblog\\controller\\IndexController';
+            $this->_controller = 'keymener\\myblog\\controller\\HomeController';
         }
-     
     }
 
     function setAction($action)
@@ -107,10 +113,8 @@ class Router
 
     function setVariable($variable)
     {
-        $var = (int)$variable ;
+        $var = (int) $variable;
         $this->_variable = $var;
     }
-    
-    
 
 }
