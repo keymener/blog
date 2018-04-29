@@ -14,7 +14,7 @@ class HomeController {
     public function home() {
         
         
-        $twig = \keymener\myblog\TwigLaunch::twigLoad();
+        $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
         echo $twig->render('home.twig', array('a' => 'a' ));
     }
 

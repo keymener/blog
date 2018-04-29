@@ -1,6 +1,6 @@
 <?php
 
-namespace keymener\myblog;
+namespace keymener\myblog\core;
 
 /**
  * Permet de generer le twig loader
@@ -10,8 +10,8 @@ namespace keymener\myblog;
 class TwigLaunch
 {
 
-    const TWIGFILES = __DIR__.'/view';
-    const TWIGTMP = __DIR__.'/tmp';
+    const TWIGFILES = 'view';
+    const TWIGTMP = 'tmp';
 
     public static function twigLoad()
     {
