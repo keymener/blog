@@ -2,16 +2,10 @@
 
 require 'vendor/autoload.php';
 
-try {
-    
-    $router = new \keymener\myblog\controller\Router($_GET['url']);
-    $instance = $router->callController();
-    $method = $router->getAction();
-    $id = $router->getVariable();
-    
-    call_user_func_array(array($instance, $method), array($id));
-    
-    
-} catch (Exception $exc) {
-    echo $exc->getMessage();
-}
+$router = new keymener\myblog\core\Router($_GET['url']);
+$controller = $router->getController();
+$action = $router->getAction();
+$var = $router->getVariable();
+
+$controllerInstance = new $controller();
+call_user_func_array(array($controllerInstance, $action),array($var));

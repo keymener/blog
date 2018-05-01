@@ -10,7 +10,7 @@ namespace keymener\myblog\controller;
 class PostController
 {
 
-    public function getAllPosts()
+    public function home()
     {
 
         $posts = new \keymener\myblog\model\PostManager();
@@ -18,7 +18,7 @@ class PostController
 
 
 
-        $twig = \keymener\myblog\TwigLaunch::twigLoad();
+        $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
         echo $twig->render('allPosts.twig', array('posts' => $posts));
     }
 
@@ -28,8 +28,7 @@ class PostController
         $post = new \keymener\myblog\model\PostManager();
         $post = $post->getPost($id);
 
-        $twig = \keymener\myblog\TwigLaunch::twigLoad();
+        $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
         echo $twig->render('singlePost.twig', array('post' => $post));
     }
-
 }
