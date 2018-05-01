@@ -15,5 +15,4 @@ class CommentController
 
         echo 'je suis la classe ' . __CLASS__;
     }
-
 }

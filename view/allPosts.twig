@@ -1,7 +1,9 @@
 {% extends "homePageTemplate.twig" %}
 
 {% block title %}Mon Blog - posts {% endblock %}
-
+{% block blog %}
+    <u>{{ parent() }}</u>
+{% endblock %}
 
 {% block content %}
     

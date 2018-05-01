@@ -107,5 +107,4 @@ class Router
         $var = (int) $variable;
         $this->variable = $var;
     }
-
 }

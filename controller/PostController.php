@@ -31,5 +31,4 @@ class PostController
         $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
         echo $twig->render('singlePost.twig', array('post' => $post));
     }
-
 }

@@ -7,16 +7,13 @@ namespace keymener\myblog\controller;
  *
  * @author keyme
  */
-class HomeController {
-
-    
-
-    public function home() {
+class HomeController
+{
+    public function home()
+    {
         
         
         $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
         echo $twig->render('home.twig', array('a' => 'a' ));
     }
-
-
 }
