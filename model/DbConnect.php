@@ -35,7 +35,7 @@ abstract class DbConnect
         return $this->db;
     }
 
-    function setDb($db)
+    function setDb(\PDO $db)
     {
         $this->db = $db;
     }
