@@ -15,8 +15,44 @@ namespace keymener\myblog\model;
  */
 class UserManager extends DbConnect
 {
+
     public function __construct()
     {
-        $this->dblaunch();
+        parent::dblaunch();
+    }
+    
+    /**
+     * Return an user object from the user table
+     * @param type $login
+     * @return \keymener\myblog\entity\User
+     */
+    public function getUser($login)
+    {
+        $req = $this->db->prepare('SELECT * FROM user WHERE login=:login');
+        $req->bindValue(':login', $login, \PDO::PARAM_STR);
+        $req->execute();
+        $user = new \keymener\myblog\entity\User($req->fetch(\PDO::FETCH_ASSOC));
+        $req->closeCursor();
+        return $user;
+    }
+
+    /**
+     * Check if an user exists in the user table
+     * @param \keymener\myblog\entity\User $user
+     * @return boolean
+     */
+    public function userExists($login)
+    {
+        $req = $this->db->prepare('SELECT * FROM user WHERE login=:login');
+        $req->bindValue(':login', $login, \PDO::PARAM_STR);
+        $req->execute();
+
+        if ($req->rowCount() == 1) {
+            $user = new \keymener\myblog\entity\User($req->fetch(\PDO::FETCH_ASSOC));
+            $req->closeCursor();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace keymener\myblog\entity;
 
 /**
  * Description of User
@@ -13,24 +9,33 @@
  */
 class User
 {
+
     protected $id;
     protected $lastname;
     protected $firstname;
     protected $login;
     protected $password;
     protected $email;
-    
-    
-    public function __construct()
+
+    public function __construct($data)
     {
-        
+        $this->hydrate($data);
     }
-    
+
     protected function hydrate($data)
     {
-        
+        if (isset($data)) {
+            foreach ($data as $key => $value) {
+
+                $method = 'set' . ucfirst($key);
+
+                if (method_exists(__CLASS__, $method)) {
+                    $this->$method($value);
+                }
+            }
+        }
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -63,6 +68,7 @@ class User
 
     protected function setId($id)
     {
+        $id = (int) $id;
         $this->id = $id;
     }
 
@@ -90,4 +96,5 @@ class User
     {
         $this->email = $email;
     }
+
 }
