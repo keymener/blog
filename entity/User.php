@@ -26,7 +26,6 @@ class User
     {
         if (isset($data)) {
             foreach ($data as $key => $value) {
-
                 $method = 'set' . ucfirst($key);
 
                 if (method_exists(__CLASS__, $method)) {
@@ -96,5 +95,4 @@ class User
     {
         $this->email = $email;
     }
-
 }

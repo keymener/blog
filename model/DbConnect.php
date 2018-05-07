@@ -30,14 +30,13 @@ abstract class DbConnect
         $this->setDb($db);
     }
 
-    function getDb(): \PDO
+    protected function getDb(): \PDO
     {
         return $this->db;
     }
 
-    function setDb(\PDO $db)
+    private function setDb(\PDO $db)
     {
         $this->db = $db;
     }
-
 }

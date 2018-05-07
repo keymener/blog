@@ -10,13 +10,13 @@ namespace keymener\myblog\model;
 class Post
 {
 
-    private $_int;
-    private $_title;
-    private $_chapeau;
-    private $_content;
-    private $_lastDate;
-    private $_published;
-    private $_adminUser;
+    private $int;
+    private $title;
+    private $chapeau;
+    private $content;
+    private $lastDate;
+    private $published;
+    private $adminUser;
 
     public function __construct(array $data)
     {
@@ -26,88 +26,85 @@ class Post
     private function hydrate($data)
     {
         foreach ($data as $key => $value) {
-
             $method = 'set' . ucfirst($key);
             if (method_exists(__CLASS__, $method)) {
-
                 $this->$method($value);
             }
         }
     }
 
-    function getInt()
+    public function getInt()
     {
-        return $this->_int;
+        return $this->int;
     }
 
-    function getTitle()
+    public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
-    function getChapeau()
+    public function getChapeau()
     {
-        return $this->_chapeau;
+        return $this->chapeau;
     }
 
-    function getContent()
+    public function getContent()
     {
-        return $this->_content;
+        return $this->content;
     }
 
-    function getLastDate()
+    public function getLastDate()
     {
-        return $this->_lastDate;
+        return $this->lastDate;
     }
 
-    function getPublished()
+    public function getPublished()
     {
-        return $this->_published;
+        return $this->published;
     }
 
-    function getAdminUser()
+    public function getAdminUser()
     {
-        return $this->_adminUser;
+        return $this->adminUser;
     }
 
-    function setInt($int)
+    public function setInt($int)
     {
-        $this->_int = $int;
+        $this->int = $int;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
-        $this->_title = $title;
+        $this->title = $title;
     }
 
-    function setChapeau($chapeau)
+    public function setChapeau($chapeau)
     {
-        $this->_chapeau = $chapeau;
+        $this->chapeau = $chapeau;
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
-        $this->_content = $content;
+        $this->content = $content;
     }
 
-    function setLastDate($lastDate)
+    public function setLastDate($lastDate)
     {
 
         if (preg_match('#^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$#', $lastDate)) {
-            $this->_lastDate = $lastDate;
+            $this->lastDate = $lastDate;
         }
     }
 
-    function setPublished($published)
+    public function setPublished($published)
     {
         if (is_bool($published)) {
-            $this->_published = $published;
+            $this->published = $published;
         }
     }
 
-    function setAdminUser($adminUser)
+    public function setAdminUser($adminUser)
     {
-        $this->_adminUser = $adminUser;
+        $this->adminUser = $adminUser;
     }
-
 }

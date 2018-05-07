@@ -27,8 +27,7 @@ class UserController
 
 //        var_dump(password_hash($_POST['password'], PASSWORD_DEFAULT));
 
-        if (isset($_POST['username']) AND isset($_POST['password'])) {
-
+        if (isset($_POST['username']) and isset($_POST['password'])) {
             $manager = new \keymener\myblog\model\UserManager;
             
             // check if the user exists in database
@@ -36,19 +35,16 @@ class UserController
                 $user = $manager->getUser($_POST['username']);
 
                 if (password_verify($_POST['password'], $user->getPassword())) {
-
                     $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
                     echo $twig->render('admin.twig', array('p' => null));
                 } else {
                     echo 'login ou mot de passe incorrect';
                 }
-            }else{
+            } else {
                 echo 'utilisateur inexistant';
             }
-                
         } else {
             echo 'pas de login';
         }
     }
-
 }

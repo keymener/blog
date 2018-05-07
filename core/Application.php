@@ -13,7 +13,7 @@ namespace keymener\myblog\core;
  *
  * @author keyme
  */
-abstract class  Application
+abstract class Application
 {
     protected $httpRequest;
     protected $httpResponse;
