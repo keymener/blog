@@ -1,9 +1,8 @@
 <?php
 
-require 'DbConnect.php';
-
-
 namespace keymener\myblog\model;
+
+require 'DbConnect.php';
 
 /**
  * post manager for database
