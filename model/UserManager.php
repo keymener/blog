@@ -20,7 +20,7 @@ class UserManager extends DbConnect
     {
         parent::dblaunch();
     }
-    
+
     /**
      * Return an user object from the user table
      * @param type $login
@@ -34,6 +34,20 @@ class UserManager extends DbConnect
         $user = new \keymener\myblog\entity\User($req->fetch(\PDO::FETCH_ASSOC));
         $req->closeCursor();
         return $user;
+    }
+
+    public function getAllUsers()
+    {
+        $users = [];
+
+        $req = $this->db->query('SELECT * FROM user');
+
+        foreach ($req as $value) {
+
+            $users[] = new \keymener\myblog\entity\User($value);
+        }
+        $req->closeCursor();
+        return $users;
     }
 
     /**

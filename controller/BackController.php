@@ -4,6 +4,7 @@ namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
 use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\model\UserManager;
 
 /**
  * Description of AdminController
@@ -73,8 +74,12 @@ class BackController
     public function userManager()
     {
         if (isset($_SESSION['auth'])) {
+            
+            $manager = new UserManager();
+            $users = $manager->getAllUsers();
+
             $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
+            echo $twig->render('backend/user.twig', array('users' => $users));
         } else {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));
