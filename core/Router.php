@@ -32,7 +32,7 @@ class Router
         if (!empty($this->urlArray[self::CONTROLLER_POSITION])) {
             $this->setController($this->urlArray[self::CONTROLLER_POSITION]);
         } else {
-            $this->setController('home');
+            $this->setController('front');
         }
         if (!empty($this->urlArray[self::ACTION_POSITION])) {
             $this->setAction($this->urlArray[self::ACTION_POSITION]);
@@ -81,7 +81,7 @@ class Router
         if (class_exists($controllerName)) {
             $this->controller = $controllerName;
         } else {
-            $this->controller = 'keymener\\myblog\\controller\\HomeController';
+            $this->controller = 'keymener\\myblog\\controller\\FrontController';
         }
     }
 
@@ -90,8 +90,10 @@ class Router
         if (isset($action)) {
             $method = $action;
 
-            if ($this->controller == 'keymener\\myblog\\controller\\HomeController') {
+
+            if ($this->controller == 'keymener\\myblog\\controller\\FrontController') {
                 $this->action = 'home';
+               
             } elseif (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {

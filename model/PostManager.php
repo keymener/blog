@@ -26,7 +26,6 @@ class PostManager extends DbConnect
         $req = $db->query('SELECT * FROM post ORDER BY lastDate DESC');
 
         foreach ($req as $value) {
-
             $posts[] = $value;
         }
         $req->closeCursor();
@@ -37,7 +36,10 @@ class PostManager extends DbConnect
     {
 
         $db = $this->getDb();
-        $req = $db->prepare('INSERT INTO post (title, chapeau, content, lastDate, published, adminUser) VALUES (:title, :chapeau, :content, :lastDate, :published, :adminUser)');
+        $req = $db->prepare('INSERT INTO post (title, chapeau, content, '
+                . 'lastDate, published, adminUser) '
+                . 'VALUES (:title, :chapeau, :content, '
+                . ':lastDate, :published, :adminUser)');
         $req->bindValue(':title', $data->getTitle(), \PDO::PARAM_STR);
         $req->bindValue(':chapeau', $data->getChapeau(), \PDO::PARAM_STR);
         $req->bindValue(':content', $data->getContent(), \PDO::PARAM_STR);
@@ -52,7 +54,13 @@ class PostManager extends DbConnect
     {
 
         $db = $this->getDb();
-        $req = $db->prepare('UPDATE post SET title = :title, chapeau = :chapeau, content = :content, lastDate = :lastDate, published = :published, adminUser = :adminUser  ');
+        $req = $db->prepare('UPDATE post SET '
+                . 'title = :title,'
+                . ' chapeau = :chapeau,'
+                . ' content = :content,'
+                . ' lastDate = :lastDate,'
+                . ' published = :published,'
+                . ' adminUser = :adminUser  ');
         $req->bindValue(':title', $data->getTitle(), \PDO::PARAM_STR);
         $req->bindValue(':chapeau', $data->getChapeau(), \PDO::PARAM_STR);
         $req->bindValue(':content', $data->getContent(), \PDO::PARAM_STR);
@@ -87,5 +95,4 @@ class PostManager extends DbConnect
 
         return $post;
     }
-
 }

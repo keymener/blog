@@ -2,6 +2,9 @@
 
 namespace keymener\myblog\controller;
 
+use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\model\PostManager;
+
 /**
  * controller pour post
  *
@@ -13,22 +16,22 @@ class PostController
     public function home()
     {
 
-        $posts = new \keymener\myblog\model\PostManager();
+        $posts = new PostManager();
         $posts = $posts->getAllPosts();
 
 
 
-        $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
-        echo $twig->render('allPosts.twig', array('posts' => $posts));
+        $twig = TwigLaunch::twigLoad();
+        echo $twig->render('frontend/allPosts.twig', array('posts' => $posts));
     }
 
     public function getPost($id)
     {
 
-        $post = new \keymener\myblog\model\PostManager();
+        $post = new PostManager();
         $post = $post->getPost($id);
 
-        $twig = \keymener\myblog\core\TwigLaunch::twigLoad();
-        echo $twig->render('singlePost.twig', array('post' => $post));
+        $twig = TwigLaunch::twigLoad();
+        echo $twig->render('frontend/singlePost.twig', array('post' => $post));
     }
 }

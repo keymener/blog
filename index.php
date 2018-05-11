@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require 'vendor/autoload.php';
 
 $router = new keymener\myblog\core\Router($_GET['url']);
