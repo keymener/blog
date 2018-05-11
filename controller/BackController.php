@@ -15,30 +15,70 @@ class BackController
 
     public function login()
     {
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('backend/login.twig', array('p' => null));
-    }
-
-    public function auth()
-    {
-
         if (isset($_POST['username']) AND isset($_POST['password'])) {
 
             $auth = new Authentication($_POST['username'], $_POST['password']);
 
             if ($auth->checkPassword()) {
+
+                $this->home();
+            } else {
                 $twig = TwigLaunch::twigLoad();
-                echo $twig->render('backend/home.twig', array('p' => null));
+                echo $twig->render('backend/login.twig', array('message' => true));
             }
+        }
+    }
+
+    public function home()
+    {
+
+        if (isset($_SESSION['auth'])) {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/home.twig', array('message' => false));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
 
     public function logout()
     {
-        
+        session_destroy();
         $twig = TwigLaunch::twigLoad();
         echo $twig->render('backend/login.twig', array('p' => null));
-        
+    }
+
+    public function posts()
+    {
+        if (isset($_SESSION['auth'])) {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/home.twig', array('message' => false));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+
+    public function comments()
+    {
+        if (isset($_SESSION['auth'])) {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/home.twig', array('message' => false));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+
+    public function userManager()
+    {
+        if (isset($_SESSION['auth'])) {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/home.twig', array('message' => false));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
     }
 
 }

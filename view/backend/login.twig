@@ -5,12 +5,18 @@
     {% endblock %}
 
 {% block content %}
+
     <body class="bg-dark py-5">
         <div class="container">
+            {% if message == true %}
+                <div class="alert alert-danger" role="alert">
+                    Login ou mot de passe incorrect.
+                </div>
+                         {% endif %}
             <div class="card card-login mx-auto mt-5">
                 <div class="card-header">Authentification</div>
                 <div class="card-body">
-                    <form action="/back/auth" method="post">
+                    <form action="/back/login" method="post">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Utilisateur</label>
                             <input class="form-control" name="username"  type="text" aria-describedby="emailHelp" placeholder="utilisateur">

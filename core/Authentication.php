@@ -10,6 +10,8 @@ namespace keymener\myblog\core;
 
 use keymener\myblog\model\UserManager;
 
+
+
 /**
  * Description of Authentication
  *
@@ -44,19 +46,18 @@ class Authentication
             $user = $manager->getUser($this->username);
 
             if (password_verify($this->password, $user->getPassword())) {
-                session_start();
+                 {
+                    $_SESSION['auth'] = $user->getId();
+                }
+
                 return true;
-            } else {
-                echo 'login ou mot de passe incorrect';
             }
-        } else {
-            echo 'login ou mot de passe incorrect';
         }
     }
 
     public function logout()
     {
-        
+        session_destroy();
     }
 
 }

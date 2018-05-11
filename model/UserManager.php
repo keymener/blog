@@ -55,4 +55,5 @@ class UserManager extends DbConnect
             return false;
         }
     }
+
 }
