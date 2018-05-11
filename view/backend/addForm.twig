@@ -1,0 +1,63 @@
+{% extends "/backend/user.twig" %}
+
+{% block cardUser %}
+    <form>
+        <div class="form-group">
+            <label for="lastname">Nom</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" />
+            <label for="fistname">Prénom</label>
+            <input type="text" class="form-control" id="fistname" name="firstname" />
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" name="email" />
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" name="login" />
+            <label for="password">Mot de passe</label>
+            <input type="text" class="form-control" id="password" name="password" />
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    </form>
+
+
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/back">Accueuil</a>
+                </li>
+            </ol>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+
+                        <div class="card-header">
+                            Ajouter un utilisateur
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="lastname">Nom</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" />
+                                    <label for="fistname">Prénom</label>
+                                    <input type="text" class="form-control" id="fistname" name="firstname" />
+                                    <label for="email">Email</label>
+                                    <input type="text" class="form-control" id="email" name="email" />
+                                    <label for="login">Login</label>
+                                    <input type="text" class="form-control" id="login" name="login" />
+                                    <label for="password">Mot de passe</label>
+                                    <input type="text" class="form-control" id="password" name="password" />
+                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
