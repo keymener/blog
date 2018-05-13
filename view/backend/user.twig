@@ -11,33 +11,55 @@
             </ol>
 
             <div class="row">
-                <table class="table">
-                    <tr>
-                        <th>#id</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
-                        <th>Login</th>
-                        <th>email</th>
-                        <th>action</th>
-                    </tr>
+                <div class="col-3">
+                    <div class="card">
 
-                    {% for user in users %}
-                        <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.firstname }}</td>
-                            <td>{{ user.lastname }}</td>
-                            <td>{{ user.login }}</td>
-                            <td>{{ user.email }}</td>
-                            <td><button type="button" class="btn btn-primary">
-                                    Modifier</button>
-                                <button type="button" class="btn btn-danger">
-                                    Supprimer</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                        <div class="card-header">
+                            Ajouter un utilisateur
+                        </div>
+                        <div class="card-body">
+                            {% block cardUser %}
+                                <a href="/user/addform"><button type="button" class="btn btn-primary"> Ajouter</button></a>
+                            {% endblock %}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="card">
+                        <div class="card-header">
+                            Liste des utilisateurs
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>#id</th>
+                                    <th>Prénom</th>
+                                    <th>Nom</th>
+                                    <th>Login</th>
+                                    <th>email</th>
+                                    <th>action</th>
+                                </tr>
+
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.firstname }}</td>
+                                        <td>{{ user.lastname }}</td>
+                                        <td>{{ user.login }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            <a href="/user/modifyuser/{{ user.id }}"><button type="button" class="btn btn-primary">Modifier</button></a>
+                                            <a href="/user/deleteuser/{{ user.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
 
 
-                </table> 
+                            </table> 
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

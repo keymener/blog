@@ -23,7 +23,7 @@ class Authentication
     private $username;
     private $password;
 
-    public function __construct($username, $password)
+    public function __construct($username =  null, $password = null)
     {
 
         $this->username = $username;
@@ -48,11 +48,18 @@ class Authentication
             if (password_verify($this->password, $user->getPassword())) {
                  {
                     $_SESSION['auth'] = $user->getId();
+                    $_SESSION['username'] = $user->getFirstname();
                 }
 
                 return true;
             }
         }
+    }
+    
+    public function encrypt($password)
+    {
+        $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
+        return $encryptedPassword;
     }
 
     public function logout()

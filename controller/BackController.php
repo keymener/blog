@@ -14,6 +14,9 @@ use keymener\myblog\model\UserManager;
 class BackController
 {
 
+    /**
+     * login page
+     */
     public function login()
     {
         if (isset($_POST['username']) AND isset($_POST['password'])) {
@@ -30,6 +33,9 @@ class BackController
         }
     }
 
+    /**
+     * home page of backend
+     */
     public function home()
     {
 
@@ -42,6 +48,9 @@ class BackController
         }
     }
 
+    /**
+     * logout
+     */
     public function logout()
     {
         session_destroy();
@@ -49,6 +58,9 @@ class BackController
         echo $twig->render('backend/login.twig', array('p' => null));
     }
 
+    /**
+     * post managment page
+     */
     public function posts()
     {
         if (isset($_SESSION['auth'])) {
@@ -60,6 +72,9 @@ class BackController
         }
     }
 
+    /**
+     * comment managment page
+     */
     public function comments()
     {
         if (isset($_SESSION['auth'])) {
@@ -71,15 +86,18 @@ class BackController
         }
     }
 
-    public function userManager()
+    /**
+     * user managment page
+     */
+    public function users()
     {
         if (isset($_SESSION['auth'])) {
-            
+
             $manager = new UserManager();
             $users = $manager->getAllUsers();
-
+                     
             $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/user.twig', array('users' => $users));
+            echo $twig->render('backend/user.twig', array('users' => $users,));
         } else {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));

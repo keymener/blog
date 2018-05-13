@@ -28,6 +28,11 @@
                     <a href="/back">Accueuil</a>
                 </li>
             </ol>
+            {% if alert == 1 %}
+                <div class="alert alert-danger" role="alert">
+                    Le login est déjà existant.
+                </div>
+            {% endif %}
 
             <div class="row">
                 <div class="col">
@@ -37,18 +42,18 @@
                             Ajouter un utilisateur
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form action="/user/adduser" method="post">
                                 <div class="form-group">
                                     <label for="lastname">Nom</label>
-                                    <input type="text" class="form-control" id="lastname" name="lastname" />
+                                    <input type="text" class="form-control" id="lastname" name="lastname" value="{{ user.lastname }}"  />
                                     <label for="fistname">Prénom</label>
-                                    <input type="text" class="form-control" id="fistname" name="firstname" />
+                                    <input type="text" class="form-control" id="fistname" name="firstname" value="{{ user.firstname }}" />
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email" />
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required/>
                                     <label for="login">Login</label>
-                                    <input type="text" class="form-control" id="login" name="login" />
+                                    <input type="text" class="form-control" id="login" name="login" value="{{ user.login }}" required/>
                                     <label for="password">Mot de passe</label>
-                                    <input type="text" class="form-control" id="password" name="password" />
+                                    <input type="password" class="form-control" id="password" name="password" value="{{ user.password }}" required />
                                     <button type="submit" class="btn btn-primary">Ajouter</button>
                                 </div>
                             </form>
