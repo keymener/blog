@@ -28,7 +28,9 @@ class BackController
                 $this->home();
             } else {
                 $twig = TwigLaunch::twigLoad();
-                echo $twig->render('backend/login.twig', array('message' => true));
+                echo $twig->render('backend/login.twig', array(
+                    'message' => true
+                    ));
             }
         }
     }
@@ -39,7 +41,7 @@ class BackController
     public function home()
     {
 
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -63,7 +65,7 @@ class BackController
      */
     public function posts()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -77,7 +79,7 @@ class BackController
      */
     public function comments()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -91,7 +93,7 @@ class BackController
      */
     public function users()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
 
             $manager = new UserManager();
             $users = $manager->getAllUsers();

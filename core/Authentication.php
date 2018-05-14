@@ -47,7 +47,7 @@ class Authentication
 
             if (password_verify($this->password, $user->getPassword())) {
                  {
-                    $_SESSION['auth'] = $user->getId();
+                    $_SESSION['userId'] = $user->getId();
                     $_SESSION['username'] = $user->getFirstname();
                 }
 

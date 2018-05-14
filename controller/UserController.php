@@ -1,6 +1,5 @@
 <?php
 
-
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
@@ -22,19 +21,24 @@ class UserController
      */
     public function deleteUser($id)
     {
-        $manager = new UserManager;
-        $manager->deleteUser($id);
-        header("Location: /back/users");
+        if (isset($_SESSION['userId'])) {
+
+            $manager = new UserManager;
+            $manager->deleteUser($id);
+            header("Location: /back/users");
+        }
     }
 
     public function addForm()
     {
+        if (isset($_SESSION['userId'])) {
 
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('backend/addForm.twig', array(
-            'action' => '/user/adduser',
-            'button' => 'add'
-        ));
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/addForm.twig', array(
+                'action' => '/user/adduser',
+                'button' => 'add'
+            ));
+        }
     }
 
     /**
@@ -42,7 +46,8 @@ class UserController
      */
     public function addUser()
     {
-        if (isset($_POST)) {
+
+        if (isset($_POST, $_SESSION['userId'])) {
 
             $manager = new UserManager;
 
@@ -61,6 +66,9 @@ class UserController
 
                 header("Location: /back/users");
             }
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
 
@@ -70,25 +78,31 @@ class UserController
      */
     public function modifyUser($id)
     {
-        $manager = new UserManager();
-        $user = $manager->getUserById($id);
+        if (isset($_SESSION['userId'])) {
+            $manager = new UserManager();
+            $user = $manager->getUserById($id);
 
 
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('backend/addForm.twig', array(
-            'user' => $user,
-            'action' => '/user/updateuser',
-            'button' => 'modify'
-        ));
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/addForm.twig', array(
+                'user' => $user,
+                'action' => '/user/updateuser',
+                'button' => 'modify'
+            ));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
     }
-    
-/**
- * Update a user using POST method
- * 
- */
+
+    /**
+     * Update a user using POST method
+     * 
+     */
     public function updateUser()
     {
-        if (isset($_POST['id'])) {
+
+        if (isset($_POST['id'], $_SESSION['userId'])) {
 
             $user = new User($_POST);
 
