@@ -61,6 +61,9 @@ class UserController
                 ));
             } else {
                 $auth = new Authentication($_POST['login'], $_POST['password']);
+
+                //encrypt the password from post variable
+                $_POST['password'] = $auth->encrypt($_POST['password']);
                 $user = new User($_POST);
                 $manager->addUser($user);
 
@@ -107,7 +110,15 @@ class UserController
             $user = new User($_POST);
 
             $manager = new UserManager();
-            $manager->updateUser($user);
+// check if the user changes the password
+            if (empty($_POST['password'])) {
+                //this will change all but not the password
+                $manager->updateUser($user);
+            } else {
+                // this will change all including password
+                $manager->updateUser($user);
+                $manager->updatePassword($user);
+            }
 
             header("Location: /back/users");
         }

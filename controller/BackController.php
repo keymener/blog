@@ -22,7 +22,7 @@ class BackController
         if (isset($_POST['username']) AND isset($_POST['password'])) {
 
             $auth = new Authentication($_POST['username'], $_POST['password']);
-
+         
             if ($auth->checkPassword()) {
 
                 $this->home();
@@ -32,7 +32,7 @@ class BackController
                     'message' => true
                     ));
             }
-        }
+    }
     }
 
     /**

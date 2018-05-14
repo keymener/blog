@@ -111,7 +111,7 @@ class UserManager extends DbConnect
     {
         $req = $this->db->prepare('UPDATE user set '
                 . 'firstname = :firstname, lastname = :lastname,'
-                . ' login = :login, email = :email, password = :password 
+                . ' login = :login, email = :email
                     WHERE 
                     id = :id');
         $req->bindValue(':id', $user->getId(), PDO::PARAM_INT);
@@ -119,7 +119,20 @@ class UserManager extends DbConnect
         $req->bindValue(':lastname', $user->getLastname(), PDO::PARAM_STR);
         $req->bindValue(':login', $user->getLogin(), PDO::PARAM_STR);
         $req->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+
+
+        $req->execute();
+        $req->closeCursor();
+    }
+
+    public function updatePassword(User $user)
+    {
+        $req = $this->db->prepare('UPDATE user set password = :password
+                    WHERE 
+                    id = :id');
+        $req->bindValue(':id', $user->getId(), PDO::PARAM_INT);
         $req->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+
         $req->execute();
         $req->closeCursor();
     }

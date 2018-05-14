@@ -29,7 +29,7 @@ class Router
     {
 
         $this->setUrlArray($url);
-
+        
         if (!empty($this->urlArray[self::CONTROLLER_POSITION])) {
             $this->setController($this->urlArray[self::CONTROLLER_POSITION]);
         } else {
