@@ -18,6 +18,7 @@ class Router
     const CONTROLLER_POSITION = 0;
     const ACTION_POSITION = 1;
     const VARIABLE_POSITION = 2;
+    const PREFIX = 'keymener\\myblog\\controller\\';
 
     public function __construct($url)
     {
@@ -76,12 +77,12 @@ class Router
     {
 
 
-        $controllerName = 'keymener\\myblog\\controller\\' . ucfirst($controller) . 'Controller';
+        $controllerName = self::PREFIX . ucfirst($controller) . 'Controller';
 
         if (class_exists($controllerName)) {
             $this->controller = $controllerName;
         } else {
-            $this->controller = 'keymener\\myblog\\controller\\FrontController';
+            $this->controller = self::PREFIX . 'FrontController';
         }
     }
 
@@ -91,16 +92,13 @@ class Router
             $method = $action;
 
 
-            if ($this->controller == 'keymener\\myblog\\controller\\FrontController') {
+            if ($this->controller == self::PREFIX . 'FrontController') {
                 $this->action = 'home';
-               
             } elseif (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {
                 throw new \Exception('method ' . $method . ' doesn\'t exists');
             }
-        } else {
-            $this->action = null;
         }
     }
 
@@ -109,4 +107,5 @@ class Router
         $var = (int) $variable;
         $this->variable = $var;
     }
+
 }

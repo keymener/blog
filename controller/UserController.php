@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace keymener\myblog\controller;
 
@@ -14,7 +9,7 @@ use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
 
 /**
- * Description of UserController
+ * User controller
  *
  * @author keyme
  */
@@ -36,7 +31,10 @@ class UserController
     {
 
         $twig = TwigLaunch::twigLoad();
-        echo $twig->render('backend/addForm.twig', array('p' => null));
+        echo $twig->render('backend/addForm.twig', array(
+            'action' => '/user/adduser',
+            'button' => 'add'
+        ));
     }
 
     /**
@@ -51,7 +49,11 @@ class UserController
 //checks if the login already exists
             if ($manager->userExists($_POST['login'])) {
                 $twig = TwigLaunch::twigLoad();
-                echo $twig->render('backend/addForm.twig', array('alert' => 1));
+                echo $twig->render('backend/addForm.twig', array(
+                    'alert' => 1,
+                    'action' => '/user/adduser',
+                    'button' => 'add'
+                ));
             } else {
                 $auth = new Authentication($_POST['login'], $_POST['password']);
                 $user = new User($_POST);
@@ -62,14 +64,39 @@ class UserController
         }
     }
 
+    /**
+     * Modify a user using its ID
+     * @param type $id
+     */
     public function modifyUser($id)
     {
         $manager = new UserManager();
         $user = $manager->getUserById($id);
-      
-      
+
+
         $twig = TwigLaunch::twigLoad();
-        echo $twig->render('backend/addForm.twig', array('user' => $user));
+        echo $twig->render('backend/addForm.twig', array(
+            'user' => $user,
+            'action' => '/user/updateuser',
+            'button' => 'modify'
+        ));
+    }
+    
+/**
+ * Update a user using POST method
+ * 
+ */
+    public function updateUser()
+    {
+        if (isset($_POST['id'])) {
+
+            $user = new User($_POST);
+
+            $manager = new UserManager();
+            $manager->updateUser($user);
+
+            header("Location: /back/users");
+        }
     }
 
 }

@@ -38,7 +38,7 @@ class UserManager extends DbConnect
         $req->closeCursor();
         return $user;
     }
-    
+
     public function getUserById($id)
     {
         $req = $this->db->prepare('SELECT * FROM user WHERE id=:id');
@@ -49,7 +49,6 @@ class UserManager extends DbConnect
         return $user;
     }
 
- 
     public function getAllUsers()
     {
         $users = [];
@@ -94,7 +93,28 @@ class UserManager extends DbConnect
     public function addUser(User $user)
     {
 
-        $req = $this->db->prepare('INSERT INTO user set firstname=:firstname, lastname=:lastname, login=:login, email=:email, password=:password');
+        $req = $this->db->prepare('INSERT INTO user 
+            ( lastname, firstname, login, password, email)
+            VALUES
+            (:lastname, :firstname, :login, :password, :email)
+           ');
+        $req->bindValue(':firstname', $user->getFirstname(), PDO::PARAM_STR);
+        $req->bindValue(':lastname', $user->getLastname(), PDO::PARAM_STR);
+        $req->bindValue(':login', $user->getLogin(), PDO::PARAM_STR);
+        $req->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+        $req->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+        $req->execute();
+        $req->closeCursor();
+    }
+
+    public function updateUser(User $user)
+    {
+        $req = $this->db->prepare('UPDATE user set '
+                . 'firstname = :firstname, lastname = :lastname,'
+                . ' login = :login, email = :email, password = :password 
+                    WHERE 
+                    id = :id');
+        $req->bindValue(':id', $user->getId(), PDO::PARAM_INT);
         $req->bindValue(':firstname', $user->getFirstname(), PDO::PARAM_STR);
         $req->bindValue(':lastname', $user->getLastname(), PDO::PARAM_STR);
         $req->bindValue(':login', $user->getLogin(), PDO::PARAM_STR);

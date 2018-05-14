@@ -42,8 +42,9 @@
                             Ajouter un utilisateur
                         </div>
                         <div class="card-body">
-                            <form action="/user/adduser" method="post">
+                            <form action="{{ action }}" method="post">
                                 <div class="form-group">
+                                    <input type="hidden" name="id" value="{{ user.id }}" />
                                     <label for="lastname">Nom</label>
                                     <input type="text" class="form-control" id="lastname" name="lastname" value="{{ user.lastname }}"  />
                                     <label for="fistname">Prénom</label>
@@ -54,7 +55,7 @@
                                     <input type="text" class="form-control" id="login" name="login" value="{{ user.login }}" required/>
                                     <label for="password">Mot de passe</label>
                                     <input type="password" class="form-control" id="password" name="password" value="{{ user.password }}" required />
-                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                    <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
                                 </div>
                             </form>
                         </div>
