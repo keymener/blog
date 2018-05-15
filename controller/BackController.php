@@ -19,12 +19,10 @@ class BackController
      */
     public function login()
     {
-        if (isset($_POST['username']) AND isset($_POST['password'])) {
-
+        if (isset($_POST['username']) and isset($_POST['password'])) {
             $auth = new Authentication($_POST['username'], $_POST['password']);
          
             if ($auth->checkPassword()) {
-
                 $this->home();
             } else {
                 $twig = TwigLaunch::twigLoad();
@@ -32,7 +30,7 @@ class BackController
                     'message' => true
                     ));
             }
-    }
+        }
     }
 
     /**
@@ -94,7 +92,6 @@ class BackController
     public function users()
     {
         if (isset($_SESSION['userId'])) {
-
             $manager = new UserManager();
             $users = $manager->getAllUsers();
                      
@@ -105,5 +102,4 @@ class BackController
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
-
 }

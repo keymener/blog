@@ -56,7 +56,6 @@ class UserManager extends DbConnect
         $req = $this->db->query('SELECT * FROM user');
 
         foreach ($req as $value) {
-
             $users[] = new User($value);
         }
         $req->closeCursor();
@@ -75,7 +74,6 @@ class UserManager extends DbConnect
         $req->execute();
 
         if ($req->rowCount() == 1) {
-
             return true;
         } else {
             return false;
@@ -136,5 +134,4 @@ class UserManager extends DbConnect
         $req->execute();
         $req->closeCursor();
     }
-
 }

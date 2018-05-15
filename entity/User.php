@@ -87,7 +87,7 @@ class User
         $this->login = $login;
     }
 
-    protected function setPassword($password)
+    public function setPassword($password)
     {
         $this->password = $password;
     }

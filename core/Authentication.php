@@ -10,8 +10,6 @@ namespace keymener\myblog\core;
 
 use keymener\myblog\model\UserManager;
 
-
-
 /**
  * Description of Authentication
  *
@@ -23,7 +21,7 @@ class Authentication
     private $username;
     private $password;
 
-    public function __construct($username =  null, $password = null)
+    public function __construct($username = null, $password = null)
     {
 
         $this->username = $username;
@@ -66,5 +64,4 @@ class Authentication
     {
         session_destroy();
     }
-
 }

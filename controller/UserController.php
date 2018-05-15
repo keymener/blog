@@ -22,7 +22,6 @@ class UserController
     public function deleteUser($id)
     {
         if (isset($_SESSION['userId'])) {
-
             $manager = new UserManager;
             $manager->deleteUser($id);
             header("Location: /back/users");
@@ -32,7 +31,6 @@ class UserController
     public function addForm()
     {
         if (isset($_SESSION['userId'])) {
-
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/addForm.twig', array(
                 'action' => '/user/adduser',
@@ -42,13 +40,12 @@ class UserController
     }
 
     /**
-     * add a user 
+     * add a user
      */
     public function addUser()
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-
             $manager = new UserManager;
 
 //checks if the login already exists
@@ -100,13 +97,12 @@ class UserController
 
     /**
      * Update a user using POST method
-     * 
+     *
      */
     public function updateUser()
     {
 
         if (isset($_POST['id'], $_SESSION['userId'])) {
-
             $user = new User($_POST);
 
             $manager = new UserManager();
@@ -117,11 +113,13 @@ class UserController
             } else {
                 // this will change all including password
                 $manager->updateUser($user);
+                $auth = new Authentication;
+                
+                $user->setPassword($auth->encrypt($_POST['password']));
                 $manager->updatePassword($user);
             }
 
             header("Location: /back/users");
         }
     }
-
 }
