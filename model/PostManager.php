@@ -95,4 +95,14 @@ class PostManager extends DbConnect
 
         return $post;
     }
+    
+    public function getLastDate()
+    {
+        $req = $this->db->query('SELECT lastDate FROM post ORDER BY lastDate DESC LIMIT 1');
+        $req->execute();
+        
+        $date = $req->fetch();
+        
+        return $date['lastDate'];
+    }
 }

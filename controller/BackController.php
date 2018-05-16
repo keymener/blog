@@ -21,14 +21,14 @@ class BackController
     {
         if (isset($_POST['username']) and isset($_POST['password'])) {
             $auth = new Authentication($_POST['username'], $_POST['password']);
-         
+
             if ($auth->checkPassword()) {
                 $this->home();
             } else {
                 $twig = TwigLaunch::twigLoad();
                 echo $twig->render('backend/login.twig', array(
                     'message' => true
-                    ));
+                ));
             }
         }
     }
@@ -64,8 +64,16 @@ class BackController
     public function posts()
     {
         if (isset($_SESSION['userId'])) {
+
+            $manager = new \keymener\myblog\model\PostManager();
+            $posts = $manager->getAllPosts();
+            $date = $manager->getLastDate();
+
             $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
+            echo $twig->render('backend/post.twig', array(
+                'posts' => $posts,
+                'lastDate' => $date)
+            );
         } else {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));
@@ -94,7 +102,7 @@ class BackController
         if (isset($_SESSION['userId'])) {
             $manager = new UserManager();
             $users = $manager->getAllUsers();
-                     
+
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/user.twig', array('users' => $users,));
         } else {
@@ -102,4 +110,5 @@ class BackController
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
+
 }
