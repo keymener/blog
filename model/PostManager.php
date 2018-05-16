@@ -2,6 +2,9 @@
 
 namespace keymener\myblog\model;
 
+use keymener\myblog\entity\Post;
+use PDO;
+
 require 'DbConnect.php';
 
 /**
@@ -32,20 +35,20 @@ class PostManager extends DbConnect
         return $posts;
     }
 
-    public function addPost($data)
+    public function addPost(Post $data)
     {
 
         $db = $this->getDb();
         $req = $db->prepare('INSERT INTO post (title, chapeau, content, '
-                . 'lastDate, published, adminUser) '
+                . 'lastDate, published, userId) '
                 . 'VALUES (:title, :chapeau, :content, '
-                . ':lastDate, :published, :adminUser)');
-        $req->bindValue(':title', $data->getTitle(), \PDO::PARAM_STR);
-        $req->bindValue(':chapeau', $data->getChapeau(), \PDO::PARAM_STR);
-        $req->bindValue(':content', $data->getContent(), \PDO::PARAM_STR);
-        $req->bindValue(':lastDate', $data->getLastDate(), \PDO::PARAM_STR);
-        $req->bindValue(':published', $data->getPublished(), \PDO::PARAM_BOOL);
-        $req->bindValue(':adminUser', $data->getAdminUser(), \PDO::PARAM_INT);
+                . ':lastDate, :published, :userId)');
+        $req->bindValue(':title', $data->getTitle(), PDO::PARAM_STR);
+        $req->bindValue(':chapeau', $data->getChapeau(), PDO::PARAM_STR);
+        $req->bindValue(':content', $data->getContent(), PDO::PARAM_STR);
+        $req->bindValue(':lastDate', $data->getLastDate(), PDO::PARAM_STR);
+        $req->bindValue(':published', $data->getPublished(), PDO::PARAM_BOOL);
+        $req->bindValue(':userId', $data->getUserId(), PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
@@ -61,12 +64,12 @@ class PostManager extends DbConnect
                 . ' lastDate = :lastDate,'
                 . ' published = :published,'
                 . ' adminUser = :adminUser  ');
-        $req->bindValue(':title', $data->getTitle(), \PDO::PARAM_STR);
-        $req->bindValue(':chapeau', $data->getChapeau(), \PDO::PARAM_STR);
-        $req->bindValue(':content', $data->getContent(), \PDO::PARAM_STR);
-        $req->bindValue(':lastDate', $data->getLastDate(), \PDO::PARAM_STR);
-        $req->bindValue(':published', $data->getPublished(), \PDO::PARAM_BOOL);
-        $req->bindValue(':adminUser', $data->getAdminUser(), \PDO::PARAM_INT);
+        $req->bindValue(':title', $data->getTitle(), PDO::PARAM_STR);
+        $req->bindValue(':chapeau', $data->getChapeau(), PDO::PARAM_STR);
+        $req->bindValue(':content', $data->getContent(), PDO::PARAM_STR);
+        $req->bindValue(':lastDate', $data->getLastDate(), PDO::PARAM_STR);
+        $req->bindValue(':published', $data->getPublished(), PDO::PARAM_BOOL);
+        $req->bindValue(':adminUser', $data->getAdminUser(), PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
@@ -76,7 +79,7 @@ class PostManager extends DbConnect
 
         $db = $this->getDb();
         $req = $db->prepare('DELETE FROM post WHERE id = :id  ');
-        $req->bindValue(':id', $id, \PDO::PARAM_INT);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
@@ -86,10 +89,10 @@ class PostManager extends DbConnect
 
         $db = $this->getDb();
         $req = $db->prepare('SELECT * FROM post WHERE id = :id  ');
-        $req->bindValue(':id', $id, \PDO::PARAM_INT);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
 
-        $post = $req->fetch(\PDO::FETCH_OBJ);
+        $post = $req->fetch(PDO::FETCH_OBJ);
 
         $req->closeCursor();
 

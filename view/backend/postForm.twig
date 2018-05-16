@@ -1,0 +1,40 @@
+{% extends "/backend/user.twig" %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/back">Accueil </a>/ <a href="/back/posts"> Gestion des articles</a> / <b>Ajouter un article</b> 
+                </li>
+            </ol>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+
+                        <div class="card-header">
+                            Ajouter un article
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ action }}" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="id" value="{{ post.id }}" />
+                                    <label for="title">Titre</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}"  required />
+                                    <label for="chapeau">Chapeau</label>
+                                    <input type="text" class="form-control" id="chapeau" name="chapeau" value="{{ post.chapeau }}" required />
+                                    <label for="content">Contenu</label>
+                                    <textarea type="text" class="form-control" id="content" rows="3" name="content" value="{{ post.content }}" required ></textarea>
+
+                                    <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

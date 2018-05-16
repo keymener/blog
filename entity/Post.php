@@ -1,6 +1,6 @@
 <?php
 
-namespace keymener\myblog\model;
+namespace keymener\myblog\entity;
 
 /**
  * post entity
@@ -10,13 +10,13 @@ namespace keymener\myblog\model;
 class Post
 {
 
-    private $int;
+    private $id;
     private $title;
     private $chapeau;
     private $content;
     private $lastDate;
-    private $published;
-    private $adminUser;
+    private $published = null;
+    private $userId;
 
     public function __construct(array $data)
     {
@@ -33,9 +33,9 @@ class Post
         }
     }
 
-    public function getInt()
+    public function getId()
     {
-        return $this->int;
+        return $this->id;
     }
 
     public function getTitle()
@@ -63,14 +63,14 @@ class Post
         return $this->published;
     }
 
-    public function getAdminUser()
+    public function getUserId()
     {
-        return $this->adminUser;
+        return $this->userId;
     }
 
-    public function setInt($int)
+    public function setId($id)
     {
-        $this->int = $int;
+        $this->id = $id;
     }
 
     public function setTitle($title)
@@ -103,8 +103,8 @@ class Post
         }
     }
 
-    public function setAdminUser($adminUser)
+    public function setUserId($userId)
     {
-        $this->adminUser = $adminUser;
+        $this->userId = $userId;
     }
 }

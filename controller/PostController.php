@@ -48,4 +48,38 @@ class PostController
         }
     }
 
+    public function postForm()
+    {
+        if (isset($_SESSION['userId'])) {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/postForm.twig', array(
+                'action' => '/post/addpost',
+                'button' => 'add'
+            ));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+    
+      public function addPost()
+    {
+
+        if (isset($_POST, $_SESSION['userId'])) {
+            $manager = new PostManager;
+
+                $post = new \keymener\myblog\entity\Post($_POST);
+                $post->setUserId($_SESSION['userId']);
+                $post->setLastDate(date("Y-m-d H:i:s"));
+                
+                $manager->addPost($post);
+
+              header("Location: /back/posts");
+            
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+
 }
