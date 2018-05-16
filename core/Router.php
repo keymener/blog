@@ -29,7 +29,7 @@ class Router
     {
 
         $this->setUrlArray($url);
-        
+
         if (!empty($this->urlArray[self::CONTROLLER_POSITION])) {
             $this->setController($this->urlArray[self::CONTROLLER_POSITION]);
         } else {
@@ -82,7 +82,7 @@ class Router
         if (class_exists($controllerName)) {
             $this->controller = $controllerName;
         } else {
-            $this->controller = self::PREFIX . 'FrontController';
+             header("Location: /error/errorPage");
         }
     }
 
@@ -92,12 +92,10 @@ class Router
             $method = $action;
 
 
-            if ($this->controller == self::PREFIX . 'FrontController') {
-                $this->action = 'home';
-            } elseif (method_exists($this->controller, $method)) {
+           if (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {
-                throw new \Exception('method ' . $method . ' doesn\'t exists');
+                 header("Location: /error/errorPage");
             }
         }
     }
@@ -107,4 +105,5 @@ class Router
         $var = (int) $variable;
         $this->variable = $var;
     }
+
 }

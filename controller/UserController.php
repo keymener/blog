@@ -25,6 +25,9 @@ class UserController
             $manager = new UserManager;
             $manager->deleteUser($id);
             header("Location: /back/users");
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
 
@@ -36,6 +39,9 @@ class UserController
                 'action' => '/user/adduser',
                 'button' => 'add'
             ));
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
 
@@ -114,7 +120,7 @@ class UserController
                 // this will change all including password
                 $manager->updateUser($user);
                 $auth = new Authentication;
-                
+
                 $user->setPassword($auth->encrypt($_POST['password']));
                 $manager->updatePassword($user);
             }
@@ -122,4 +128,5 @@ class UserController
             header("Location: /back/users");
         }
     }
+
 }
