@@ -4,6 +4,7 @@ namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
 use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\model\UserManager;
 
 /**
  * Description of AdminController
@@ -13,26 +14,32 @@ use keymener\myblog\core\TwigLaunch;
 class BackController
 {
 
+    /**
+     * login page
+     */
     public function login()
     {
-        if (isset($_POST['username']) AND isset($_POST['password'])) {
-
+        if (isset($_POST['username']) and isset($_POST['password'])) {
             $auth = new Authentication($_POST['username'], $_POST['password']);
-
+         
             if ($auth->checkPassword()) {
-
                 $this->home();
             } else {
                 $twig = TwigLaunch::twigLoad();
-                echo $twig->render('backend/login.twig', array('message' => true));
+                echo $twig->render('backend/login.twig', array(
+                    'message' => true
+                    ));
             }
         }
     }
 
+    /**
+     * home page of backend
+     */
     public function home()
     {
 
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -41,6 +48,9 @@ class BackController
         }
     }
 
+    /**
+     * logout
+     */
     public function logout()
     {
         session_destroy();
@@ -48,9 +58,12 @@ class BackController
         echo $twig->render('backend/login.twig', array('p' => null));
     }
 
+    /**
+     * post managment page
+     */
     public function posts()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -59,9 +72,12 @@ class BackController
         }
     }
 
+    /**
+     * comment managment page
+     */
     public function comments()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -70,15 +86,20 @@ class BackController
         }
     }
 
-    public function userManager()
+    /**
+     * user managment page
+     */
+    public function users()
     {
-        if (isset($_SESSION['auth'])) {
+        if (isset($_SESSION['userId'])) {
+            $manager = new UserManager();
+            $users = $manager->getAllUsers();
+                     
             $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
+            echo $twig->render('backend/user.twig', array('users' => $users,));
         } else {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
-
 }

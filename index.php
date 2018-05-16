@@ -7,5 +7,6 @@ $controller = $router->getController();
 $action = $router->getAction();
 $var = $router->getVariable();
 
+
 $controllerInstance = new $controller();
-call_user_func_array(array($controllerInstance, $action),array($var));
+call_user_func_array(array($controllerInstance, $action), array($var));
