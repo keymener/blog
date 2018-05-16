@@ -34,4 +34,18 @@ class PostController
         $twig = TwigLaunch::twigLoad();
         echo $twig->render('frontend/singlePost.twig', array('post' => $post));
     }
+
+    public function deletePost($id)
+    {
+        if (isset($_SESSION['userId'])) {
+            $manager = new PostManager();
+            $manager->deletePost($id);
+
+            header("location: /back/posts");
+        } else {
+            $twig = TwigLaunch::twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+
 }
