@@ -3,7 +3,9 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
+use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\model\PostManager;
 use keymener\myblog\model\UserManager;
 
 /**
@@ -64,8 +66,9 @@ class BackController
     public function posts()
     {
         if (isset($_SESSION['userId'])) {
-
-            $manager = new \keymener\myblog\model\PostManager();
+            $factory = new Factory;
+            $posts = $factory->createManager('post');
+            
             $posts = $manager->getAllPosts();
             $date = $manager->getLastDate();
 
@@ -100,7 +103,9 @@ class BackController
     public function users()
     {
         if (isset($_SESSION['userId'])) {
-            $manager = new UserManager();
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
+            
             $users = $manager->getAllUsers();
 
             $twig = TwigLaunch::twigLoad();

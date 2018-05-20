@@ -16,8 +16,9 @@ class PostController
     public function home()
     {
 
-        $posts = new PostManager();
-        $posts = $posts->getAllPosts();
+        $factory = new Factory;
+        $manager = $factory->createManager('post');
+        $posts = $manager->getAllPosts();
 
 
 
@@ -28,8 +29,9 @@ class PostController
     public function getPost($id)
     {
 
-        $post = new PostManager();
-        $post = $post->getPost($id);
+        $factory = new Factory;
+        $manager = $factory->createManager('post');
+        $post = $manager->getPost($id);
 
         $twig = TwigLaunch::twigLoad();
         echo $twig->render('frontend/singlePost.twig', array('post' => $post));
@@ -38,7 +40,8 @@ class PostController
     public function deletePost($id)
     {
         if (isset($_SESSION['userId'])) {
-            $manager = new PostManager();
+            $factory = new Factory;
+            $manager = $factory->createManager('post');
             $manager->deletePost($id);
 
             header("location: /back/posts");
@@ -61,25 +64,30 @@ class PostController
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
-    
-      public function addPost()
+
+    public function addPost()
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-            $manager = new PostManager;
+            $factory = new Factory;
+            $manager = $factory->createManager('post');
+            $user = new User;
+            $post = new \keymener\myblog\entity\Post($_POST);
+            $post->setUserId($_SESSION['userId']);
+            $post->setLastDate(date("Y-m-d H:i:s"));
 
-                $post = new \keymener\myblog\entity\Post($_POST);
-                $post->setUserId($_SESSION['userId']);
-                $post->setLastDate(date("Y-m-d H:i:s"));
-                
-                $manager->addPost($post);
+            $manager->addPost($post);
 
-              header("Location: /back/posts");
-            
+            header("Location: /back/posts");
         } else {
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));
         }
+    }
+
+    public function modifyPost()
+    {
+        if (isset($_POS, $SESSION['userId'])
     }
 
 }

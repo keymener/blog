@@ -5,27 +5,26 @@ namespace keymener\myblog\model;
 use keymener\myblog\entity\Post;
 use PDO;
 
-require 'DbConnect.php';
-
 /**
  * post manager for database
  *
  * @author keyme
  */
-class PostManager extends DbConnect
+class PostManager
 {
 
-    public function __construct()
+    private $db;
+
+    public function __construct(Database $db)
     {
-        $this->dblaunch();
+        $this->db = $db;
     }
 
     public function getAllPosts()
     {
-
         $posts = [];
 
-        $db = $this->getDb();
+        $db = $this->db->dbLaunch();
         $req = $db->query('SELECT * FROM post ORDER BY lastDate DESC');
 
         foreach ($req as $value) {
@@ -38,7 +37,7 @@ class PostManager extends DbConnect
     public function addPost(Post $data)
     {
 
-        $db = $this->getDb();
+        $db = $this->db->dbLaunch;
         $req = $db->prepare('INSERT INTO post (title, chapeau, content, '
                 . 'lastDate, published, userId) '
                 . 'VALUES (:title, :chapeau, :content, '
@@ -56,7 +55,7 @@ class PostManager extends DbConnect
     public function updatePost($data)
     {
 
-        $db = $this->getDb();
+        $db = $this->db->dbLaunch;
         $req = $db->prepare('UPDATE post SET '
                 . 'title = :title,'
                 . ' chapeau = :chapeau,'
@@ -77,7 +76,7 @@ class PostManager extends DbConnect
     public function deletePost($id)
     {
 
-        $db = $this->getDb();
+        $db = $this->db->dbLaunch;
         $req = $db->prepare('DELETE FROM post WHERE id = :id  ');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
@@ -87,7 +86,7 @@ class PostManager extends DbConnect
     public function getPost($id)
     {
 
-        $db = $this->getDb();
+        $db = $this->db->dbLaunch;
         $req = $db->prepare('SELECT * FROM post WHERE id = :id  ');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
@@ -98,14 +97,15 @@ class PostManager extends DbConnect
 
         return $post;
     }
-    
+
     public function getLastDate()
     {
-        $req = $this->db->query('SELECT lastDate FROM post ORDER BY lastDate DESC LIMIT 1');
+        $req = $this->db->dbLaunch()->query('SELECT lastDate FROM post ORDER BY lastDate DESC LIMIT 1');
         $req->execute();
-        
+
         $date = $req->fetch();
-        
+
         return $date['lastDate'];
     }
+
 }

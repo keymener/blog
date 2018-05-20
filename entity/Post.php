@@ -103,8 +103,9 @@ class Post
         }
     }
 
-    public function setUserId($userId)
+    public function setUserId(User $user)
     {
-        $this->userId = $userId;
+        $this->userId = $user->getId();
     }
+
 }

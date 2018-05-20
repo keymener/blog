@@ -16,12 +16,12 @@ use PDO;
  *
  * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
  */
-class UserManager extends DbConnect
+class UserManager
 {
-
-    public function __construct()
+private $db;
+    public function __construct(Database $db)
     {
-        parent::dblaunch();
+        $this->db = $db;
     }
 
     /**
@@ -31,7 +31,7 @@ class UserManager extends DbConnect
      */
     public function getUser($login)
     {
-        $req = $this->db->prepare('SELECT * FROM user WHERE login=:login');
+        $req = $this->d->b->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
         $user = new User($req->fetch(PDO::FETCH_ASSOC));
@@ -41,7 +41,7 @@ class UserManager extends DbConnect
 
     public function getUserById($id)
     {
-        $req = $this->db->prepare('SELECT * FROM user WHERE id=:id');
+        $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE id=:id');
         $req->bindValue(':id', $id, PDO::PARAM_STR);
         $req->execute();
         $user = new User($req->fetch(PDO::FETCH_ASSOC));
@@ -52,8 +52,9 @@ class UserManager extends DbConnect
     public function getAllUsers()
     {
         $users = [];
+        
 
-        $req = $this->db->query('SELECT * FROM user');
+        $req = $this->db->dbLaunch()->query('SELECT * FROM user');
 
         foreach ($req as $value) {
             $users[] = new User($value);
@@ -69,7 +70,7 @@ class UserManager extends DbConnect
      */
     public function userExists($login)
     {
-        $req = $this->db->prepare('SELECT * FROM user WHERE login=:login');
+        $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
 
@@ -82,7 +83,7 @@ class UserManager extends DbConnect
 
     public function deleteUser($id)
     {
-        $req = $this->db->prepare('DELETE FROM user WHERE id=:id');
+        $req = $this->db->dbLaunch()->prepare('DELETE FROM user WHERE id=:id');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
@@ -91,7 +92,7 @@ class UserManager extends DbConnect
     public function addUser(User $user)
     {
 
-        $req = $this->db->prepare('INSERT INTO user 
+        $req = $this->db->dbLaunch()->prepare('INSERT INTO user 
             ( lastname, firstname, login, password, email)
             VALUES
             (:lastname, :firstname, :login, :password, :email)
@@ -107,7 +108,7 @@ class UserManager extends DbConnect
 
     public function updateUser(User $user)
     {
-        $req = $this->db->prepare('UPDATE user set '
+        $req = $this->db->dbLaunch()->prepare('UPDATE user set '
                 . 'firstname = :firstname, lastname = :lastname,'
                 . ' login = :login, email = :email
                     WHERE 
@@ -125,7 +126,7 @@ class UserManager extends DbConnect
 
     public function updatePassword(User $user)
     {
-        $req = $this->db->prepare('UPDATE user set password = :password
+        $req = $this->db->dbLaunch()->prepare('UPDATE user set password = :password
                     WHERE 
                     id = :id');
         $req->bindValue(':id', $user->getId(), PDO::PARAM_INT);

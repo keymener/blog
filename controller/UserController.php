@@ -3,6 +3,7 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
+use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
@@ -22,7 +23,9 @@ class UserController
     public function deleteUser($id)
     {
         if (isset($_SESSION['userId'])) {
-            $manager = new UserManager;
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
+            
             $manager->deleteUser($id);
             header("Location: /back/users");
         } else {
@@ -52,7 +55,8 @@ class UserController
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-            $manager = new UserManager;
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
 
 //checks if the login already exists
             if ($manager->userExists($_POST['login'])) {
@@ -85,7 +89,8 @@ class UserController
     public function modifyUser($id)
     {
         if (isset($_SESSION['userId'])) {
-            $manager = new UserManager();
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
             $user = $manager->getUserById($id);
 
 
@@ -111,7 +116,8 @@ class UserController
         if (isset($_POST['id'], $_SESSION['userId'])) {
             $user = new User($_POST);
 
-            $manager = new UserManager();
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
 // check if the user changes the password
             if (empty($_POST['password'])) {
                 //this will change all but not the password
