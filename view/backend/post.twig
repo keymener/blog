@@ -32,7 +32,7 @@
                             <i class="fa fa-table"></i> Liste des articles</div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>#Id</th>
@@ -65,8 +65,13 @@
                                                 <td>{{ post.userId }}</td>
                                                 <td>{{ post.published }}</td>
                                                 <td>
-                                                    <a href="/post/modifypost/{{ post.id }}"><button type="button" class="btn btn-primary">Modifier</button></a>
-                                                    <a href="/post/deletepost/{{ post.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                                    <a href="/post/modifypost/{{ post.id }}"><button type="button" class="btn btn-primary btn-sm">Modifier</button></a>
+                                                    {% if post.published != 1 %}
+                                                        <a href="/post/publishpost/{{ post.id }}"><button type="button" class="btn btn-success btn-sm">Publier</button></a>
+                                                    {% else %}
+                                                        <a href="/post/unpublishpost/{{ post.id }}"><button type="button" class="btn btn-warning btn-sm">Dé Publier</button></a>
+                                                    {% endif %}
+                                                    <a href="/post/deletepost/{{ post.id }}"><button type="button" class="btn btn-danger btn-sm">Supprimer</button></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

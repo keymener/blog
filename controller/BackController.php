@@ -60,28 +60,7 @@ class BackController
         echo $twig->render('backend/login.twig', array('p' => null));
     }
 
-    /**
-     * post managment page
-     */
-    public function posts()
-    {
-        if (isset($_SESSION['userId'])) {
-            $factory = new Factory;
-            $posts = $factory->createManager('post');
-            
-            $posts = $manager->getAllPosts();
-            $date = $manager->getLastDate();
 
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/post.twig', array(
-                'posts' => $posts,
-                'lastDate' => $date)
-            );
-        } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
-    }
 
     /**
      * comment managment page

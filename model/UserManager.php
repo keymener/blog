@@ -31,7 +31,7 @@ private $db;
      */
     public function getUser($login)
     {
-        $req = $this->d->b->prepare('SELECT * FROM user WHERE login=:login');
+        $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
         $user = new User($req->fetch(PDO::FETCH_ASSOC));

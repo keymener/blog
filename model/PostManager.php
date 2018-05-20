@@ -28,8 +28,9 @@ class PostManager
         $req = $db->query('SELECT * FROM post ORDER BY lastDate DESC');
 
         foreach ($req as $value) {
-            $posts[] = $value;
+            $posts[] = new Post($value);
         }
+     
         $req->closeCursor();
         return $posts;
     }
@@ -37,7 +38,7 @@ class PostManager
     public function addPost(Post $data)
     {
 
-        $db = $this->db->dbLaunch;
+        $db = $this->db->dbLaunch();
         $req = $db->prepare('INSERT INTO post (title, chapeau, content, '
                 . 'lastDate, published, userId) '
                 . 'VALUES (:title, :chapeau, :content, '
@@ -52,23 +53,25 @@ class PostManager
         $req->closeCursor();
     }
 
-    public function updatePost($data)
+    public function updatePost(Post $data)
     {
 
-        $db = $this->db->dbLaunch;
+        $db = $this->db->dbLaunch();
         $req = $db->prepare('UPDATE post SET '
                 . 'title = :title,'
                 . ' chapeau = :chapeau,'
                 . ' content = :content,'
                 . ' lastDate = :lastDate,'
                 . ' published = :published,'
-                . ' adminUser = :adminUser  ');
+                . ' UserId = :adminUser  '
+                . 'WHERE id = :id');
         $req->bindValue(':title', $data->getTitle(), PDO::PARAM_STR);
         $req->bindValue(':chapeau', $data->getChapeau(), PDO::PARAM_STR);
         $req->bindValue(':content', $data->getContent(), PDO::PARAM_STR);
         $req->bindValue(':lastDate', $data->getLastDate(), PDO::PARAM_STR);
         $req->bindValue(':published', $data->getPublished(), PDO::PARAM_BOOL);
-        $req->bindValue(':adminUser', $data->getAdminUser(), PDO::PARAM_INT);
+        $req->bindValue(':adminUser', $data->getUserId(), PDO::PARAM_INT);
+        $req->bindValue(':id', $data->getUserId(), PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
@@ -76,23 +79,24 @@ class PostManager
     public function deletePost($id)
     {
 
-        $db = $this->db->dbLaunch;
+        $db = $this->db->dbLaunch();
         $req = $db->prepare('DELETE FROM post WHERE id = :id  ');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
 
-    public function getPost($id)
+    public function getPost($id) : Post
     {
 
-        $db = $this->db->dbLaunch;
+        $db = $this->db->dbLaunch();
         $req = $db->prepare('SELECT * FROM post WHERE id = :id  ');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
 
-        $post = $req->fetch(PDO::FETCH_OBJ);
-
+        $result = $req->fetch(PDO::FETCH_ASSOC);
+       
+        $post = new Post($result);
         $req->closeCursor();
 
         return $post;

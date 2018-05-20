@@ -36,8 +36,8 @@ class Authentication
      */
     public function checkPassword()
     {
-
-        $manager = new UserManager;
+        $factory = new Factory();
+        $manager = $factory->createManager('user');
 
         // check if the user exists in database
         if ($manager->userExists($this->username)) {

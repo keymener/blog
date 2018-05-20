@@ -15,7 +15,7 @@ class Post
     private $chapeau;
     private $content;
     private $lastDate;
-    private $published = null;
+    private $published;
     private $userId;
 
     public function __construct(array $data)
@@ -98,14 +98,13 @@ class Post
 
     public function setPublished($published)
     {
-        if (is_bool($published)) {
-            $this->published = $published;
-        }
+
+        $this->published = (bool)$published;
     }
 
-    public function setUserId(User $user)
+    public function setUserId($user)
     {
-        $this->userId = $user->getId();
+        $this->userId = $user;
     }
 
 }
