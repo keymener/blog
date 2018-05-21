@@ -3,7 +3,9 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
+use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\model\PostManager;
 use keymener\myblog\model\UserManager;
 
 /**
@@ -21,14 +23,14 @@ class BackController
     {
         if (isset($_POST['username']) and isset($_POST['password'])) {
             $auth = new Authentication($_POST['username'], $_POST['password']);
-         
+
             if ($auth->checkPassword()) {
                 $this->home();
             } else {
                 $twig = TwigLaunch::twigLoad();
                 echo $twig->render('backend/login.twig', array(
                     'message' => true
-                    ));
+                ));
             }
         }
     }
@@ -58,19 +60,7 @@ class BackController
         echo $twig->render('backend/login.twig', array('p' => null));
     }
 
-    /**
-     * post managment page
-     */
-    public function posts()
-    {
-        if (isset($_SESSION['userId'])) {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
-        } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
-    }
+
 
     /**
      * comment managment page
@@ -92,9 +82,11 @@ class BackController
     public function users()
     {
         if (isset($_SESSION['userId'])) {
-            $manager = new UserManager();
+            $factory = new Factory;
+            $manager = $factory->createManager('user');
+            
             $users = $manager->getAllUsers();
-                     
+
             $twig = TwigLaunch::twigLoad();
             echo $twig->render('backend/user.twig', array('users' => $users,));
         } else {
@@ -102,4 +94,5 @@ class BackController
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
+
 }
