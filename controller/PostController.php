@@ -164,10 +164,15 @@ class PostController
             $factory = new Factory;
             $manager = $factory->createManager('post');
 
-            $post = new Post($_POST); // instance of post 
-
+            $post = new Post($_POST); 
+            $post->setUserId($_SESSION['userId']);
+            $post->setLastDate(date("Y-m-d H:i:s"));
+         
             $manager->updatePost($post);
 
+       
+            
+            
             header("Location: /post/home");
         } else {
             $twig = TwigLaunch::twigLoad();

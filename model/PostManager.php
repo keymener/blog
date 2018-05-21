@@ -63,7 +63,7 @@ class PostManager
                 . ' content = :content,'
                 . ' lastDate = :lastDate,'
                 . ' published = :published,'
-                . ' UserId = :adminUser  '
+                . ' userId = :adminUser  '
                 . 'WHERE id = :id');
         $req->bindValue(':title', $data->getTitle(), PDO::PARAM_STR);
         $req->bindValue(':chapeau', $data->getChapeau(), PDO::PARAM_STR);
@@ -71,7 +71,7 @@ class PostManager
         $req->bindValue(':lastDate', $data->getLastDate(), PDO::PARAM_STR);
         $req->bindValue(':published', $data->getPublished(), PDO::PARAM_BOOL);
         $req->bindValue(':adminUser', $data->getUserId(), PDO::PARAM_INT);
-        $req->bindValue(':id', $data->getUserId(), PDO::PARAM_INT);
+        $req->bindValue(':id', $data->getId(), PDO::PARAM_INT);
         $req->execute();
         $req->closeCursor();
     }
