@@ -18,10 +18,7 @@ class Post
     private $published;
     private $userId;
 
-    public function __construct(array $data)
-    {
-        $this->hydrate($data);
-    }
+  
 
     public function hydrate($data)
     {

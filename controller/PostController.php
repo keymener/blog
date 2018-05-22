@@ -2,7 +2,6 @@
 
 namespace keymener\myblog\controller;
 
-use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Post;
 use keymener\myblog\model\PostManager;
@@ -35,17 +34,21 @@ class PostController
     {
         if (isset($_SESSION['userId'])) {
 
-
+            // get all post from database
             $posts = $this->postManager->getAllPosts();
+
+            //get last date
             $date = $this->postManager->getLastDate();
 
-            echo $this->twig->render('backend/post.twig', array(
+            //send it to view
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/post.twig', array(
                 'posts' => $posts,
                 'lastDate' => $date)
             );
         } else {
-
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -56,7 +59,8 @@ class PostController
 
         $post = $this->postManager->getPost($id);
 
-        echo $this->twig->render('frontend/singlePost.twig', array(
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('frontend/singlePost.twig', array(
             'post' => $post)
         );
     }
@@ -70,7 +74,8 @@ class PostController
             header("location: /post/home");
         } else {
 
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig > render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -80,13 +85,14 @@ class PostController
     {
         if (isset($_SESSION['userId'])) {
 
-            echo $this->twig->render('backend/postForm.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/postForm.twig', array(
                 'action' => '/post/addpost',
                 'button' => 'add')
             );
         } else {
-
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -97,8 +103,7 @@ class PostController
 
         if (isset($_POST, $_SESSION['userId'])) {
 
-
-            $this->post($_POST);
+            $this->post->hydrate($_POST);
             $this->post->setUserId($_SESSION['userId']);
             $this->post->setLastDate(date("Y-m-d H:i:s"));
 
@@ -107,7 +112,8 @@ class PostController
             header("Location: /post/home");
         } else {
 
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -117,17 +123,20 @@ class PostController
     {
         if (isset($_SESSION['userId'])) {
 
-            $post = $this->post($this->postManager->getPost($id));
+            $data = $this->postManager->getPost($id);
 
+            $this->post->hydrate($data);
 
-            echo $this->twig->render('backend/postForm.twig', array(
-                'post' => $post,
+                      
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/postForm.twig', array(
+                'post' => $this->post,
                 'action' => '/post/updatepost',
                 'button' => 'modify'
             ));
         } else {
-
-            echo $twig->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -136,8 +145,9 @@ class PostController
     public function publishPost($id)
     {
         if (isset($_SESSION['userId'])) {
-            //get the post from database and add to constructor's instance
-            $this->post($this->postManager->getPost($id));
+            //get the post from database and hydrate isntance
+            $data = $this->postManager->getPost($id);
+            $this->post->hydrate($data);
 
             //set the value true to published
             $this->post->setPublished(true);
@@ -148,8 +158,8 @@ class PostController
             // return to home view
             header("Location: /post/home");
         } else {
-
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
@@ -159,8 +169,10 @@ class PostController
     {
         if (isset($_SESSION['userId'])) {
 
-            //get the post from database and add to constructor's instance
-            $this->post($this->postManager->getPost($id));
+            //get the post from database and hydrate isntance
+            $data = $this->postManager->getPost($id);
+            $this->post->hydrate($data);
+
 
             // set the attribute to false for unpublish
             $this->post->setPublished(false);
@@ -171,27 +183,29 @@ class PostController
             // return to home view
             header("Location: /post/home");
         } else {
-
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }
     }
 
-    public function updatePost($id)
+    public function updatePost()
     {
         if (isset($_SESSION['userId'], $_POST['id'])) {
-
-            $this->post($_POST);
-            $$this->post->setUserId($_SESSION['userId']);
+          
+    
+            $this->post->hydrate($_POST);
+                                       
+            $this->post->setUserId($_SESSION['userId']);
             $this->post->setLastDate(date("Y-m-d H:i:s"));
 
             $this->postManager->updatePost($this->post);
 
             header("Location: /post/home");
         } else {
-
-            echo $this->twig->render('backend/login.twig', array(
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
                 'message' => false)
             );
         }

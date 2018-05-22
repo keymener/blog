@@ -16,7 +16,7 @@ class PostManager
     private $db;
     private $post;
 
-    public function __construct(Database $db, keymener\myblog\entity\Post $post)
+    public function __construct(Database $db, Post $post)
     {
         $this->db = $db;
         $this->post = $post;
@@ -24,15 +24,10 @@ class PostManager
 
     public function getAllPosts()
     {
-        $posts = [];
-
+        
         $db = $this->db->dbLaunch();
         $req = $db->query('SELECT * FROM post ORDER BY lastDate DESC');
-
-        foreach ($req as $value) {
-            $posts[] = new Post($value);
-        }
-
+        $posts = $req->fetchall(PDO::FETCH_ASSOC);
         $req->closeCursor();
         return $posts;
     }
@@ -88,7 +83,7 @@ class PostManager
         $req->closeCursor();
     }
 
-    public function getPost($id): Post
+    public function getPost($id)
     {
 
         $db = $this->db->dbLaunch();

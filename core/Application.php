@@ -20,15 +20,18 @@ class Application
 
     private $router;
     private $container;
-
+   
     public function __construct(Router $router, Container $container)
     {
         $this->router = $router;
         $this->container = $container;
+       
     }
 
     public function run()
     {
+           
+        
         //get the controller name
         $controller = $this->router->getController();
 
@@ -38,8 +41,10 @@ class Application
         // get the variable
         $var = $this->router->getVariable();
 
-        //set instance using php-di container and autowiring
-        $this->container->get($controller)->$method($var);
+        // call controller
+        $instance = $this->container->get($controller);
+
+        $instance->$method($var);
     }
 
 }
