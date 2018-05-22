@@ -14,10 +14,12 @@ class PostManager
 {
 
     private $db;
+    private $post;
 
-    public function __construct(Database $db)
+    public function __construct(Database $db, keymener\myblog\entity\Post $post)
     {
         $this->db = $db;
+        $this->post = $post;
     }
 
     public function getAllPosts()
@@ -30,7 +32,7 @@ class PostManager
         foreach ($req as $value) {
             $posts[] = new Post($value);
         }
-     
+
         $req->closeCursor();
         return $posts;
     }
@@ -86,7 +88,7 @@ class PostManager
         $req->closeCursor();
     }
 
-    public function getPost($id) : Post
+    public function getPost($id): Post
     {
 
         $db = $this->db->dbLaunch();
@@ -95,11 +97,8 @@ class PostManager
         $req->execute();
 
         $result = $req->fetch(PDO::FETCH_ASSOC);
-       
-        $post = new Post($result);
         $req->closeCursor();
-
-        return $post;
+        return $result;
     }
 
     public function getLastDate()

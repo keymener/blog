@@ -18,10 +18,17 @@ use keymener\myblog\core\TwigLaunch;
 class ErrorController
 {
 
+    private $twig;
+
+    public function __construct(TwigLaunch $twig)
+    {
+        $this->twig = $twig;
+    }
+
     public function errorPage()
     {
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('errorPage.twig',['hide' => true] );
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('errorPage.twig', ['hide' => true]);
     }
 
 }

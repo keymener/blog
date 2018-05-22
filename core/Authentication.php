@@ -18,14 +18,11 @@ use keymener\myblog\model\UserManager;
 class Authentication
 {
 
-    private $username;
-    private $password;
+    private $userManager;
 
-    public function __construct($username = null, $password = null)
+    public function __construct(UserManager $userManager)
     {
-
-        $this->username = $username;
-        $this->password = $password;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -34,26 +31,24 @@ class Authentication
      * @param type $password
      * @return boolean
      */
-    public function checkPassword()
+    public function checkPassword($username = null, $password = null)
     {
-        $factory = new Factory();
-        $manager = $factory->createManager('user');
-
-        // check if the user exists in database
-        if ($manager->userExists($this->username)) {
-            $user = $manager->getUser($this->username);
-
-            if (password_verify($this->password, $user->getPassword())) {
-                 {
-                    $_SESSION['userId'] = $user->getId();
-                    $_SESSION['username'] = $user->getFirstname();
-                }
-
-                return true;
-            }
-        }
+//        // check if the user exists in database
+//        if ($this->userManager->userExists($username)) {
+//            $user = $this->userManager->getUser(username);
+//
+//            if (password_verify($password, $user->getPassword())) { {
+//                    $_SESSION['userId'] = $user->getId();
+//                    $_SESSION['username'] = $user->getFirstname();
+//                }
+//
+//                return true;
+//            }
+//        }
+        
+        echo 'toto';
     }
-    
+
     public function encrypt($password)
     {
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -64,4 +59,5 @@ class Authentication
     {
         session_destroy();
     }
+
 }

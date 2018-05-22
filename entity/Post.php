@@ -23,7 +23,7 @@ class Post
         $this->hydrate($data);
     }
 
-    private function hydrate($data)
+    public function hydrate($data)
     {
         foreach ($data as $key => $value) {
             $method = 'set' . ucfirst($key);
