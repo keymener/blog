@@ -17,12 +17,8 @@ class User
     protected $password;
     protected $email;
 
-    public function __construct($data)
-    {
-        $this->hydrate($data);
-    }
 
-    protected function hydrate($data)
+    public function hydrate(array $data)
     {
         if (isset($data)) {
             foreach ($data as $key => $value) {

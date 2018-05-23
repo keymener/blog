@@ -1,12 +1,28 @@
 <?php
 session_start();
+
+use DI\Container;
+use keymener\myblog\core\Application;
+use keymener\myblog\core\Authentication;
+use keymener\myblog\core\Router;
+
 require 'vendor/autoload.php';
 
-$router = new keymener\myblog\core\Router($_GET['url']);
-$controller = $router->getController();
-$action = $router->getAction();
-$var = $router->getVariable();
+// create instance of Router and send the url
+$url = empty($_GET['url']) ? '/home/home' : $_GET['url'];
+
+$router = new Router($url);
+
+// create an instance of php-di Container
+$container = new Container;
 
 
-$controllerInstance = new $controller();
-call_user_func_array(array($controllerInstance, $action), array($var));
+// create instance of Application
+$application = new Application($router, $container);
+
+//run the application
+$application->run();
+
+
+
+

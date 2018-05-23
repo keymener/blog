@@ -11,10 +11,17 @@ use keymener\myblog\core\TwigLaunch;
  */
 class FrontController
 {
+
+    private $twig;
+
+    public function __construct(TwigLaunch $twig)
+    {
+        $this->twig = $twig;
+    }
+
     public function home()
     {
-                
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('frontend/home.twig', array('a' => 'a' ));
+        echo $this->twig->twigLoad()->render('frontend/home.twig', array(
+            'a' => 'a'));
     }
 }

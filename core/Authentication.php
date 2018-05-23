@@ -8,8 +8,6 @@
 
 namespace keymener\myblog\core;
 
-use keymener\myblog\model\UserManager;
-
 /**
  * Description of Authentication
  *
@@ -18,43 +16,28 @@ use keymener\myblog\model\UserManager;
 class Authentication
 {
 
-    private $username;
-    private $password;
-
-    public function __construct($username = null, $password = null)
-    {
-
-        $this->username = $username;
-        $this->password = $password;
-    }
-
     /**
-     * Check if the typed password is ok
+     * compare to string
      * @param type $username
      * @param type $password
      * @return boolean
      */
-    public function checkPassword()
+    public function checkPassword($userPassword, $basePassword): bool
     {
-        $factory = new Factory();
-        $manager = $factory->createManager('user');
 
-        // check if the user exists in database
-        if ($manager->userExists($this->username)) {
-            $user = $manager->getUser($this->username);
-
-            if (password_verify($this->password, $user->getPassword())) {
-                 {
-                    $_SESSION['userId'] = $user->getId();
-                    $_SESSION['username'] = $user->getFirstname();
-                }
-
-                return true;
-            }
+        if (password_verify($userPassword, $basePassword)) {
+            return true;
+        } else {
+            return false;
         }
     }
-    
-    public function encrypt($password)
+
+    /**
+     * return encrypted password
+     * @param string $password
+     * @return string
+     */
+    public function encrypt(string $password) : string
     {
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
         return $encryptedPassword;

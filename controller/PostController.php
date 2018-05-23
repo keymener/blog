@@ -2,10 +2,9 @@
 
 namespace keymener\myblog\controller;
 
-use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Post;
-use keymener\myblog\entity\User;
+use keymener\myblog\model\PostManager;
 
 /**
  * controller pour post
@@ -15,65 +14,78 @@ use keymener\myblog\entity\User;
 class PostController
 {
 
+    private $post;
+    private $postManager;
+    private $twig;
+
+    public function __construct(
+        Post $post,
+        PostManager $postManager,
+        TwigLaunch $twig
+    ) {
+        $this->post = $post;
+        $this->postManager = $postManager;
+        $this->twig = $twig;
+    }
+
     /**
      * post managment page
      */
     public function home()
     {
         if (isset($_SESSION['userId'])) {
-            $factory = new Factory;
-            $manager = $factory->createManager('post');
+            // get all post from database
+            $posts = $this->postManager->getAllPosts();
 
-            $posts = $manager->getAllPosts();
-            $date = $manager->getLastDate();
+            //get last date
+            $date = $this->postManager->getLastDate();
 
-            $twig = TwigLaunch::twigLoad();
+            //send it to view
+            $twig = $this->twig->twigLoad();
             echo $twig->render('backend/post.twig', array(
                 'posts' => $posts,
-                'lastDate' => $date)
-            );
+                'lastDate' => $date));
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
     public function getPost($id)
     {
 
-        $factory = new Factory;
-        $manager = $factory->createManager('post');
-        $post = $manager->getPost($id);
+        $post = $this->postManager->getPost($id);
 
-        $twig = TwigLaunch::twigLoad();
-        echo $twig->render('frontend/singlePost.twig', array('post' => $post));
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('frontend/singlePost.twig', array(
+            'post' => $post));
     }
 
     public function deletePost($id)
     {
         if (isset($_SESSION['userId'])) {
-            $factory = new Factory;
-            $manager = $factory->createManager('post');
-            $manager->deletePost($id);
+            $this->postManager->deletePost($id);
 
             header("location: /post/home");
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig > render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
     public function postForm()
     {
         if (isset($_SESSION['userId'])) {
-            $twig = TwigLaunch::twigLoad();
+            $twig = $this->twig->twigLoad();
             echo $twig->render('backend/postForm.twig', array(
                 'action' => '/post/addpost',
-                'button' => 'add'
-            ));
+                'button' => 'add'));
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
@@ -81,103 +93,101 @@ class PostController
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-            $factory = new Factory;
-            $postManager = $factory->createManager('post');
+            $this->post->hydrate($_POST);
+            $this->post->setUserId($_SESSION['userId']);
+            $this->post->setLastDate(date("Y-m-d H:i:s"));
 
-            $post = new Post($_POST);
-            $post->setUserId($_SESSION['userId']);
-            $post->setLastDate(date("Y-m-d H:i:s"));
-
-            $postManager->addPost($post);
+            $this->postManager->addPost($this->post);
 
             header("Location: /post/home");
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
     public function modifyPost($id)
     {
         if (isset($_SESSION['userId'])) {
+            $data = $this->postManager->getPost($id);
 
-            $factory = new Factory;
-            $manager = $factory->createManager('post');
+            $this->post->hydrate($data);
 
-            $post = $manager->getPost($id);
-
-            $twig = TwigLaunch::twigLoad();
+                      
+            $twig = $this->twig->twigLoad();
             echo $twig->render('backend/postForm.twig', array(
-                'post' => $post,
+                'post' => $this->post,
                 'action' => '/post/updatepost',
                 'button' => 'modify'
             ));
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
     public function publishPost($id)
     {
         if (isset($_SESSION['userId'])) {
+            //get the post from database and hydrate isntance
+            $data = $this->postManager->getPost($id);
+            $this->post->hydrate($data);
 
-            $factory = new Factory;
-            $manager = $factory->createManager('post'); // get the manager
+            //set the value true to published
+            $this->post->setPublished(true);
 
-            $post = $manager->getPost($id); // instance of post
-            $post->setPublished(true);
+            // update to database
+            $this->postManager->updatePost($this->post);
 
-            $manager->updatePost($post);
-
+            // return to home view
             header("Location: /post/home");
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
     public function unpublishPost($id)
     {
         if (isset($_SESSION['userId'])) {
-
-            $factory = new Factory;
-            $manager = $factory->createManager('post');
-
-            $post = $manager->getPost($id); // get the instance of post
-            $post->setPublished(false); // set the attribute to false for unpublish
+            //get the post from database and hydrate isntance
+            $data = $this->postManager->getPost($id);
+            $this->post->hydrate($data);
 
 
-            $manager->updatePost($post);
+            // set the attribute to false for unpublish
+            $this->post->setPublished(false);
 
+            //update to database
+            $this->postManager->updatePost($this->post);
+
+            // return to home view
             header("Location: /post/home");
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
 
-    public function updatePost($id)
+    public function updatePost()
     {
         if (isset($_SESSION['userId'], $_POST['id'])) {
+            $this->post->hydrate($_POST);
+                                       
+            $this->post->setUserId($_SESSION['userId']);
+            $this->post->setLastDate(date("Y-m-d H:i:s"));
 
-            $factory = new Factory;
-            $manager = $factory->createManager('post');
+            $this->postManager->updatePost($this->post);
 
-            $post = new Post($_POST); 
-            $post->setUserId($_SESSION['userId']);
-            $post->setLastDate(date("Y-m-d H:i:s"));
-         
-            $manager->updatePost($post);
-
-       
-            
-            
             header("Location: /post/home");
         } else {
-            $twig = TwigLaunch::twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array(
+                'message' => false));
         }
     }
-
 }

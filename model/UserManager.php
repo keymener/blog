@@ -18,10 +18,14 @@ use PDO;
  */
 class UserManager
 {
-private $db;
-    public function __construct(Database $db)
+
+    private $db;
+    private $user;
+
+    public function __construct(Database $db, User $user)
     {
         $this->db = $db;
+        $this->user = $user;
     }
 
     /**
@@ -34,9 +38,9 @@ private $db;
         $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
-        $user = new User($req->fetch(PDO::FETCH_ASSOC));
+        $result = $req->fetch(PDO::FETCH_ASSOC);
         $req->closeCursor();
-        return $user;
+        return $result;
     }
 
     public function getUserById($id)
@@ -44,21 +48,17 @@ private $db;
         $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE id=:id');
         $req->bindValue(':id', $id, PDO::PARAM_STR);
         $req->execute();
-        $user = new User($req->fetch(PDO::FETCH_ASSOC));
+        $result = $req->fetch(PDO::FETCH_ASSOC);
         $req->closeCursor();
-        return $user;
+        return $result;
     }
 
-    public function getAllUsers()
+    public function getAllUsers(): array
     {
-        $users = [];
-        
 
         $req = $this->db->dbLaunch()->query('SELECT * FROM user');
+        $users = $req->fetchall(PDO::FETCH_ASSOC);
 
-        foreach ($req as $value) {
-            $users[] = new User($value);
-        }
         $req->closeCursor();
         return $users;
     }
@@ -68,9 +68,10 @@ private $db;
      * @param User $user
      * @return boolean
      */
-    public function userExists($login)
+    public function userExists($login): bool
     {
-        $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE login=:login');
+        $db = $this->db->dbLaunch();
+        $req = $db->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
 

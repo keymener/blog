@@ -12,29 +12,21 @@ use PDO;
 class Database
 {
 
-    private $dbName;
-    private $dbHost;
-    private $dbUser;
-    private $dbPassword;
-
-    public function __construct($dbName, $dbHost, $dbUser, $dbPassword)
-    {
-
-        $this->dbName = $dbName;
-        $this->dbHost = $dbHost;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
-    }
+    const DBHOST = 'localhost';
+    const DBNAME = 'myblog';
+    const DBUSER = 'root';
+    const DBPASS = '';
 
     public function dbLaunch()
     {
 
 
-        $db = new PDO('mysql:dbhost=' . $this->dbHost . ';dbname=' . $this->dbName . ';charset=utf8', $this->dbUser, $this->dbPassword);
+        $db = new PDO('mysql:dbhost=' . self::DBHOST .
+                ';dbname=' . self::DBNAME . ';'
+                . 'charset=utf8', self::DBUSER, self::DBPASS);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
         return $db;
     }
-
 }

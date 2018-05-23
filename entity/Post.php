@@ -18,12 +18,9 @@ class Post
     private $published;
     private $userId;
 
-    public function __construct(array $data)
-    {
-        $this->hydrate($data);
-    }
+  
 
-    private function hydrate($data)
+    public function hydrate($data)
     {
         foreach ($data as $key => $value) {
             $method = 'set' . ucfirst($key);
@@ -106,5 +103,4 @@ class Post
     {
         $this->userId = $user;
     }
-
 }

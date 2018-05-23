@@ -49,8 +49,8 @@
                                         <td>{{ user.login }}</td>
                                         <td>{{ user.email }}</td>
                                         <td>
-                                            <a href="/user/modifyuser/{{ user.id }}"><button type="button" class="btn btn-primary">Modifier</button></a>
-                                            <a href="/user/deleteuser/{{ user.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                            <a href="/user/updateform/{{ user.id }}"><button type="button" class="btn btn-primary">Modifier</button></a>
+                                            <a href="/user/delete/{{ user.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
                                         </td>
                                     </tr>
                                 {% endfor %}
