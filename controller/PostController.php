@@ -19,9 +19,10 @@ class PostController
     private $twig;
 
     public function __construct(
-    Post $post, PostManager $postManager, TwigLaunch $twig
-    )
-    {
+        Post $post,
+        PostManager $postManager,
+        TwigLaunch $twig
+    ) {
         $this->post = $post;
         $this->postManager = $postManager;
         $this->twig = $twig;
@@ -33,7 +34,6 @@ class PostController
     public function home()
     {
         if (isset($_SESSION['userId'])) {
-
             // get all post from database
             $posts = $this->postManager->getAllPosts();
 
@@ -44,13 +44,11 @@ class PostController
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/post.twig', array(
                 'posts' => $posts,
-                'lastDate' => $date)
-            );
+                'lastDate' => $date));
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
@@ -61,40 +59,33 @@ class PostController
 
         $twig = $this->twig->twigLoad();
         echo $twig->render('frontend/singlePost.twig', array(
-            'post' => $post)
-        );
+            'post' => $post));
     }
 
     public function deletePost($id)
     {
         if (isset($_SESSION['userId'])) {
-
             $this->postManager->deletePost($id);
 
             header("location: /post/home");
         } else {
-
             $twig = $this->twig->twigLoad();
             echo $twig > render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
     public function postForm()
     {
         if (isset($_SESSION['userId'])) {
-
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/postForm.twig', array(
                 'action' => '/post/addpost',
-                'button' => 'add')
-            );
+                'button' => 'add'));
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
@@ -102,7 +93,6 @@ class PostController
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-
             $this->post->hydrate($_POST);
             $this->post->setUserId($_SESSION['userId']);
             $this->post->setLastDate(date("Y-m-d H:i:s"));
@@ -111,18 +101,15 @@ class PostController
 
             header("Location: /post/home");
         } else {
-
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
     public function modifyPost($id)
     {
         if (isset($_SESSION['userId'])) {
-
             $data = $this->postManager->getPost($id);
 
             $this->post->hydrate($data);
@@ -137,8 +124,7 @@ class PostController
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
@@ -160,15 +146,13 @@ class PostController
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
     public function unpublishPost($id)
     {
         if (isset($_SESSION['userId'])) {
-
             //get the post from database and hydrate isntance
             $data = $this->postManager->getPost($id);
             $this->post->hydrate($data);
@@ -185,16 +169,13 @@ class PostController
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
 
     public function updatePost()
     {
         if (isset($_SESSION['userId'], $_POST['id'])) {
-          
-    
             $this->post->hydrate($_POST);
                                        
             $this->post->setUserId($_SESSION['userId']);
@@ -206,9 +187,7 @@ class PostController
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => false)
-            );
+                'message' => false));
         }
     }
-
 }

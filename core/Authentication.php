@@ -26,9 +26,7 @@ class Authentication
     {
 
         if (password_verify($userPassword, $basePassword)) {
-        
             return true;
-            
         } else {
             return false;
         }
@@ -49,5 +47,4 @@ class Authentication
     {
         session_destroy();
     }
-
 }

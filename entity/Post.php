@@ -103,5 +103,4 @@ class Post
     {
         $this->userId = $user;
     }
-
 }

@@ -3,7 +3,6 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
-use keymener\myblog\core\Factory;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
@@ -22,8 +21,11 @@ class UserController
     private $auth;
 
     public function __construct(
-    User $user, UserManager $userManager, TwigLaunch $twig, Authentication $auth)
-    {
+        User $user,
+        UserManager $userManager,
+        TwigLaunch $twig,
+        Authentication $auth
+    ) {
         $this->user = $user;
         $this->userManager = $userManager;
         $this->twig = $twig;
@@ -31,13 +33,29 @@ class UserController
     }
 
     /**
+     * user managment page
+     */
+    public function home()
+    {
+        if (isset($_SESSION['userId'])) {
+            $users = $this->userManager->getAllUsers();
+
+
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/user.twig', array('users' => $users,));
+        } else {
+            $twig = $this->twig->twigLoad();
+            echo $twig->render('backend/login.twig', array('message' => false));
+        }
+    }
+
+    /**
      * delete usuer by its id
      * @param type $id
      */
-    public function deleteUser($id)
+    public function delete($id)
     {
         if (isset($_SESSION['userId'])) {
-
             $this->userManager->deleteUser($id);
             header("Location: /back/users");
         } else {
@@ -61,14 +79,13 @@ class UserController
     }
 
     /**
-     * add a user
+     * add user into database
      */
     public function addUser()
     {
 
         if (isset($_POST, $_SESSION['userId'])) {
-
-//checks if the login already exists
+            //checks if the login already exists, if yes return error
             if ($this->userManager->userExists($_POST['login'])) {
                 $twig = $this->twig->twigLoad();
                 echo $twig->render('backend/addForm.twig', array(
@@ -77,12 +94,17 @@ class UserController
                     'button' => 'add'
                 ));
             } else {
-                $auth = $this->auth($_POST['login'], $_POST['password']);
+                $user = $this->user->hydrate($_POST);
 
                 //encrypt the password from post variable
-                $_POST['password'] = $auth->encrypt($_POST['password']);
-                $user = $this->user($_POST);
-                $this->userManager->addUser($user);
+                $password = $this->auth->encrypt($_POST['password']);
+
+                // hydrate user entity
+                $this->user->hydrate($_POST);
+                $this->user->setPassword($password);
+
+                //add user into database
+                $this->userManager->addUser($this->user);
 
                 header("Location: /back/users");
             }
@@ -96,17 +118,16 @@ class UserController
      * Modify a user using its ID
      * @param type $id
      */
-    public function modifyUser($id)
+    public function updateForm($id)
     {
         if (isset($_SESSION['userId'])) {
-         
-            $this->user($manager->getUserById($id));
-
+            $data = $this->userManager->getUserById($id);
+            $this->user->hydrate($data);
 
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/addForm.twig', array(
-                'user' => $user,
-                'action' => '/user/updateuser',
+                'user' => $this->user,
+                'action' => '/user/update',
                 'button' => 'modify'
             ));
         } else {
@@ -119,21 +140,22 @@ class UserController
      * Update a user using POST method
      *
      */
-    public function updateUser()
+    public function update()
     {
 
         if (isset($_POST['id'], $_SESSION['userId'])) {
-            $user = $this->user($_POST);
+            $this->user->hydrate($_POST);
+            
 
-        
+
 // check if the user changes the password
             if (empty($_POST['password'])) {
                 //this will change all but not the password
-                $this->userManager->updateUser($user);
+                $this->userManager->updateUser($this->user);
             } else {
                 // this will change all including password
-                $this->userManager->updateUser($user);
-                
+                $this->userManager->updateUser($this->user);
+
                 $this->user->setPassword($this->auth->encrypt($_POST['password']));
                 $this->userManager->updatePassword($this->user);
             }
@@ -141,5 +163,4 @@ class UserController
             header("Location: /back/users");
         }
     }
-
 }

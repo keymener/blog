@@ -22,8 +22,6 @@ class FrontController
     public function home()
     {
         echo $this->twig->twigLoad()->render('frontend/home.twig', array(
-            'a' => 'a')
-        );
+            'a' => 'a'));
     }
-
 }

@@ -30,5 +30,4 @@ class ErrorController
         $twig = $this->twig->twigLoad();
         echo $twig->render('errorPage.twig', ['hide' => true]);
     }
-
 }

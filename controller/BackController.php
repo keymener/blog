@@ -33,7 +33,7 @@ class BackController
      */
     public function login()
     {
-        if (isset($_POST['username'], $_POST['password']) AND $this->userManager->userExists($_POST['username'])) {
+        if (isset($_POST['username'], $_POST['password']) and $this->userManager->userExists($_POST['username'])) {
             // encrypt password
             $pwd = $_POST['password'];
 
@@ -46,12 +46,10 @@ class BackController
             
             //compare password
             if ($this->auth->checkPassword($pwd, $this->user->getPassword())) {
-
                 $_SESSION['userId'] = $this->user->getId();
                 $_SESSION['username'] = $this->user->getFirstname();
                 
                 $this->home();
-                
             } else {
                 $twig = $this->twig->twigLoad();
                 echo $twig->render('backend/login.twig', array(
@@ -74,7 +72,6 @@ class BackController
     {
 
         if (isset($_SESSION['userId'])) {
-
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/home.twig', array('message' => false));
         } else {
@@ -113,7 +110,6 @@ class BackController
     public function users()
     {
         if (isset($_SESSION['userId'])) {
-
             $users = $this->userManager->getAllUsers();
 
             $twig = $this->twig->twigLoad();
@@ -123,5 +119,4 @@ class BackController
             echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
-
 }

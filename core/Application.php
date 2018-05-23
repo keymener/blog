@@ -25,7 +25,6 @@ class Application
     {
         $this->router = $router;
         $this->container = $container;
-       
     }
 
     public function run()
@@ -46,5 +45,4 @@ class Application
 
         $instance->$method($var);
     }
-
 }

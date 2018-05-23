@@ -24,9 +24,19 @@ class PostManager
 
     public function getAllPosts()
     {
-        
+
         $db = $this->db->dbLaunch();
-        $req = $db->query('SELECT * FROM post ORDER BY lastDate DESC');
+        $req = $db->query('SELECT 
+post.id,
+post.title,
+post.chapeau,
+post.content,
+post.lastDate,
+post.published,
+user.firstname
+FROM post
+INNER JOIN user ON ( user.id = post.userid )
+ORDER BY lastDate DESC');
         $posts = $req->fetchall(PDO::FETCH_ASSOC);
         $req->closeCursor();
         return $posts;
@@ -105,5 +115,4 @@ class PostManager
 
         return $date['lastDate'];
     }
-
 }

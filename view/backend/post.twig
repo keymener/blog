@@ -39,6 +39,7 @@
                                             <th>Titre</th>
                                             <th>Chapeau</th>
                                             <th>date</th>
+                                            <th>content</th>
                                             <th>Utilisateur</th>
                                             <th>Publié</th>
                                             <th>Action</th>
@@ -50,6 +51,7 @@
                                             <th>Titre</th>
                                             <th>Chapeau</th>
                                             <th>date</th>
+                                            <th>content</th>
                                             <th>Utilisateur</th>
                                             <th>Publié</th>
                                             <th>Action</th>
@@ -62,7 +64,8 @@
                                                 <td>{{ post.title }}</td>
                                                 <td>{{ post.chapeau }}</td>
                                                 <td>{{ post.lastDate }}</td>
-                                                <td>{{ post.userId }}</td>
+                                                <td>{{ post.content }}</td>
+                                                <td>{{ post.firstname }}</td>
                                                 <td>{{ post.published }}</td>
                                                 <td>
                                                     <a href="/post/modifypost/{{ post.id }}"><button type="button" class="btn btn-primary btn-sm">Modifier</button></a>

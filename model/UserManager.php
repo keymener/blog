@@ -38,7 +38,7 @@ class UserManager
         $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE login=:login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
-        $result= $req->fetch(PDO::FETCH_ASSOC);
+        $result = $req->fetch(PDO::FETCH_ASSOC);
         $req->closeCursor();
         return $result;
     }
@@ -53,15 +53,12 @@ class UserManager
         return $result;
     }
 
-    public function getAllUsers()
+    public function getAllUsers(): array
     {
-        $users = [];
 
         $req = $this->db->dbLaunch()->query('SELECT * FROM user');
+        $users = $req->fetchall(PDO::FETCH_ASSOC);
 
-        foreach ($req as $value) {
-            $users[] = new User($value);
-        }
         $req->closeCursor();
         return $users;
     }
@@ -71,7 +68,7 @@ class UserManager
      * @param User $user
      * @return boolean
      */
-    public function userExists($login) : bool
+    public function userExists($login): bool
     {
         $db = $this->db->dbLaunch();
         $req = $db->prepare('SELECT * FROM user WHERE login=:login');
@@ -139,5 +136,4 @@ class UserManager
         $req->execute();
         $req->closeCursor();
     }
-
 }

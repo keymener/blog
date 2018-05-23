@@ -92,10 +92,10 @@ class Router
             $method = $action;
 
 
-           if (method_exists($this->controller, $method)) {
+            if (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {
-                 header("Location: /error/errorPage");
+                header("Location: /error/errorPage");
             }
         }
     }
@@ -105,5 +105,4 @@ class Router
         $var = (int) $variable;
         $this->variable = $var;
     }
-
 }
