@@ -36,7 +36,7 @@ class PostController
         if (isset($_SESSION['userId'])) {
             // get all post from database
             $posts = $this->postManager->getAllPosts();
-
+  
             //get last date
             $date = $this->postManager->getLastDate();
 

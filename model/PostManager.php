@@ -41,6 +41,26 @@ ORDER BY lastDate DESC');
         $req->closeCursor();
         return $posts;
     }
+        public function getAllPublished()
+    {
+
+        $db = $this->db->dbLaunch();
+        $req = $db->query('SELECT 
+post.id,
+post.title,
+post.chapeau,
+post.content,
+post.lastDate,
+post.published,
+user.firstname
+FROM post
+INNER JOIN user ON ( user.id = post.userid )
+WHERE post.published = true
+ORDER BY lastDate DESC');
+        $posts = $req->fetchall(PDO::FETCH_ASSOC);
+        $req->closeCursor();
+        return $posts;
+    }
 
     public function addPost(Post $data)
     {

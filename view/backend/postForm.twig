@@ -16,16 +16,16 @@
                             Ajouter un article
                         </div>
                         <div class="card-body">
-                            {{ post.id }}
+                       
                             <form action="{{ action }}" method="post">
                                 <div class="form-group">
                                     <input type="hidden" name="id" value="{{ post.id }}" />
                                     <label for="title">Titre</label>
                                     <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}"  required />
                                     <label for="chapeau">Chapeau</label>
-                                    <input type="text" class="form-control" id="chapeau" name="chapeau" value="{{ post.chapeau }}" required />
+                                    <textarea type="text" class="form-control" id="chapeau" rows="3" name="chapeau" value="{{ post.chapeau }}" required ></textarea>
                                     <label for="content">Contenu</label>
-                                    <textarea type="text" class="form-control" id="content" rows="3" name="content" value="{{ post.content }}" required ></textarea>
+                                    <textarea type="text" class="form-control" id="content" rows="5" name="content" value="{{ post.content }}" required ></textarea>
 
                                     <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
                                 </div>
