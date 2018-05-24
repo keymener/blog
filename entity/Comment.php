@@ -20,7 +20,8 @@ class Comment
     private $dateTime;
     private $pubished = false;
     private $post_id;
-    private $user_id;
+    private $user_id = null;
+    private $author;
     
       public function hydrate($data)
     {
@@ -31,8 +32,12 @@ class Comment
             }
         }
     }
-    
-    public function getId()
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+        public function getId()
     {
         return $this->id;
     }
@@ -91,6 +96,12 @@ class Comment
     {
         $this->user_id = (int)$user_id;
     }
+
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
 
 
 }

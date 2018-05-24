@@ -3,7 +3,9 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\TwigLaunch;
+use keymener\myblog\entity\Comment;
 use keymener\myblog\entity\Post;
+use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
 
 /**
@@ -17,13 +19,18 @@ class BlogController
     private $twig;
     private $postManager;
     private $post;
+    private $comment;
+    private $commentManager;
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $post, )
+    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager
+    )
     {
         $this->twig = $twig;
         $this->postManager = $postManager;
-        $this->post = $post ;
+        $this->post = $post;
+        $this->comment = $comment;
+        $this->commentManager = $commentManager;
     }
 
     public function home()
@@ -39,15 +46,22 @@ class BlogController
 
         echo $this->twig->twigLoad()->render('frontend/posts.twig', array('posts' => $posts));
     }
-    
+
     public function post($id)
     {
+        //post instance
         $data = $this->postManager->getPost($id);
         $this->post->hydrate($data);
-            
-        echo $this->twig->twigLoad()->render('frontend/post.twig', array('post' => $this->post));
+
+        //comments of this post
+        $comments = $this->commentManager->getComments($id);
+        echo $this->twig->twigLoad()->render(
+                'frontend/post.twig', [
+            'post' => $this->post,
+            'comments' => $comments
+        ]);
     }
-    
+
     public function comment($postId)
     {
         
