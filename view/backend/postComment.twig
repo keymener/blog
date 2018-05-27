@@ -43,10 +43,10 @@
 
                         {% for comment in comments %}
                             <div class="row">
-                                {{comment.author }}
+                                {{ comment.author }}
                                 {{ comment.dateTime }}
                                 {{ comment.content }}
-                                {% if comment.pusblished == false %}
+                                {% if comment.published == false %}
                                 <a href="/comment/commentValidate/{{ comment.id }}"><button type="button" class="btn btn-warning btn-sm">Valider</button></a>
                                 {% endif %}
                             </div>
