@@ -39,7 +39,8 @@ class PostController
   
             //get last date
             $date = $this->postManager->getLastDate();
-
+            
+      
             //send it to view
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/post.twig', array(

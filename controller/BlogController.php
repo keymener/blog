@@ -54,7 +54,7 @@ class BlogController
         $this->post->hydrate($data);
 
         //comments of this post
-        $comments = $this->commentManager->getComments($id);
+        $comments = $this->commentManager->getOkComments($id);
         echo $this->twig->twigLoad()->render(
                 'frontend/post.twig', [
             'post' => $this->post,
