@@ -33,11 +33,15 @@ class CommentController
         $this->post = $post;
     }
 
-    public function home()
+    public function home($message = null)
     {
         $posts = $this->postManager->getAllPostsComments();
 
-        echo $this->twig->twigLoad()->render('backend/comment.twig', ['posts' => $posts]);
+        echo $this->twig->twigLoad()->render('backend/comment.twig', [
+            'posts' => $posts,
+            'message' => $message
+                ]
+                );
     }
 
     public function add()
@@ -72,8 +76,8 @@ class CommentController
     public function commentValidate($id)
     {
         $this->commentManager->publish($id);
-        
-        $this->home();
+        $message = 'validate';
+        $this->home($message);
     }
 
 }

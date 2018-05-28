@@ -62,9 +62,6 @@ class BlogController
         ]);
     }
 
-    public function comment($postId)
-    {
-        
-    }
+
 
 }
