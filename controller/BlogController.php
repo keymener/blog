@@ -35,8 +35,10 @@ class BlogController
 
     public function home()
     {
-        echo $this->twig->twigLoad()->render('frontend/home.twig', array(
-            'a' => 'a'));
+        echo $this->twig->twigLoad()->render('frontend/home.twig', [
+            'message' => null
+                ]
+        );
     }
 
     public function posts()
@@ -47,7 +49,7 @@ class BlogController
         echo $this->twig->twigLoad()->render('frontend/posts.twig', array('posts' => $posts));
     }
 
-    public function post($id)
+    public function post($id, $message = null)
     {
         //post instance
         $data = $this->postManager->getPost($id);
@@ -58,10 +60,23 @@ class BlogController
         echo $this->twig->twigLoad()->render(
                 'frontend/post.twig', [
             'post' => $this->post,
-            'comments' => $comments
+            'comments' => $comments,
+            'message' => $message
         ]);
     }
 
+    public function add()
+    {
+        if (isset($_POST['content'], $_POST['post_id'])) {
 
+            $this->comment->hydrate($_POST);
+            $this->comment->setDateTime(date("Y-m-d H:i:s"));
+
+            $this->commentManager->add($this->comment);
+
+            $message = 'commentAdd';
+            $this->post($this->comment->getPost_id(), $message);
+        }
+    }
 
 }

@@ -32,15 +32,23 @@
             <div class="mt-3 mb-3">
                 <div class="container">
                     <h5>Commentaires</h5>
+                    {% if message == 'commentAdd' %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            Le commentaire a bien été enregistré. Il va être sousmis à validation par l'administrateur.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
 
                     {% for comment in comments %}
-<div class="row">
-    {{comment.author }}
-                        {{ comment.dateTime }}
-                        {{ comment.content }}
-</div>
+                        <div class="row">
+                            {{comment.author }}
+                            {{ comment.dateTime }}
+                            {{ comment.content }}
+                        </div>
                     {% endfor %}
-                    <form action="/comment/add" method='post'>
+                    <form action="/blog/add" method='post'>
                         <input type="hidden" name="post_id" value="{{ post.id }}" />
                         <div class="form-group">
                             <label for="author">Votre pseudo</label>

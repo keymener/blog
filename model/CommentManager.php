@@ -20,10 +20,12 @@ class CommentManager
 {
 
     private $db;
+    private $comment;
 
-    public function __construct(Database $db)
+    public function __construct(Database $db, Comment $comment)
     {
         $this->db = $db;
+        $this->comment = $comment;
     }
 
     public function getAllComments()
@@ -42,6 +44,21 @@ class CommentManager
         $req->execute();
 
         return $req->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Return comment data by its Id
+     * @param int $id
+     * @return type
+     */
+    public function getComment(int $id)
+    {
+        $req = $this->db->dbLaunch()->prepare(''
+                . 'SELECT * FROM comment WHERE id = :id ');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getOkComments($postId)
@@ -95,12 +112,12 @@ class CommentManager
 
         return $req->columnCount();
     }
-    
-    public function publish($id)
+
+    public function update(Comment $comment)
     {
         $statement = 'UPDATE comment SET published = true WHERE id = :id';
         $req = $this->db->dbLaunch()->prepare($statement);
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':id', $comment->getId(), PDO::PARAM_INT);
         $req->execute();
     }
 

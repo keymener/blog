@@ -33,33 +33,19 @@ class CommentController
         $this->post = $post;
     }
 
-    public function home($message = null)
+    public function home()
     {
         $posts = $this->postManager->getAllPostsComments();
 
         echo $this->twig->twigLoad()->render('backend/comment.twig', [
-            'posts' => $posts,
-            'message' => $message
+            'posts' => $posts
                 ]
-                );
+        );
     }
 
-    public function add()
+    public function validate($postId, $message = null)
     {
-        if (isset($_POST['content'], $_POST['post_id'])) {
-
-            $this->comment->hydrate($_POST);
-            $this->comment->setDateTime(date("Y-m-d H:i:s"));
-
-
-            $this->commentManager->add($this->comment);
-
-            header("location: /blog/post/" . $this->comment->getPost_id());
-        }
-    }
-
-    public function validate($postId)
-    {
+   
         //post instance
         $data = $this->postManager->getPost($postId);
         $this->post->hydrate($data);
@@ -69,15 +55,23 @@ class CommentController
         echo $this->twig->twigLoad()->render(
                 'backend/postComment.twig', [
             'post' => $this->post,
-            'comments' => $comments
+            'comments' => $comments,
+            'message' => $message
         ]);
     }
-    
+
     public function commentValidate($id)
     {
-        $this->commentManager->publish($id);
+        
+        $data = $this->commentManager->getComment($id);
+        $this->comment->hydrate($data);
+   
+        $this->comment->setPublished(true);
+  
+        $this->commentManager->update($this->comment);
         $message = 'validate';
-        $this->home($message);
+  
+        $this->validate($this->comment->getPost_id(), $message);
     }
 
 }

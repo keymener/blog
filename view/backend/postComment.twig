@@ -40,6 +40,14 @@
                 <div class="mt-3 mb-3">
                     <div class="container">
                         <h5>Commentaires</h5>
+                        {% if message == 'validate' %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Commentaire validé !
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
 
                         {% for comment in comments %}
                             <div class="row">
@@ -47,7 +55,7 @@
                                 {{ comment.dateTime }}
                                 {{ comment.content }}
                                 {% if comment.published == false %}
-                                <a href="/comment/commentValidate/{{ comment.id }}"><button type="button" class="btn btn-warning btn-sm">Valider</button></a>
+                                    <a href="/comment/commentValidate/{{ comment.id }}"><button type="button" class="btn btn-warning btn-sm">Valider</button></a>
                                 {% endif %}
                             </div>
                         {% endfor %}

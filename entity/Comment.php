@@ -15,15 +15,16 @@ namespace keymener\myblog\entity;
  */
 class Comment
 {
+
     private $id;
     private $content;
     private $dateTime;
-    private $pubished = false;
+    private $published = false;
     private $post_id;
     private $user_id = null;
     private $author;
-    
-      public function hydrate($data)
+
+    public function hydrate($data)
     {
         foreach ($data as $key => $value) {
             $method = 'set' . ucfirst($key);
@@ -32,12 +33,13 @@ class Comment
             }
         }
     }
+
     public function getAuthor()
     {
         return $this->author;
     }
 
-        public function getId()
+    public function getId()
     {
         return $this->id;
     }
@@ -52,9 +54,9 @@ class Comment
         return $this->dateTime;
     }
 
-    public function getPubished()
+    public function getPublished()
     {
-        return $this->pubished;
+        return $this->published;
     }
 
     public function getPost_id()
@@ -69,7 +71,7 @@ class Comment
 
     public function setId($id)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
     }
 
     public function setContent($content)
@@ -82,26 +84,24 @@ class Comment
         $this->dateTime = $dateTime;
     }
 
-    public function setPubished($pubished)
+    public function setPublished($published)
     {
-        $this->pubished = (bool)$pubished;
+        $this->published = (bool) $published;
     }
 
     public function setPost_id($post_id)
     {
-        $this->post_id = (int)$post_id;
+        $this->post_id = (int) $post_id;
     }
 
     public function setUser_id($user_id)
     {
-        $this->user_id = (int)$user_id;
+        $this->user_id = (int) $user_id;
     }
 
     public function setAuthor($author)
     {
         $this->author = $author;
     }
-
-
 
 }
