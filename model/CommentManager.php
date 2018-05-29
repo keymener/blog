@@ -85,7 +85,7 @@ class CommentManager
 
         $req->bindValue(':content', $comment->getContent(), PDO::PARAM_STR);
         $req->bindValue(':dateTime', $comment->getDateTime(), PDO::PARAM_STR);
-        $req->bindValue(':published', $comment->getPubished(), PDO::PARAM_BOOL);
+        $req->bindValue(':published', $comment->getPublished(), PDO::PARAM_BOOL);
         $req->bindValue(':postId', $comment->getPost_id(), PDO::PARAM_INT);
         $req->bindValue(':userId', $comment->getUser_id(), PDO::PARAM_INT);
         $req->bindValue(':author', $comment->getAuthor(), PDO::PARAM_STR);
@@ -100,6 +100,18 @@ class CommentManager
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
 
+        return $req->columnCount();
+    }
+    
+    /**
+     * count all comments waiting for validation
+     * @return type
+     */
+      public function countAllWaitComment()
+    {
+        $statement = 'SELECT * FROM comment WHERE published = false';
+        $req = $this->db->dbLaunch()->query($statement);
+    
         return $req->columnCount();
     }
 

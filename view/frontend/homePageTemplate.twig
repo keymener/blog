@@ -44,9 +44,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/blog/posts">{% block blog %}Blog{% endblock %}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/back/home">{% block login %}Log In{% endblock %}</a>
-                            </li>
+
                             <a class="nav-link" href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i class="fab fa-linkedin"></i></a>							
                             <a class="nav-link" href="https://github.com/keymener/"><i class="fab fa-github-square"></i></i></a>
 
@@ -57,10 +55,10 @@
         {% endif %}
         <!-- Content -->
         <div class="content">
-            
 
-            {% block content %}{% endblock %}
-        
+
+        {% block content %}{% endblock %}
+
     </div>
 
     {% if hide != true %}
@@ -69,7 +67,9 @@
             <div class="container">
                 <p class="m-0 text-center text-white small">Copyright &copy; Keigo Matsunaga 2018</p>
 
-                </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/back/home">{% block login %}Admin{% endblock %}</a>
+                </li>
             </div>
             <!-- /.container -->
         </footer>
