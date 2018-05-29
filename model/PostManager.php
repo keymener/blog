@@ -42,6 +42,47 @@ ORDER BY lastDate DESC');
         return $posts;
     }
 
+    public function getAllPostsComments()
+    {
+        $statement = 'SELECT
+ pt.id,
+ pt.title,
+count(co.id) com
+   
+                    FROM
+                    post pt,
+                    comment co
+                    WHERE
+                    pt.id = (SELECT co.post_id WHERE co.published = false)
+                    group by pt.id';
+        $db = $this->db->dbLaunch();
+        $req = $db->query($statement);
+        $posts = $req->fetchall(PDO::FETCH_ASSOC);
+        $req->closeCursor();
+        return $posts;
+    }
+
+    public function getAllPublished()
+    {
+
+        $db = $this->db->dbLaunch();
+        $req = $db->query('SELECT 
+post.id,
+post.title,
+post.chapeau,
+post.content,
+post.lastDate,
+post.published,
+user.firstname
+FROM post
+INNER JOIN user ON ( user.id = post.userid )
+WHERE post.published = true
+ORDER BY lastDate DESC');
+        $posts = $req->fetchall(PDO::FETCH_ASSOC);
+        $req->closeCursor();
+        return $posts;
+    }
+
     public function addPost(Post $data)
     {
 
@@ -115,4 +156,5 @@ ORDER BY lastDate DESC');
 
         return $date['lastDate'];
     }
+
 }

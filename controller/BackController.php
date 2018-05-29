@@ -5,6 +5,7 @@ namespace keymener\myblog\controller;
 use keymener\myblog\core\Authentication;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\User;
+use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\UserManager;
 
 /**
@@ -19,13 +20,15 @@ class BackController
     private $auth;
     private $user;
     private $userManager;
+    private $commentManager;
 
-    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager)
+    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, CommentManager $commentManager)
     {
         $this->twig = $twig;
         $this->auth = $auth;
         $this->user = $user;
         $this->userManager = $userManager;
+        $this->commentManager = $commentManager;
     }
 
     /**
@@ -72,8 +75,12 @@ class BackController
     {
 
         if (isset($_SESSION['userId'])) {
+            
+//            $countComments = $this->commentManager->countAllWaitComment();
+            
             $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
+            echo $twig->render('backend/home.twig', array(
+                'message' => false));
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array('message' => false));

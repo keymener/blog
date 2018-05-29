@@ -1,0 +1,28 @@
+{% extends "/frontend/homePageTemplate.twig" %}
+
+{% block title %}Mon Blog - posts {% endblock %}
+{% block blog %}
+    <u>{{ parent() }}</u>
+    {% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+        <div class="blogcontent">
+            {% for post in posts %}        
+                <div class="post bg-light mb-3" >
+                    <div class=""><h4>{{ post.title }}</h4></div>
+                    <div class="chapeau">
+                        {{ post.chapeau }}
+                    </div>
+                    <div class="">
+                        <p><i class="far fa-clock"></i>{{ post.lastDate|date("d/m/Y")}} </p>
+                        <a href="/blog/post/{{ post.id }}"><button type="button" class="btn btn-primary rounded-pill">Voir l'article</button></a>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

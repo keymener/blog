@@ -5,6 +5,7 @@
 {% block content %}
 
     <body class="bg-dark py-5">
+
         <div class="container">
             {% if message == true %}
                 <div class="alert alert-danger" role="alert">
@@ -14,6 +15,7 @@
             <div class="card card-login mx-auto mt-5">
                 <div class="card-header">Authentification</div>
                 <div class="card-body">
+
                     <form action="/back/login" method="post">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Utilisateur</label>
@@ -26,6 +28,12 @@
 
                         <input class=" btn" type="submit" value="Valider">
                     </form>
+
+                    <div class="col">
+                        <a href="/blog/home">Retour sur le site</a>
+                    </div>
+
+
                 </div>
             </div>
         </div>

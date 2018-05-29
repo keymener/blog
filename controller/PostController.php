@@ -36,10 +36,11 @@ class PostController
         if (isset($_SESSION['userId'])) {
             // get all post from database
             $posts = $this->postManager->getAllPosts();
-
+  
             //get last date
             $date = $this->postManager->getLastDate();
-
+            
+      
             //send it to view
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/post.twig', array(

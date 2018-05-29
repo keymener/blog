@@ -6,7 +6,10 @@
         <div class="container-fluid">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/back">Accueil </a>/ <b>Gestion des articles</b>
+                    <a href="/back">Accueil </a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Gestion des articles
                 </li>
             </ol>
 
@@ -39,7 +42,7 @@
                                             <th>Titre</th>
                                             <th>Chapeau</th>
                                             <th>date</th>
-                                            <th>content</th>
+                                                {#                                            <th>content</th>#}
                                             <th>Utilisateur</th>
                                             <th>Publié</th>
                                             <th>Action</th>
@@ -51,7 +54,7 @@
                                             <th>Titre</th>
                                             <th>Chapeau</th>
                                             <th>date</th>
-                                            <th>content</th>
+                                                {#                                            <th>content</th>#}
                                             <th>Utilisateur</th>
                                             <th>Publié</th>
                                             <th>Action</th>
@@ -64,7 +67,7 @@
                                                 <td>{{ post.title }}</td>
                                                 <td>{{ post.chapeau }}</td>
                                                 <td>{{ post.lastDate }}</td>
-                                                <td>{{ post.content }}</td>
+                                                {#                                                <td>{{ post.content }}</td>#}
                                                 <td>{{ post.firstname }}</td>
                                                 <td>{{ post.published }}</td>
                                                 <td>
