@@ -33,6 +33,7 @@ class ComposerStaticInit2dab7f2547ef2cfcdd073dc4456123f7
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
             'PhpDocReader\\' => 13,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'I' => 
         array (
@@ -80,6 +81,10 @@ class ComposerStaticInit2dab7f2547ef2cfcdd073dc4456123f7
         'PhpDocReader\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-di/phpdoc-reader/src/PhpDocReader',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Invoker\\' => 
         array (
