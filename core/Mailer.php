@@ -19,6 +19,7 @@ class Mailer
 {
 
     private $mail;
+    private $email;
     private $myEmail;
     private $password;
     private $host;
@@ -26,9 +27,10 @@ class Mailer
     private $smtpSecure;
     private $smtpAuth;
 
-    public function __construct(PHPMailer $mail)
+    public function __construct(PHPMailer $mail, Email $email)
     {
         $this->mail = $mail;
+        $this->email = $email;
         $config = parse_ini_file('./config/config.ini', true);
         $this->myEmail = $config['email']['myEmail'];
         $this->password = $config['email']['password'];
@@ -38,8 +40,13 @@ class Mailer
         $this->smtpAuth = $config['email']['smtpAuth'];
     }
 
-    public function sendmail($name, $userEmail, $message)
+    public function sendmail($name, $email, $content)
     {
+        
+        //build the Email isntance
+        $this->email->setName($name);
+        $this->email->setEmail($email);
+        $this->email->setContent($content);
 
 
 //Tell PHPMailer to use SMTP
@@ -71,24 +78,19 @@ class Mailer
 //Set who the message is to be sent to
         $this->mail->addAddress($this->myEmail, 'John Doe');
 //Set the subject line
-        $this->mail->Subject = 'PHPMailer GMail SMTP test';
+        $this->mail->Subject = 'Mail de Myblog';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-        $this->mail->msgHTML('<b>nom:</b> '.$name.'</br><b>email :</b>' .$userEmail.'</br><b>message:</b> '. $message);
+        $this->mail->msgHTML($this->email->format());
 //Replace the plain text body with one created manually
         $this->mail->AltBody = 'This is a plain-text message body';
 //Attach an image file
 //        $this->mail->addAttachment('images/phpmailer_mini.png');
 //send the message, check for errors
         if (!$this->mail->send()) {
-            echo "Mailer Error: " . $this->mail->ErrorInfo;
+            return false;
         } else {
-            echo "Message sent!";
-//Section 2: IMAP
-//Uncomment these to save your message in the 'Sent Mail' folder.
-#if (save_mail($mail)) {
-#    echo "Message saved!";
-#}
+            return true;
         }
     }
 
