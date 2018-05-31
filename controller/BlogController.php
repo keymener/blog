@@ -2,6 +2,7 @@
 
 namespace keymener\myblog\controller;
 
+use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Comment;
 use keymener\myblog\entity\Post;
@@ -21,9 +22,11 @@ class BlogController
     private $post;
     private $comment;
     private $commentManager;
+    private $mailer;
+    
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager
+    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer
     )
     {
         $this->twig = $twig;
@@ -31,12 +34,15 @@ class BlogController
         $this->post = $post;
         $this->comment = $comment;
         $this->commentManager = $commentManager;
+        $this->mailer = $mailer;
+        
+        
     }
 
-    public function home()
+    public function home($message = null)
     {
         echo $this->twig->twigLoad()->render('frontend/home.twig', [
-            'message' => null
+            'message' => $message
                 ]
         );
     }
@@ -65,6 +71,9 @@ class BlogController
         ]);
     }
 
+    /**
+     * add comment
+     */
     public function add()
     {
         if (isset($_POST['content'], $_POST['post_id'])) {
@@ -76,6 +85,28 @@ class BlogController
 
             $message = 'commentAdd';
             $this->post($this->comment->getPost_id(), $message);
+        }
+    }
+
+    /**
+     * send email
+     */
+    public function sendMail()
+    {
+        if (isset($_POST['name'], $_POST['userEmail'], $_POST['message'])) {
+            
+            $name = $_POST['name'];
+            $userEmail = $_POST['userEmail'];
+            $message = $_POST['message'];
+            
+            if($this->mailer->sendmail($name, $userEmail, $message)){
+                                
+                $this->home('mailOk');
+            }else{
+                $this->home('mailNok');
+            }
+        }else{
+            echo 'erreur';
         }
     }
 

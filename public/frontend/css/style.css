@@ -9,37 +9,51 @@ and open the template in the editor.
 */
 
 header.masthead .masthead-content .masthead-heading{
-    
+
     font-size: 2.5rem;
 
 }
 
 header.masthead .masthead-content .masthead-subheading{
-    
+
     font-size: 1.5rem;
-  
+
 }
 
 .navbar-custom .navbar-brand{
-    
+
     font-size: 0.8rem;
-     letter-spacing: 0.8rem;
+    letter-spacing: 0.8rem;
 }
 
 .chapeau{
-    
+
     font-size: 1rem;
-    
+
 }
 
 .post{
-    
+
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    
+
 }
 
 .blogcontent{
-    
-   padding-top: 110px;
+
+    padding-top: 110px;
 }
+
+header.masthead{
+    background: url('../img/banner.jpg') no-repeat;
+    background-size: cover;
+    filter: brightness(50%);
+    /*opacity: 0.8;*/
+    /*background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);*/
+}
+
+header.masthead .bg-circle{
+    opacity: 0.5;
+}
+
+
 
