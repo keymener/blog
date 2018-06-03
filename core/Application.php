@@ -30,14 +30,16 @@ class Application
 
     public function run()
     {
+        //parse the ini file to list all backend controllers
+        $check = parse_ini_file('./config/sessionCheck.ini');
+      
         //get the controller name
             $controller = $this->router->getController();
-
+           
+           
         // if it goes to frontend OR a user is allready logged, 
         // we can call the instance
-        if ($controller == 'keymener\myblog\controller\BlogController' 
-                OR $controller == 'keymener\myblog\controller\ErrorController'
-                OR isset($_SESSION['userId'])) {
+        if (!in_array($controller, $check) OR isset($_SESSION['userId'])) {
             
 
             // get the method name
@@ -55,5 +57,6 @@ class Application
             $backController->login();
         }
     }
+    
 
 }
