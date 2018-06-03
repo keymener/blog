@@ -10,6 +10,7 @@ namespace keymener\myblog\core;
 
 use DI\Container;
 
+
 /**
  * Description of Application
  *
@@ -20,7 +21,7 @@ class Application
 
     private $router;
     private $container;
-   
+
     public function __construct(Router $router, Container $container)
     {
         $this->router = $router;
@@ -29,20 +30,30 @@ class Application
 
     public function run()
     {
-           
-        
         //get the controller name
-        $controller = $this->router->getController();
+            $controller = $this->router->getController();
 
-        // get the method name
-        $method = $this->router->getAction();
+        // if it goes to frontend OR a user is allready logged, 
+        // we can call the instance
+        if ($controller == 'keymener\myblog\controller\BlogController' 
+                OR $controller == 'keymener\myblog\controller\ErrorController'
+                OR isset($_SESSION['userId'])) {
+            
 
-        // get the variable
-        $var = $this->router->getVariable();
+            // get the method name
+            $method = $this->router->getAction();
 
-        // call controller
-        $instance = $this->container->get($controller);
+            // get the variable
+            $var = $this->router->getVariable();
 
-        $instance->$method($var);
+            // get controller
+            $instance = $this->container->get($controller);
+                   
+            $instance->$method($var);
+        }else{
+            $backController = $this->container->get('keymener\myblog\controller\BackController');
+            $backController->login();
+        }
     }
+
 }
