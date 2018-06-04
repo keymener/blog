@@ -31,7 +31,7 @@ class Application
     public function run()
     {
         //parse the ini file to list all backend controllers
-        $check = parse_ini_file('./config/sessionCheck.ini');
+        $check = parse_ini_file('../config/sessionCheck.ini');
       
         //get the controller name
             $controller = $this->router->getController();

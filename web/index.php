@@ -6,7 +6,7 @@ use keymener\myblog\core\Application;
 use keymener\myblog\core\Authentication;
 use keymener\myblog\core\Router;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 // create instance of Router and send the url
 $url = empty($_GET['url']) ? 'blog/home' : $_GET['url'];

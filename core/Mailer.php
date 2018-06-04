@@ -31,7 +31,7 @@ class Mailer
     {
         $this->mail = $mail;
         $this->email = $email;
-        $config = parse_ini_file('./config/email.ini', true);
+        $config = parse_ini_file('../config/email.ini', true);
         $this->myEmail = $config['email']['myEmail'];
         $this->password = $config['email']['password'];
         $this->host = $config['email']['host'];
