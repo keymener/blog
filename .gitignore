@@ -2,4 +2,4 @@ tmp/
 nbproject/
 phpcs.xml
 squizlabs/
-config/
+email.ini

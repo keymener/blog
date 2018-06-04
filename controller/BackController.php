@@ -37,32 +37,33 @@ class BackController
     public function login()
     {
         if (isset($_POST['username'], $_POST['password']) and $this->userManager->userExists($_POST['username'])) {
-            // encrypt password
+
             $pwd = $_POST['password'];
+
 
             // get all info from user
             $dataUser = $this->userManager->getUser($_POST['username']);
 
             // hydrate the instance user with all info
             $this->user->hydrate($dataUser);
-    
-            
+
+
             //compare password
             if ($this->auth->checkPassword($pwd, $this->user->getPassword())) {
                 $_SESSION['userId'] = $this->user->getId();
                 $_SESSION['username'] = $this->user->getFirstname();
-                
+
                 $this->home();
             } else {
                 $twig = $this->twig->twigLoad();
                 echo $twig->render('backend/login.twig', array(
-                    'message' => true
+                    'message' => 'error'
                 ));
             }
         } else {
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => true
+                'message' => 'empty'
             ));
         }
     }
@@ -74,17 +75,13 @@ class BackController
     public function home()
     {
 
-        if (isset($_SESSION['userId'])) {
-            
+
+
 //            $countComments = $this->commentManager->countAllWaitComment();
-            
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/home.twig', array(
-                'message' => false));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/home.twig', array(
+            'message' => false));
     }
 
     /**
@@ -102,13 +99,9 @@ class BackController
      */
     public function comments()
     {
-        if (isset($_SESSION['userId'])) {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/home.twig', array('message' => false));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/home.twig', array('message' => false));
     }
 
     /**
@@ -116,14 +109,11 @@ class BackController
      */
     public function users()
     {
-        if (isset($_SESSION['userId'])) {
-            $users = $this->userManager->getAllUsers();
 
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/user.twig', array('users' => $users,));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+        $users = $this->userManager->getAllUsers();
+
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/user.twig', array('users' => $users,));
     }
+
 }

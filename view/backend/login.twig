@@ -7,10 +7,15 @@
     <body class="bg-dark py-5">
 
         <div class="container">
-            {% if message == true %}
+            {% if message == 'error' %}
                 <div class="alert alert-danger" role="alert">
                     Login ou mot de passe incorrect.
                 </div>
+                {% elseif message == 'empty' %}
+                      <div class="alert alert-warning" role="alert">
+                    Veuillez rentrer le login et le mot de passe.
+                </div> 
+                
             {% endif %}
             <div class="card card-login mx-auto mt-5">
                 <div class="card-header">Authentification</div>

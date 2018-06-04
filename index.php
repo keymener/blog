@@ -9,7 +9,7 @@ use keymener\myblog\core\Router;
 require 'vendor/autoload.php';
 
 // create instance of Router and send the url
-$url = empty($_GET['url']) ? '/home/home' : $_GET['url'];
+$url = empty($_GET['url']) ? 'blog/home' : $_GET['url'];
 
 $router = new Router($url);
 

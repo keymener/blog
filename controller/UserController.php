@@ -21,32 +21,27 @@ class UserController
     private $auth;
 
     public function __construct(
-        User $user,
-        UserManager $userManager,
-        TwigLaunch $twig,
-        Authentication $auth
-    ) {
+    User $user, UserManager $userManager, TwigLaunch $twig, Authentication $auth
+    )
+    {
         $this->user = $user;
         $this->userManager = $userManager;
         $this->twig = $twig;
         $this->auth = $auth;
     }
 
+
     /**
      * user managment page
      */
     public function home()
     {
-        if (isset($_SESSION['userId'])) {
-            $users = $this->userManager->getAllUsers();
+
+        $users = $this->userManager->getAllUsers();
 
 
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/user.twig', array('users' => $users,));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/user.twig', array('users' => $users,));
     }
 
     /**
@@ -55,27 +50,19 @@ class UserController
      */
     public function delete($id)
     {
-        if (isset($_SESSION['userId'])) {
-            $this->userManager->deleteUser($id);
-            header("Location: /back/users");
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+
+        $this->userManager->deleteUser($id);
+        header("Location: /back/users");
     }
 
     public function addForm()
     {
-        if (isset($_SESSION['userId'])) {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/addForm.twig', array(
-                'action' => '/user/adduser',
-                'button' => 'add'
-            ));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/addForm.twig', array(
+            'action' => '/user/adduser',
+            'button' => 'add'
+        ));
     }
 
     /**
@@ -84,7 +71,7 @@ class UserController
     public function addUser()
     {
 
-        if (isset($_POST, $_SESSION['userId'])) {
+        if (isset($_POST)) {
             //checks if the login already exists, if yes return error
             if ($this->userManager->userExists($_POST['login'])) {
                 $twig = $this->twig->twigLoad();
@@ -108,9 +95,6 @@ class UserController
 
                 header("Location: /back/users");
             }
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
         }
     }
 
@@ -120,20 +104,16 @@ class UserController
      */
     public function updateForm($id)
     {
-        if (isset($_SESSION['userId'])) {
-            $data = $this->userManager->getUserById($id);
-            $this->user->hydrate($data);
 
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/addForm.twig', array(
-                'user' => $this->user,
-                'action' => '/user/update',
-                'button' => 'modify'
-            ));
-        } else {
-            $twig = $this->twig->twigLoad();
-            echo $twig->render('backend/login.twig', array('message' => false));
-        }
+        $data = $this->userManager->getUserById($id);
+        $this->user->hydrate($data);
+
+        $twig = $this->twig->twigLoad();
+        echo $twig->render('backend/addForm.twig', array(
+            'user' => $this->user,
+            'action' => '/user/update',
+            'button' => 'modify'
+        ));
     }
 
     /**
@@ -143,9 +123,9 @@ class UserController
     public function update()
     {
 
-        if (isset($_POST['id'], $_SESSION['userId'])) {
+        if (isset($_POST['id'])) {
             $this->user->hydrate($_POST);
-            
+
 
 
 // check if the user changes the password
@@ -163,4 +143,5 @@ class UserController
             header("Location: /back/users");
         }
     }
+
 }
