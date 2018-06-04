@@ -58,8 +58,7 @@ class Mailer
         $this->mail->SMTPDebug = 0;
 //Set the hostname of the mail server
         $this->mail->Host = $this->host;
-// use
-// $mail->Host = gethostbyname('smtp.gmail.com');
+
 // if your network does not support SMTP over IPv6
 //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
         $this->mail->Port = $this->port;
@@ -85,7 +84,7 @@ class Mailer
 //Replace the plain text body with one created manually
         $this->mail->AltBody = 'This is a plain-text message body';
 //Attach an image file
-//        $this->mail->addAttachment('images/phpmailer_mini.png');
+
 //send the message, check for errors
         if (!$this->mail->send()) {
             return false;

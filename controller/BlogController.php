@@ -76,7 +76,7 @@ class BlogController
      */
     public function add()
     {
-        if (isset($_POST['content'], $_POST['post_id'])) {
+        if (isset($_POST['content'], $_POST['postId'])) {
 
             $this->comment->hydrate($_POST);
             $this->comment->setDateTime(date("Y-m-d H:i:s"));
@@ -84,7 +84,7 @@ class BlogController
             $this->commentManager->add($this->comment);
 
             $message = 'commentAdd';
-            $this->post($this->comment->getPost_id(), $message);
+            $this->post($this->comment->getPostId(), $message);
         }
     }
 
