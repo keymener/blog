@@ -13,7 +13,7 @@ use Twig_Loader_Filesystem;
 class TwigLaunch
 {
 
-    const TWIGFILES = 'view';
+    const TWIGFILES = '../view';
     const TWIGTMP = 'tmp';
 
     public static function twigLoad()
