@@ -39,7 +39,7 @@ class Application
            
         // if it goes to frontend OR a user is allready logged, 
         // we can call the instance
-        if (!in_array($controller, $check) OR isset($_SESSION['userId'])) {
+        if (!in_array($controller, $check) || isset($_SESSION['userId'])) {
             
 
             // get the method name
