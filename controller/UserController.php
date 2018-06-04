@@ -81,7 +81,7 @@ class UserController
                     'button' => 'add'
                 ));
             } else {
-                $user = $this->user->hydrate($_POST);
+                
 
                 //encrypt the password from post variable
                 $password = $this->auth->encrypt($_POST['password']);

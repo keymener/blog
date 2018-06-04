@@ -14,12 +14,12 @@ class PostManager
 {
 
     private $db;
-    private $post;
+  
 
-    public function __construct(Database $db, Post $post)
+    public function __construct(Database $db)
     {
         $this->db = $db;
-        $this->post = $post;
+
     }
 
     public function getAllPosts()
@@ -53,7 +53,7 @@ count(co.id) com
                     post pt,
                     comment co
                     WHERE
-                    pt.id = (SELECT co.post_id WHERE co.published = false)
+                    pt.id = (SELECT co.postId WHERE co.published = false)
                     group by pt.id';
         $db = $this->db->dbLaunch();
         $req = $db->query($statement);

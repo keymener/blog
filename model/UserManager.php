@@ -20,12 +20,12 @@ class UserManager
 {
 
     private $db;
-    private $user;
 
-    public function __construct(Database $db, User $user)
+
+    public function __construct(Database $db)
     {
         $this->db = $db;
-        $this->user = $user;
+       
     }
 
     /**

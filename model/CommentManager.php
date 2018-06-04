@@ -20,12 +20,12 @@ class CommentManager
 {
 
     private $db;
-    private $comment;
+    
 
-    public function __construct(Database $db, Comment $comment)
+    public function __construct(Database $db)
     {
         $this->db = $db;
-        $this->comment = $comment;
+        
     }
 
     public function getAllComments()
@@ -39,7 +39,7 @@ class CommentManager
     public function getComments($postId)
     {
         $req = $this->db->dbLaunch()->prepare(''
-                . 'SELECT * FROM comment WHERE post_id = :id ');
+                . 'SELECT * FROM comment WHERE postId = :id ');
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
 
@@ -65,7 +65,7 @@ class CommentManager
     {
         $req = $this->db->dbLaunch()->prepare(''
                 . 'SELECT * FROM comment '
-                . 'WHERE published = true AND post_id = :id ');
+                . 'WHERE published = true AND postId = :id ');
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
 
@@ -74,20 +74,23 @@ class CommentManager
 
     public function add(Comment $comment)
     {
+        
+   
+        
         $req = $this->db->dbLaunch()->prepare(''
                 . 'INSERT INTO comment '
                 . 'SET content = :content,'
                 . 'dateTime = :dateTime, '
                 . 'published = :published, '
-                . 'post_id = :postId, '
-                . 'user_id = :userId, '
+                . 'postId = :postId, '
+                . 'userId = :userId, '
                 . 'author = :author');
 
         $req->bindValue(':content', $comment->getContent(), PDO::PARAM_STR);
         $req->bindValue(':dateTime', $comment->getDateTime(), PDO::PARAM_STR);
         $req->bindValue(':published', $comment->getPublished(), PDO::PARAM_BOOL);
-        $req->bindValue(':postId', $comment->getPost_id(), PDO::PARAM_INT);
-        $req->bindValue(':userId', $comment->getUser_id(), PDO::PARAM_INT);
+        $req->bindValue(':postId', $comment->getPostId(), PDO::PARAM_INT);
+        $req->bindValue(':userId', $comment->getUserId(), PDO::PARAM_INT);
         $req->bindValue(':author', $comment->getAuthor(), PDO::PARAM_STR);
 
         $req->execute();
@@ -95,7 +98,7 @@ class CommentManager
 
     public function countWaitComment($postId)
     {
-        $statement = 'SELECT * FROM comment WHERE published = false AND post_id = :id';
+        $statement = 'SELECT * FROM comment WHERE published = false AND postId = :id';
         $req = $this->db->dbLaunch()->prepare($statement);
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
@@ -117,7 +120,7 @@ class CommentManager
 
     public function countCommment($postId)
     {
-        $statement = 'SELECT * FROM comment WHERE post_id = :id';
+        $statement = 'SELECT * FROM comment WHERE postId = :id';
         $req = $this->db->dbLaunch()->prepare($statement);
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();

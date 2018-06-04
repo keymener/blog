@@ -20,8 +20,8 @@ class Comment
     private $content;
     private $dateTime;
     private $published = false;
-    private $post_id;
-    private $user_id = null;
+    private $postId;
+    private $userId = null;
     private $author;
 
     public function hydrate($data)
@@ -59,14 +59,14 @@ class Comment
         return $this->published;
     }
 
-    public function getPost_id()
+    public function getPostId()
     {
-        return $this->post_id;
+        return $this->postId;
     }
 
-    public function getUser_id()
+    public function getUserId()
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     public function setId($id)
@@ -89,14 +89,14 @@ class Comment
         $this->published = (bool) $published;
     }
 
-    public function setPost_id($post_id)
+    public function setPostId($postId)
     {
-        $this->post_id = (int) $post_id;
+        $this->postId = (int) $postId;
     }
 
-    public function setUser_id($user_id)
+    public function setUserId($userId)
     {
-        $this->user_id = (int) $user_id;
+        $this->userId = (int) $userId;
     }
 
     public function setAuthor($author)

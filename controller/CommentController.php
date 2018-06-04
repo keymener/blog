@@ -71,7 +71,7 @@ class CommentController
         $this->commentManager->update($this->comment);
         $message = 'validate';
   
-        $this->validate($this->comment->getPost_id(), $message);
+        $this->validate($this->comment->getPostId(), $message);
     }
 
 }
