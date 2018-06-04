@@ -36,7 +36,7 @@ class BackController
      */
     public function login()
     {
-        if (isset($_POST['username'], $_POST['password']) and $this->userManager->userExists($_POST['username'])) {
+        if (isset($_POST['username'], $_POST['password']) && $this->userManager->userExists($_POST['username'])) {
 
             $pwd = $_POST['password'];
 
