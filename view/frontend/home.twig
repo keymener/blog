@@ -9,7 +9,7 @@
         <div class="masthead-content">
             <div class="container">
                 <h2 class="masthead-heading mb-0">Développeur PHP</h2>
-                <img class="img-fluid rounded-circle" src="/frontend/img/01.jpg" alt="">
+                <img class="img-fluid rounded-circle" src="/frontend/img/01.jpg" alt="Ma tête">
                 <h3 class="masthead-subheading mb-0">Keigo Matsunaga</h3>
 
                 <a href="/frontend/pdf/cv_dev.pdf" class="btn btn-primary btn-xl rounded-pill mt-5">Voir mon CV</a>
@@ -20,49 +20,56 @@
         <div class="bg-circle-3 bg-circle"></div>
 
     </header>
-
     <section>
-        <div class ="mt-3 mb-3">
-            <div class="container">
-                
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="p-5">
+              <img class="img-fluid rounded-circle" src="/frontend/img/bureau.jpg" alt="code">
             </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="p-5">
+              <h1>Le code, ma nouvelle passion!</h1>
+              <p>Si j'ai découvert le code il n'y a pas très longtemps, le fait de plonger dedans m'a donné un nouveau soufle pour ma créativité! Je suis complètement autodidacte et j'aime relever des défis par moi même!</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
     <section>
-        <div class="mt-3 mb-3">
             <div class="container">
-                {% if message == 'mailOk' %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Message envoyé.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% elseif message == 'mailNok' %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Problème lors de l'envoi du message, veuillez essayer ulterieurment.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endif %}
-                <h1>Pour me contacter</h1>
-                <form action="/blog/sendmail" method="post">
-                    <div class="form-group">
-                        <label for="formGroupExampleInput">Votre Nom / Prenom</label>
-                        <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Jean Dupont" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Votre adresse mail</label>
-                        <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="votremail@example.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Votre message</label>
-                        <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary rounded-pill">Valider</button>
-                </form>
+                <div class="row align-items-center">
+                    <div class="my-3 col-md-6">
+                    {% if message == 'mailOk' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Message envoyé.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% elseif message == 'mailNok' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Problème lors de l'envoi du message, veuillez essayer ulterieurment.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <h1>Pour me contacter</h1>
+                    <form action="/blog/sendmail" method="post">
+                        <div class="form-group">  
+                            <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Votre nom et prénom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="Votre adresse mail" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" placeholder="Votre message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary rounded-pill">Valider</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>

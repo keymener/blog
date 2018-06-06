@@ -10,7 +10,7 @@ and open the template in the editor.
 
 header.masthead .masthead-content .masthead-heading{
 
-    font-size: 2.5rem;
+    font-size: 3rem;
 
 }
 
@@ -46,13 +46,20 @@ header.masthead .masthead-content .masthead-subheading{
 header.masthead{
     background: url('../img/banner.jpg') no-repeat;
     background-size: cover;
-    filter: brightness(50%);
-    /*opacity: 0.8;*/
-    /*background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);*/
+    
 }
 
 header.masthead .bg-circle{
     opacity: 0.5;
+}
+
+img.logo{
+    width: 50px;
+}
+
+img.footerlogo{
+    width: 30px;
+   
 }
 
 
