@@ -33,7 +33,7 @@
         {% if hide != true %} 
             <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
                 <div class="container">
-                    <a class="navbar-brand" href="/blog/home">Keigo Matsunaga</a>
+                    <a class="navbar-brand" href="/blog/home"><img src="/frontend/img/biglogo.png" class="logo" /> Keigo Matsunaga</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -47,7 +47,7 @@
                             </li>
 
                             <a class="nav-link" href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i class="fab fa-linkedin"></i></a>							
-                            <a class="nav-link" href="https://github.com/keymener/"><i class="fab fa-github-square"></i></i></a>
+                            <a class="nav-link" href="https://github.com/keymener/"><i class="fab fa-github-square"></i></a>
 
                         </ul>
                     </div>
@@ -63,21 +63,101 @@
     </div>
 
     {% if hide != true %}
-        <!-- Footer -->
-        <footer class="py-5 bg-black">
-            <div class="container">
-                <p class="m-0 text-center text-white small">Copyright &copy; Keigo Matsunaga 2018</p>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/back/login">{% block login %}Admin{% endblock %}</a>
-                </li>
+        <footer class="page-footer font-small mdb-color pt-4 mt-4 bg-dark">
+
+            <!-- Footer Links -->
+            <div class="container text-center text-md-left">
+
+                <!-- Footer links -->
+                <div class="row text-center text-md-left mt-3 pb-3">
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold"><img src="/frontend/img/biglogo.png" class="footerlogo" /> Keigo Matsunaga</h6>
+                        <p>Autodidacte et curieux, je suis passioné par les nouvelles technologies mais aussi par la simplicité du monde au naturel.</p>
+                        
+                    </div>
+                    <!-- Grid column -->
+
+                    <hr class="w-100 clearfix d-md-none">
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                 
+                    </div>
+                    <!-- Grid column -->
+
+                    <hr class="w-100 clearfix d-md-none">
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3 ">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Liens</h6>
+                        <p><a class ="footer-link text-secondary" href="/frontend/pdf/cv_dev.pdf">Mon CV</a></p>
+                        <p><a class ="footer-link text-secondary" href="/blog/posts">Blog</a></p>
+                        <p><a class ="footer-link text-secondary" href="/blog/home">Présentation</a></p>
+                        <p><a class ="footer-link text-secondary" href="/back/login">{% block login %}Admin{% endblock %}</a></p>
+                    </div>
+
+                    <!-- Grid column -->
+                    <hr class="w-100 clearfix d-md-none">
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+              
+
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Footer links -->
+
+                <hr>
+
+                <!-- Grid row -->
+                <div class="row d-flex align-items-center">
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-4">
+
+                        <!--Copyright-->
+                        <p class="text-center text-md-left">© 2018 Copyright: <strong> Keigo Matsunaga</strong></a></p>
+
+                    </div>
+                    <!-- Grid column -->
+                     <!-- Grid column -->
+                    <div class="col-md-4 col-lg-4 ">
+
+                        <!--Logomakr-->
+                        <p>Logo <img src="/frontend/img/biglogo.png" class="footerlogo" /> créé grâce à <a class="text-secondary" href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a><p>
+
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-4 ml-lg-0">
+
+                        <!-- Social buttons -->
+                        <div class="text-center text-md-right">
+                            <ul class="list-unstyled list-inline">
+                                <li class="list-inline-item"><a class="btn-floating " href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i class="fab fa-linkedin fa-2x text-secondary"></i></a>	</li>						
+                                <li class="list-inline-item"><a class="btn-floating " href="https://github.com/keymener/"><i class="fab fa-github-square fa-2x text-secondary"></i></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row -->
+
             </div>
-            <!-- /.container -->
+            <!-- Footer Links -->
+
         </footer>
+        <!-- Footer -->
 
         <!-- Bootstrap core JavaScript -->
-        <script src="frontend/vendor/jquery/jquery.min.js"></script>
-        <script src="frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/frontend/vendor/jquery/jquery.min.js"></script>
+        <script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     {% endif %}
 </body>
 

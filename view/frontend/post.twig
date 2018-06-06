@@ -10,24 +10,24 @@
 
 {% block content %}
     <div class="container">
-        <div class="blogcontent">
+        <section class="blogcontent">
+            <div class ="container">
+                <div class="post bg-light mb-3 px-4" >
+                    <div class="py-2"><h4>{{ post.title }}</h4></div>
+                    <div class="chapeau py-2 font-weight-bold">
+                        {{ post.chapeau }}
+                    </div>
+                    <div class="postContent">
+                        {{ post.content }}
+                    </div>
+                    <div class="py-2">
+                        <p><i class="far fa-clock"></i> {{ post.lastDate|date("d/m/Y")}} </p>
 
-            <div class="post bg-light mb-3" >
-                <div class=""><h4>{{ post.title }}</h4></div>
-                <div class="chapeau">
-                    {{ post.chapeau }}
-                </div>
-                <div class="postContent">
-                    {{ post.content }}
-                </div>
-                <div>
-                    <p><i class="far fa-clock"></i>{{ post.lastDate|date("d/m/Y")}} </p>
+                    </div>
 
                 </div>
-
             </div>
-
-        </div>
+        </section>
         <section>
             <div class="mt-3 mb-3">
                 <div class="container">
@@ -42,12 +42,16 @@
                     {% endif %}
 
                     {% for comment in comments %}
-                        <div class="row">
-                            {{comment.author }}
-                            {{ comment.dateTime }}
-                            {{ comment.content }}
+                        <div class="card my-4">
+                            <div class="card-header">
+                                <b>{{comment.author }}</b> le {{ comment.dateTime | date("d/m/Y") }} à {{ comment.dateTime | date("H:m") }}
+                            </div>
+                            <div class="card-body">
+                                {{ comment.content }}
+                            </div>
                         </div>
                     {% endfor %}
+                    <h5>Laissez un commentaire</h5>
                     <form action="/blog/add" method='post'>
                         <input type="hidden" name="postId" value="{{ post.id }}" />
                         <div class="form-group">
