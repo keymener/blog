@@ -7,7 +7,7 @@ use PDO;
 /**
  * connection to database with pdo
  *
- * @author keyme
+ * @author keymener
  */
 class Database
 {
