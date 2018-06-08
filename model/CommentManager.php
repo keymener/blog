@@ -10,7 +10,7 @@ use PDO;
 /**
  * CRUD of Comments
  *
- * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
+ * @author keymener
  */
 class CommentManager
 {
