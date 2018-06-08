@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 namespace keymener\myblog\model;
 
@@ -12,7 +8,7 @@ use keymener\myblog\entity\Comment;
 use PDO;
 
 /**
- * Description of commentManager
+ * CRUD of Comments
  *
  * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
  */
