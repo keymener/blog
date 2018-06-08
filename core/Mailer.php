@@ -1,19 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 namespace keymener\myblog\core;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * Description of Mailer
+ * sends email using phpmailer
  *
- * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
+ * @author keymener
  */
 class Mailer
 {
@@ -40,6 +36,13 @@ class Mailer
         $this->smtpAuth = $config['email']['smtpAuth'];
     }
 
+    /**
+     * send the email using parameters from attributes
+     * @param string $name
+     * @param string $email
+     * @param string $content
+     * @return boolean
+     */
     public function sendmail($name, $email, $content)
     {
         

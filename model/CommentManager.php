@@ -24,6 +24,10 @@ class CommentManager
         
     }
 
+    /**
+     * get all comments
+     * @return array
+     */
     public function getAllComments()
     {
         $statement = 'SELECT * FROM comment';
@@ -32,6 +36,11 @@ class CommentManager
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * get comments by post
+     * @param int $postId
+     * @return array
+     */
     public function getComments($postId)
     {
         $req = $this->db->dbLaunch()->prepare(''
@@ -57,6 +66,11 @@ class CommentManager
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * get published comments
+     * @param int $postId
+     * @return array
+     */
     public function getOkComments($postId)
     {
         $req = $this->db->dbLaunch()->prepare(''
@@ -68,11 +82,13 @@ class CommentManager
         return $req->fetchall(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * insert a new comment
+     * @param Comment $comment
+     */
     public function add(Comment $comment)
     {
-        
-   
-        
+                
         $req = $this->db->dbLaunch()->prepare(''
                 . 'INSERT INTO comment '
                 . 'SET content = :content,'
@@ -92,6 +108,11 @@ class CommentManager
         $req->execute();
     }
 
+    /**
+     * get the number of unpublished comments
+     * @param int $postId
+     * @return int
+     */
     public function countWaitComment($postId)
     {
         $statement = 'SELECT * FROM comment WHERE published = false AND postId = :id';
@@ -104,7 +125,7 @@ class CommentManager
     
     /**
      * count all comments waiting for validation
-     * @return type
+     * @return int
      */
       public function countAllWaitComment()
     {
@@ -114,6 +135,11 @@ class CommentManager
         return $req->columnCount();
     }
 
+    /**
+     * count commments by post
+     * @param int $postId
+     * @return int
+     */
     public function countCommment($postId)
     {
         $statement = 'SELECT * FROM comment WHERE postId = :id';
@@ -124,6 +150,10 @@ class CommentManager
         return $req->columnCount();
     }
 
+    /**
+     * update a comment
+     * @param Comment $comment
+     */
     public function update(Comment $comment)
     {
         $statement = 'UPDATE comment SET published = true WHERE id = :id';

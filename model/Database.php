@@ -17,6 +17,10 @@ class Database
     const DBUSER = 'root';
     const DBPASS = '';
 
+    /**
+     * instances a pdo object with our params
+     * @return PDO
+     */
     public function dbLaunch()
     {
 

@@ -1,17 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace keymener\myblog\core;
 
 /**
- * Description of Email
+ * represents an email
  *
- * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
+ * @author keymener
  */
 class Email
 {
@@ -19,6 +14,10 @@ class Email
     private $email;
     private $content;
 
+    /**
+     * format the content of the email
+     * @return string
+     */
     public function format()
     {
         return '<b>Nom et Prénom:</b> ' . $this->name . '<br />'
