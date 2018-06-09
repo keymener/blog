@@ -31,47 +31,94 @@
                 <div class="col-lg-6">
                     <div class="p-5">
                         <h1>Le code, ma nouvelle passion!</h1>
-                        <p>Si j'ai découvert le code il n'y a pas très longtemps, le fait de plonger dedans m'a donné un nouveau soufle pour ma créativité! Je suis complètement autodidacte et j'aime relever des défis par moi même!</p>
+
+                        <p>Je suis Keigo et je suis un tout nouveau développeur PHP.
+                            <br />Mon objectif est de devenir un bon developpeur et proposer mes services pour creer des outils qui vous faciliteront votre tâches au quotidien. </p>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <section>
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="my-3 col-md-6">
-                    {% if message == 'mailOk' %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Message envoyé.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+
+
+        <section style="background-color: #fee6f2; ">
+            <div class="container ">
+                <div class="row align-items-center text-center">
+                    <div class="col">
+                        <h1>Mes outils</h1>
+                    </div>
+                </div>
+                <div class="row align-items-center text-center my-3">
+                    <div class='col'>
+                        <div  style="font-size:7em; color:#ee0979">
+                            <i class="fab fa-html5"></i>
+
                         </div>
-                    {% elseif message == 'mailNok' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            Problème lors de l'envoi du message, veuillez essayer ulterieurment.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <h5>HTML</h5>
+                    </div>
+                    <div class='col'>
+                        <div  style="font-size:7em; color:#ee0979">
+                            <i class="fab fa-css3-alt"></i>
                         </div>
-                    {% endif %}
-                    <h1>Pour me contacter</h1>
-                    <form action="/blog/sendmail" method="post">
-                        <div class="form-group">  
-                            <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Votre nom et prénom" required>
+                        <h5>CSS, Boostrap</h5>
+                    </div>
+                    <div class='col'>
+                        <div  style="font-size:7em; color:#ee0979">
+                            <i class="fab fa-php"></i>
                         </div>
-                        <div class="form-group">
-                            <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="Votre adresse mail" required>
+                        <h5>PHP</h5>
+                    </div>
+                    <div class='col'>
+                        <div  style="font-size:7em; color:#ee0979">
+                            <i class="fas fa-database"></i><br />
                         </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" placeholder="Votre message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary rounded-pill">Valider</button>
-                    </form>
+                        <h5>Bases de données Mysql, Oracle</h5>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row align-items-center my-3">
+                    <div class='col-md-3'>
+                    </div>
+                    <div class="my-3 col-md-6 text-center">
+                        {% if message == 'mailOk' %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Message envoyé.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% elseif message == 'mailNok' %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                Problème lors de l'envoi du message, veuillez essayer ulterieurment.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
+                        <h1>Pour me contacter</h1>
+                        <form action="/blog/sendmail" method="post">
+                            <div class="form-group">  
+                                <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Votre nom et prénom" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="Votre adresse mail" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" placeholder="Votre message" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary rounded-pill">Envoyer</button>
+                        </form>
+                    </div>
+                    <div class='col-md-3'>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-{% endblock %}
+    {% endblock %}
