@@ -82,7 +82,8 @@ class Router
         if (class_exists($controllerName)) {
             $this->controller = $controllerName;
         } else {
-             header("Location: /error/errorPage");
+             $this->controller = 'keymener\\myblog\\controller\\ErrorController';
+             $this->action = 'errorPage';
         }
     }
 
@@ -95,7 +96,8 @@ class Router
             if (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {
-                header("Location: /error/errorPage");
+                  $this->controller = 'keymener\\myblog\\controller\\ErrorController';
+             $this->action = 'errorPage';
             }
         }
     }
