@@ -8,9 +8,9 @@ use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
 
 /**
- * Description of AdminController
+ * this is where the admin part is begining
  *
- * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
+ * @author keymener
  */
 class BackController
 {

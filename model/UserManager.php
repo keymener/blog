@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 namespace keymener\myblog\model;
 
@@ -12,9 +8,9 @@ use keymener\myblog\entity\User;
 use PDO;
 
 /**
- * Description of UserManager
+ * CRUD of user
  *
- * @author Keigo Matsunaga <keigo.matsunaga@gmail.com>
+ * @author keymener
  */
 class UserManager
 {
@@ -43,6 +39,11 @@ class UserManager
         return $result;
     }
 
+    /**
+     * get user data by its id
+     * @param int $id
+     * @return array
+     */
     public function getUserById($id)
     {
         $req = $this->db->dbLaunch()->prepare('SELECT * FROM user WHERE id=:id');
@@ -53,6 +54,10 @@ class UserManager
         return $result;
     }
 
+    /**
+     * gets all users
+     * @return array
+     */
     public function getAllUsers(): array
     {
 
@@ -82,6 +87,10 @@ class UserManager
         }
     }
 
+    /**
+     * delete a user 
+     * @param int $id
+     */
     public function deleteUser($id)
     {
         $req = $this->db->dbLaunch()->prepare('DELETE FROM user WHERE id=:id');
@@ -90,6 +99,10 @@ class UserManager
         $req->closeCursor();
     }
 
+    /**
+     * add a user
+     * @param User $user
+     */
     public function addUser(User $user)
     {
 
@@ -107,6 +120,10 @@ class UserManager
         $req->closeCursor();
     }
 
+    /**
+     * update a user
+     * @param User $user
+     */
     public function updateUser(User $user)
     {
         $req = $this->db->dbLaunch()->prepare('UPDATE user set '
@@ -125,6 +142,10 @@ class UserManager
         $req->closeCursor();
     }
 
+    /**
+     * update user password
+     * @param User $user
+     */
     public function updatePassword(User $user)
     {
         $req = $this->db->dbLaunch()->prepare('UPDATE user set password = :password

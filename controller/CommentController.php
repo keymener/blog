@@ -9,9 +9,9 @@ use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
 
 /**
- * controller pour post
+ * comment controller
  *
- * @author keyme
+ * @author keymener
  */
 class CommentController
 {
@@ -33,6 +33,9 @@ class CommentController
         $this->post = $post;
     }
 
+    /**
+     * main page
+     */
     public function home()
     {
         $posts = $this->postManager->getAllPostsComments();
@@ -43,6 +46,11 @@ class CommentController
         );
     }
 
+    /**
+     * get single post page
+     * @param int $postId
+     * @param string $message
+     */
     public function validate($postId, $message = null)
     {
    
@@ -60,6 +68,10 @@ class CommentController
         ]);
     }
 
+    /**
+     * comment validation
+     * @param int $id
+     */
     public function commentValidate($id)
     {
         

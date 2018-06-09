@@ -6,9 +6,9 @@ use keymener\myblog\entity\Post;
 use PDO;
 
 /**
- * post manager for database
+ * crud of post
  *
- * @author keyme
+ * @author keymener
  */
 class PostManager
 {
@@ -22,6 +22,10 @@ class PostManager
 
     }
 
+    /**
+     * gets all posts
+     * @return array
+     */
     public function getAllPosts()
     {
 
@@ -42,6 +46,10 @@ ORDER BY lastDate DESC');
         return $posts;
     }
 
+    /**
+     * get all posts with comments
+     * @return array
+     */
     public function getAllPostsComments()
     {
         $statement = 'SELECT
@@ -62,6 +70,10 @@ count(co.id) com
         return $posts;
     }
 
+    /**
+     * get all published posts
+     * @return array
+     */
     public function getAllPublished()
     {
 
@@ -83,6 +95,10 @@ ORDER BY lastDate DESC');
         return $posts;
     }
 
+    /**
+     * add a new post
+     * @param Post $data
+     */
     public function addPost(Post $data)
     {
 
@@ -101,6 +117,10 @@ ORDER BY lastDate DESC');
         $req->closeCursor();
     }
 
+    /**
+     * update a post
+     * @param Post $data
+     */
     public function updatePost(Post $data)
     {
 
@@ -124,6 +144,10 @@ ORDER BY lastDate DESC');
         $req->closeCursor();
     }
 
+    /**
+     * delete a post
+     * @param int $id
+     */
     public function deletePost($id)
     {
 
@@ -134,6 +158,11 @@ ORDER BY lastDate DESC');
         $req->closeCursor();
     }
 
+    /**
+     * get a single post by its id
+     * @param int $id
+     * @return array
+     */
     public function getPost($id)
     {
 
@@ -147,6 +176,10 @@ ORDER BY lastDate DESC');
         return $result;
     }
 
+    /**
+     * get the last date of post
+     * @return string
+     */
     public function getLastDate()
     {
         $req = $this->db->dbLaunch()->query('SELECT lastDate FROM post ORDER BY lastDate DESC LIMIT 1');

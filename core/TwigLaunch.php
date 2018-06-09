@@ -6,9 +6,9 @@ use Twig_Environment;
 use Twig_Loader_Filesystem;
 
 /**
- * Permet de generer le twig loader
+ * Generate the twig view
  *
- * @author keyme
+ * @author keymener
  */
 class TwigLaunch
 {
@@ -16,13 +16,17 @@ class TwigLaunch
     const TWIGFILES = '../view';
     const TWIGTMP = 'tmp';
 
+    /**
+     * instances twig loader and twig environment
+     * @return Twig_Environment
+     */
     public static function twigLoad()
     {
 
         $loader = new Twig_Loader_Filesystem(self::TWIGFILES);
         $twig = new Twig_Environment($loader, array(
             'cache' => false
-                //'auto_reload' => true
+                
         ));
 
         return $twig;
