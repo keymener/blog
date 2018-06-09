@@ -5,7 +5,7 @@ namespace keymener\myblog\entity;
 /**
  * post entity
  *
- * @author keyme
+ * @author keymener
  */
 class Post
 {

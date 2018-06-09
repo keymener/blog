@@ -3,9 +3,9 @@
 namespace keymener\myblog\core;
 
 /**
- * get an url and you can call the controller , action and variable
+ * parse an url and sest the controller namespace , method and variable
  *
- * @author keyme
+ * @author keymener
  */
 class Router
 {
@@ -25,6 +25,10 @@ class Router
         $this->hydrate($url);
     }
 
+    /**
+     * hydrate all attributes using setters
+     * @param string $url
+     */
     private function hydrate($url)
     {
 

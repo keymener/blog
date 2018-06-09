@@ -10,9 +10,9 @@ use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
 
 /**
- * controller pour post
+ * post controller
  *
- * @author keyme
+ * @author keymener
  */
 class BlogController
 {
@@ -39,6 +39,10 @@ class BlogController
         
     }
 
+    /**
+     * home page
+     * @param string $message
+     */
     public function home($message = null)
     {
         echo $this->twig->twigLoad()->render('frontend/home.twig', [
@@ -47,6 +51,9 @@ class BlogController
         );
     }
 
+    /**
+     * get the posts page
+     */
     public function posts()
     {
         $posts = $this->postManager->getAllPublished();
@@ -55,6 +62,11 @@ class BlogController
         echo $this->twig->twigLoad()->render('frontend/posts.twig', array('posts' => $posts));
     }
 
+    /**
+     * get the single post page
+     * @param ing $id
+     * @param string $message
+     */
     public function post($id, $message = null)
     {
         //post instance

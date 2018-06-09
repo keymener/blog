@@ -3,9 +3,9 @@
 namespace keymener\myblog\entity;
 
 /**
- * Description of User
+ * User entity
  *
- * @author keyme
+ * @author keymener
  */
 class User
 {

@@ -7,9 +7,9 @@ use keymener\myblog\entity\Post;
 use keymener\myblog\model\PostManager;
 
 /**
- * controller pour post
+ * post controller
  *
- * @author keyme
+ * @author keymener
  */
 class PostController
 {
@@ -47,6 +47,10 @@ class PostController
             'lastDate' => $date));
     }
 
+    /**
+     * get single post page
+     * @param int $id
+     */
     public function getPost($id)
     {
 
@@ -57,6 +61,10 @@ class PostController
             'post' => $post));
     }
 
+    /**
+     * delete post
+     * @param int $id
+     */
     public function deletePost($id)
     {
 
@@ -65,6 +73,9 @@ class PostController
         header("location: /post/home");
     }
 
+    /**
+     * post form
+     */
     public function postForm()
     {
 
@@ -74,6 +85,9 @@ class PostController
             'button' => 'add'));
     }
 
+    /**
+     * add post
+     */
     public function addPost()
     {
 
@@ -87,6 +101,10 @@ class PostController
         header("Location: /post/home");
     }
 
+    /**
+     * update post
+     * @param int $id
+     */
     public function modifyPost($id)
     {
 
@@ -103,6 +121,10 @@ class PostController
         ));
     }
 
+    /**
+     * publish post
+     * @param int $id
+     */
     public function publishPost($id)
     {
 
@@ -120,6 +142,10 @@ class PostController
         header("Location: /post/home");
     }
 
+    /**
+     * unpublish post
+     * @param int $id
+     */
     public function unpublishPost($id)
     {
 
@@ -138,6 +164,9 @@ class PostController
         header("Location: /post/home");
     }
 
+    /**
+     * update post
+     */
     public function updatePost()
     {
         if (isset($_POST['id'])) {

@@ -10,7 +10,7 @@ use keymener\myblog\model\UserManager;
 /**
  * User controller
  *
- * @author keyme
+ * @author keymener
  */
 class UserController
 {
@@ -55,6 +55,9 @@ class UserController
         header("Location: /back/users");
     }
 
+    /**
+     * user form
+     */
     public function addForm()
     {
 
