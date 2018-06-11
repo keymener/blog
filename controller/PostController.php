@@ -5,6 +5,7 @@ namespace keymener\myblog\controller;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Post;
 use keymener\myblog\model\PostManager;
+use keymener\myblog\model\UserManager;
 
 /**
  * post controller
@@ -17,14 +18,18 @@ class PostController
     private $post;
     private $postManager;
     private $twig;
+    private $user;
+    private $userManager;
 
     public function __construct(
-    Post $post, PostManager $postManager, TwigLaunch $twig
+    Post $post, PostManager $postManager, TwigLaunch $twig, UserManager $userManager
     )
     {
         $this->post = $post;
         $this->postManager = $postManager;
         $this->twig = $twig;
+        $this->userManager = $userManager;
+        $this->user = $user ;
     }
 
     /**
@@ -108,16 +113,19 @@ class PostController
     public function modifyPost($id)
     {
 
+        //post instance
         $data = $this->postManager->getPost($id);
-
         $this->post->hydrate($data);
-
-
+        
+        //user array
+        $users = $this->userManager->getAllUsers();
+  
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/postForm.twig', array(
             'post' => $this->post,
             'action' => '/post/updatepost',
-            'button' => 'modify'
+            'button' => 'modify',
+            'users' => $users
         ));
     }
 
@@ -171,8 +179,8 @@ class PostController
     {
         if (isset($_POST['id'])) {
             $this->post->hydrate($_POST);
-
-            $this->post->setUserId($_SESSION['userId']);
+            
+            $this->post->setUserId($_POST['userId']);
             $this->post->setLastDate(date("Y-m-d H:i:s"));
 
             $this->postManager->updatePost($this->post);

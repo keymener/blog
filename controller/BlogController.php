@@ -6,8 +6,10 @@ use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Comment;
 use keymener\myblog\entity\Post;
+use keymener\myblog\entity\User;
 use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
+use keymener\myblog\model\UserManager;
 
 /**
  * post controller
@@ -18,23 +20,27 @@ class BlogController
 {
 
     private $twig;
-    private $postManager;
+    private $mailer;
     private $post;
     private $comment;
+    private $user;
+    private $postManager;
     private $commentManager;
-    private $mailer;
+    private $userManager;
     
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer
+    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user
     )
     {
         $this->twig = $twig;
-        $this->postManager = $postManager;
+        $this->mailer = $mailer;
         $this->post = $post;
         $this->comment = $comment;
+        $this->postManager = $postManager;
         $this->commentManager = $commentManager;
-        $this->mailer = $mailer;
+        $this->userManager = $userManager;
+        $this->user = $user ;
         
         
     }
@@ -72,14 +78,21 @@ class BlogController
         //post instance
         $data = $this->postManager->getPost($id);
         $this->post->hydrate($data);
-
+        
+        //user instance
+        $dataUser = $this->userManager->getUserById($this->post->getUserId());
+        $this->user->hydrate($dataUser);
+        
+     
+        
         //comments of this post
         $comments = $this->commentManager->getOkComments($id);
         echo $this->twig->twigLoad()->render(
                 'frontend/post.twig', [
             'post' => $this->post,
             'comments' => $comments,
-            'message' => $message
+            'message' => $message,
+            'user' => $this->user
         ]);
     }
 
