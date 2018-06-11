@@ -12,11 +12,21 @@ use PDO;
 class Database
 {
 
-    const DBHOST = 'yourdbhost';
-    const DBNAME = 'yourdbname';
-    const DBUSER = 'yourdbuser';
-    const DBPASS = 'yourdbpassword';
-    const DBPORT = 3306 ;
+    private $dbhost ;
+    private $dbname ;
+    private $dbuser ;
+    private $dbpassword ;
+    private $dbport ;
+
+    public function __construct()
+    {
+        $config = parse_ini_file('../config/database.ini', true);
+        $this->dbhost = $config['database']['dbhost'];
+        $this->dbname = $config['database']['dbname'];
+        $this->dbuser = $config['database']['dbuser'];
+        $this->dbpassword = $config['database']['dbpassword'];
+        $this->dbport = $config['database']['dbport'];
+    }
 
     /**
      * instances a pdo object with our params
@@ -24,9 +34,9 @@ class Database
      */
     public function dbLaunch()
     {
-    	$dsn = 'mysql:host='.self::DBHOST.';port='.self::DBPORT.';dbname='.self::DBNAME.';charset=utf8';
+        $dsn = 'mysql:host='.$this->dbhost.';port='.$this->dbport.';dbname='.$this->dbname.';charset=utf8';
 
-        $db = new PDO($dsn , self::DBUSER, self::DBPASS);
+        $db = new PDO($dsn , $this->dbuser, $this->dbpassword);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
