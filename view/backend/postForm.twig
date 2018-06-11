@@ -23,9 +23,15 @@
                                     <label for="title">Titre</label>
                                     <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}"  required />
                                     <label for="chapeau">Chapeau</label>
-                                    <textarea type="text" class="form-control" id="chapeau" rows="3" name="chapeau" value="{{ post.chapeau }}" required ></textarea>
+                                    <textarea type="text" class="form-control" id="chapeau" rows="3" name="chapeau" required >{{ post.chapeau }}</textarea>
                                     <label for="content">Contenu</label>
-                                    <textarea type="text" class="form-control" id="content" rows="5" name="content" value="{{ post.content }}" required ></textarea>
+                                    <textarea type="text" class="form-control" id="content" rows="5" name="content" required >{{ post.content }}</textarea>
+                                    <label for="user">Auteur</label>
+                                    <select name="userId" id="user">
+                                        {% for user in users %}
+                                            <option value="{{ user.id }}">{{ user.firstname }} {{user.lastname }}</option>
+                                        {% endfor %}
+                                    </select>
 
                                     <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
                                 </div>
