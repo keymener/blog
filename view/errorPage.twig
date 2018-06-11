@@ -4,8 +4,8 @@
 {% block content %}
 <div class="container" >
 	<div class="d-flex flex-column justify-content-center align-items-center " style="min-height: 100vh;">
-		<h1>Erreur 404</h1> 
-		<p>Page non trouvée.</p>
+		<h1>Erreur {{ code }}</h1> 
+		<p>{{ description }}</p>
 		<a href="/blog/home">retour à l'accueuil</a>
 	</div>
 </div>
