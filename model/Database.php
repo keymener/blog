@@ -12,10 +12,11 @@ use PDO;
 class Database
 {
 
-    const DBHOST = 'localhost';
-    const DBNAME = 'myblog';
-    const DBUSER = 'root';
-    const DBPASS = '';
+    const DBHOST = 'yourdbhost';
+    const DBNAME = 'yourdbname';
+    const DBUSER = 'yourdbuser';
+    const DBPASS = 'yourdbpassword';
+    const DBPORT = 3306 ;
 
     /**
      * instances a pdo object with our params
@@ -23,11 +24,9 @@ class Database
      */
     public function dbLaunch()
     {
+    	$dsn = 'mysql:host='.self::DBHOST.';port='.self::DBPORT.';dbname='.self::DBNAME.';charset=utf8';
 
-
-        $db = new PDO('mysql:dbhost=' . self::DBHOST .
-                ';dbname=' . self::DBNAME . ';'
-                . 'charset=utf8', self::DBUSER, self::DBPASS);
+        $db = new PDO($dsn , self::DBUSER, self::DBPASS);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 

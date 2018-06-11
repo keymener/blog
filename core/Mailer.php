@@ -15,6 +15,7 @@ class Mailer
 {
 
     private $mail;
+    private $destEmail;
     private $email;
     private $myEmail;
     private $password;
@@ -28,6 +29,7 @@ class Mailer
         $this->mail = $mail;
         $this->email = $email;
         $config = parse_ini_file('../config/email.ini', true);
+        $this->destEmail = $config['email']['destEmail'];
         $this->myEmail = $config['email']['myEmail'];
         $this->password = $config['email']['password'];
         $this->host = $config['email']['host'];
@@ -45,7 +47,8 @@ class Mailer
      */
     public function sendmail($name, $email, $content)
     {
-        
+             
+      
         //build the Email isntance
         $this->email->setName($name);
         $this->email->setEmail($email);
@@ -78,7 +81,7 @@ class Mailer
 //Set an alternative reply-to address
         $this->mail->addReplyTo($this->myEmail, 'First Last');
 //Set who the message is to be sent to
-        $this->mail->addAddress($this->myEmail, 'John Doe');
+        $this->mail->addAddress($this->destEmail, 'John Doe');
 //Set the subject line
         $this->mail->Subject = 'Mail de Myblog';
 //Read an HTML message body from an external file, convert referenced images to embedded,

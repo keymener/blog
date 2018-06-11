@@ -1,6 +1,6 @@
 {% extends "/frontend/homePageTemplate.twig" %}
 
-{% block title %}Mon Blog - posts {% endblock %}
+{% block title %}Mon Blog - Blog {% endblock %}
 {% block blog %}
     <u>{{ parent() }}</u>
     {% endblock %}
@@ -19,7 +19,7 @@
                         </div>
                         <div class="">
                             <p><i class="far fa-clock py-2"></i> {{ post.lastDate|date("d/m/Y")}} </p>
-                            <a href="/blog/post/{{ post.id }}"><button type="button" class="btn btn-primary rounded-pill">Voir l'article</button></a>
+                            <a class="btn btn-primary rounded-pill" href="/blog/post/{{ post.id }}">Voir l'article</a>
                         </div>
 
                     </div>

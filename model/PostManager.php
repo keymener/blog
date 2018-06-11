@@ -52,17 +52,12 @@ ORDER BY lastDate DESC');
      */
     public function getAllPostsComments()
     {
-        $statement = 'SELECT
- pt.id,
- pt.title,
-count(co.id) com
-   
-                    FROM
-                    post pt,
-                    comment co
-                    WHERE
-                    pt.id = (SELECT co.postId WHERE co.published = false)
-                    group by pt.id';
+        $statement = 'SELECT pt.id, pt.title, count(co.id) as com 
+FROM
+post pt
+INNER JOIN comment co on ( co.postId = pt.id )
+WHERE co.published = false
+group by pt.id';
         $db = $this->db->dbLaunch();
         $req = $db->query($statement);
         $posts = $req->fetchall(PDO::FETCH_ASSOC);
