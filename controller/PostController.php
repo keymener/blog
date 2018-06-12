@@ -18,7 +18,6 @@ class PostController
     private $post;
     private $postManager;
     private $twig;
-    private $user;
     private $userManager;
 
     public function __construct(
@@ -29,7 +28,6 @@ class PostController
         $this->postManager = $postManager;
         $this->twig = $twig;
         $this->userManager = $userManager;
-        $this->user = $user ;
     }
 
     /**
