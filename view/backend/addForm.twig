@@ -55,6 +55,7 @@
                                     <input type="text" class="form-control" id="login" name="login" value="{{ user.login }}" required/>
                                     <label for="password">Mot de passe</label>
                                     <input type="password" class="form-control" id="password" name="password" {% if button == 'add' %}required{% endif %} />
+                                    <input type="hidden" name="token" id="token" value="{{ token }}" />
                                     <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
                                 </div>
                             </form>

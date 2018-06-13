@@ -55,7 +55,10 @@
                                                 <td>{{ post.com }}</td>
 
                                                 <td>
-                                                    <a href="/comment/validate/{{ post.id }}"><button type="button" class="btn btn-warning btn-sm">Vérifier</button></a>
+                                                    <form method="post" action="/comment/validate/{{ post.id }}">
+                                                        <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                                        <button type="submit" class="btn btn-warning btn-sm">Vérifier</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         {% endfor %}

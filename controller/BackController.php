@@ -53,7 +53,7 @@ class BackController
                     $_SESSION['userId'] = $this->user->getId();
                     $_SESSION['username'] = $this->user->getFirstname();
 
-                    $this->home();
+                    header('Location:/back/home');
                 } else {
                     //generate token csrf
                     $token = $this->csrf->sessionRandom(5);

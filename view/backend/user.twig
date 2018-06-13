@@ -49,8 +49,13 @@
                                         <td>{{ user.login }}</td>
                                         <td>{{ user.email }}</td>
                                         <td>
-                                            <a href="/user/updateform/{{ user.id }}"><button type="button" class="btn btn-primary">Modifier</button></a>
-                                            <a href="/user/delete/{{ user.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                            <form method="post" action="/user/updateform/{{ user.id }}">
+                                                <button type="submit" class="btn btn-primary">Modifier</button>
+                                            </form>
+                                            <form method="post" action="/user/delete/{{ user.id }}">
+                                                <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 {% endfor %}

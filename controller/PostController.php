@@ -114,7 +114,7 @@ class PostController
                 echo 'token ne match pas';
             }
         } else {
-            'pas de token';
+           echo 'pas de token';
         }
     }
 
@@ -171,7 +171,7 @@ class PostController
                 echo 'token ne match pas';
             }
         } else {
-            'pas de token';
+            echo 'pas de token';
         }
     }
 
@@ -202,7 +202,7 @@ class PostController
                 echo 'token ne match pas';
             }
         } else {
-            'pas de token';
+           echo 'pas de token';
         }
     }
 
