@@ -2,6 +2,7 @@
 
 namespace keymener\myblog\controller;
 
+use keymener\myblog\core\Csrf;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Post;
 use keymener\myblog\model\PostManager;
@@ -19,15 +20,17 @@ class PostController
     private $postManager;
     private $twig;
     private $userManager;
+    private $csrf;
 
     public function __construct(
-    Post $post, PostManager $postManager, TwigLaunch $twig, UserManager $userManager
+    Post $post, PostManager $postManager, TwigLaunch $twig, UserManager $userManager, Csrf $csrf
     )
     {
         $this->post = $post;
         $this->postManager = $postManager;
         $this->twig = $twig;
         $this->userManager = $userManager;
+        $this->csrf = $csrf;
     }
 
     /**
@@ -35,6 +38,8 @@ class PostController
      */
     public function home()
     {
+        //random token for csrf
+        $token = $this->csrf->sessionRandom(5);
 
         // get all post from database
         $posts = $this->postManager->getAllPosts();
@@ -47,21 +52,9 @@ class PostController
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/post.twig', array(
             'posts' => $posts,
-            'lastDate' => $date));
-    }
-
-    /**
-     * get single post page
-     * @param int $id
-     */
-    public function getPost($id)
-    {
-
-        $post = $this->postManager->getPost($id);
-
-        $twig = $this->twig->twigLoad();
-        echo $twig->render('frontend/singlePost.twig', array(
-            'post' => $post));
+            'lastDate' => $date,
+            'token' => $token
+        ));
     }
 
     /**
@@ -70,10 +63,19 @@ class PostController
      */
     public function deletePost($id)
     {
+        if (isset($_SESSION['token'], $_POST['token'])) {
 
-        $this->postManager->deletePost($id);
+            if ($_SESSION['token'] == $_POST['token']) {
 
-        header("location: /post/home");
+                $this->postManager->deletePost($id);
+
+                header("location: /post/home");
+            } else {
+                echo 'token ne match pas';
+            }
+        } else {
+            'pas de token';
+        }
     }
 
     /**
@@ -81,11 +83,15 @@ class PostController
      */
     public function postForm()
     {
+        //random token for csrf
+        $token = $this->csrf->sessionRandom(5);
 
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/postForm.twig', array(
             'action' => '/post/addpost',
-            'button' => 'add'));
+            'button' => 'add',
+            'token' => $token
+        ));
     }
 
     /**
@@ -93,15 +99,23 @@ class PostController
      */
     public function addPost()
     {
+        if (isset($_SESSION['token'], $_POST['token'])) {
 
+            if ($_SESSION['token'] == $_POST['token']) {
 
-        $this->post->hydrate($_POST);
-        $this->post->setUserId($_SESSION['userId']);
-        $this->post->setLastDate(date("Y-m-d H:i:s"));
+                $this->post->hydrate($_POST);
+                $this->post->setUserId($_SESSION['userId']);
+                $this->post->setLastDate(date("Y-m-d H:i:s"));
 
-        $this->postManager->addPost($this->post);
+                $this->postManager->addPost($this->post);
 
-        header("Location: /post/home");
+                header("Location: /post/home");
+            } else {
+                echo 'token ne match pas';
+            }
+        } else {
+           echo 'pas de token';
+        }
     }
 
     /**
@@ -110,20 +124,23 @@ class PostController
      */
     public function modifyPost($id)
     {
+        //random token for csrf
+        $token = $this->csrf->sessionRandom(5);
 
         //post instance
         $data = $this->postManager->getPost($id);
         $this->post->hydrate($data);
-        
+
         //user array
         $users = $this->userManager->getAllUsers();
-  
+
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/postForm.twig', array(
             'post' => $this->post,
             'action' => '/post/updatepost',
             'button' => 'modify',
-            'users' => $users
+            'users' => $users,
+            'token' => $token
         ));
     }
 
@@ -134,18 +151,28 @@ class PostController
     public function publishPost($id)
     {
 
-        //get the post from database and hydrate isntance
-        $data = $this->postManager->getPost($id);
-        $this->post->hydrate($data);
+        if (isset($_SESSION['token'], $_POST['token'])) {
 
-        //set the value true to published
-        $this->post->setPublished(true);
+            if ($_SESSION['token'] == $_POST['token']) {
 
-        // update to database
-        $this->postManager->updatePost($this->post);
+                //get the post from database and hydrate isntance
+                $data = $this->postManager->getPost($id);
+                $this->post->hydrate($data);
 
-        // return to home view
-        header("Location: /post/home");
+                //set the value true to published
+                $this->post->setPublished(true);
+
+                // update to database
+                $this->postManager->updatePost($this->post);
+
+                // return to home view
+                header("Location: /post/home");
+            } else {
+                echo 'token ne match pas';
+            }
+        } else {
+            echo 'pas de token';
+        }
     }
 
     /**
@@ -154,20 +181,29 @@ class PostController
      */
     public function unpublishPost($id)
     {
+        if (isset($_SESSION['token'], $_POST['token'])) {
 
-        //get the post from database and hydrate isntance
-        $data = $this->postManager->getPost($id);
-        $this->post->hydrate($data);
+            if ($_SESSION['token'] == $_POST['token']) {
+
+                //get the post from database and hydrate isntance
+                $data = $this->postManager->getPost($id);
+                $this->post->hydrate($data);
 
 
-        // set the attribute to false for unpublish
-        $this->post->setPublished(false);
+                // set the attribute to false for unpublish
+                $this->post->setPublished(false);
 
-        //update to database
-        $this->postManager->updatePost($this->post);
+                //update to database
+                $this->postManager->updatePost($this->post);
 
-        // return to home view
-        header("Location: /post/home");
+                // return to home view
+                header("Location: /post/home");
+            } else {
+                echo 'token ne match pas';
+            }
+        } else {
+           echo 'pas de token';
+        }
     }
 
     /**
@@ -175,15 +211,24 @@ class PostController
      */
     public function updatePost()
     {
-        if (isset($_POST['id'])) {
-            $this->post->hydrate($_POST);
-            
-            $this->post->setUserId($_POST['userId']);
-            $this->post->setLastDate(date("Y-m-d H:i:s"));
 
-            $this->postManager->updatePost($this->post);
+        if (isset($_SESSION['token'], $_POST['token']) && !empty($_POST['id'])) {
 
-            header("Location: /post/home");
+            if ($_SESSION['token'] == $_POST['token']) {
+
+                $this->post->hydrate($_POST);
+
+                $this->post->setUserId($_POST['userId']);
+                $this->post->setLastDate(date("Y-m-d H:i:s"));
+
+                $this->postManager->updatePost($this->post);
+
+                header("Location: /post/home");
+            } else {
+                echo 'token ne match pas';
+            }
+        } else {
+           echo 'pas de token';
         }
     }
 

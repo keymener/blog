@@ -3,7 +3,6 @@ session_start();
 
 use DI\Container;
 use keymener\myblog\core\Application;
-use keymener\myblog\core\Authentication;
 use keymener\myblog\core\Router;
 
 require '../vendor/autoload.php';

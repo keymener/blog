@@ -2,6 +2,7 @@
 
 namespace keymener\myblog\controller;
 
+use keymener\myblog\core\Csrf;
 use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Comment;
@@ -27,10 +28,10 @@ class BlogController
     private $postManager;
     private $commentManager;
     private $userManager;
-    
+    private $csrf;
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user
+    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf
     )
     {
         $this->twig = $twig;
@@ -40,9 +41,8 @@ class BlogController
         $this->postManager = $postManager;
         $this->commentManager = $commentManager;
         $this->userManager = $userManager;
-        $this->user = $user ;
-        
-        
+        $this->user = $user;
+        $this->csrf = $csrf;
     }
 
     /**
@@ -51,8 +51,12 @@ class BlogController
      */
     public function home($message = null)
     {
+        //put the random into session for csrf
+        $token = $this->csrf->sessionRandom(5);
+
         echo $this->twig->twigLoad()->render('frontend/home.twig', [
-            'message' => $message
+            'message' => $message,
+            'token' => $token
                 ]
         );
     }
@@ -75,16 +79,19 @@ class BlogController
      */
     public function post($id, $message = null)
     {
+        //put the random token into session for csrf
+        $token = $this->csrf->sessionRandom(5);
+
         //post instance
         $data = $this->postManager->getPost($id);
         $this->post->hydrate($data);
-        
+
         //user instance
         $dataUser = $this->userManager->getUserById($this->post->getUserId());
         $this->user->hydrate($dataUser);
-        
-     
-        
+
+
+
         //comments of this post
         $comments = $this->commentManager->getOkComments($id);
         echo $this->twig->twigLoad()->render(
@@ -92,7 +99,8 @@ class BlogController
             'post' => $this->post,
             'comments' => $comments,
             'message' => $message,
-            'user' => $this->user
+            'user' => $this->user,
+            'token' => $token
         ]);
     }
 
@@ -101,15 +109,24 @@ class BlogController
      */
     public function add()
     {
-        if (isset($_POST['content'], $_POST['postId'])) {
+        if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
 
-            $this->comment->hydrate($_POST);
-            $this->comment->setDateTime(date("Y-m-d H:i:s"));
+            //checks if token matches for csrf
+            if ($_SESSION['token'] == $_POST['token']) {
 
-            $this->commentManager->add($this->comment);
 
-            $message = 'commentAdd';
-            $this->post($this->comment->getPostId(), $message);
+                $this->comment->hydrate($_POST);
+                $this->comment->setDateTime(date("Y-m-d H:i:s"));
+
+                $this->commentManager->add($this->comment);
+
+                $message = 'commentAdd';
+                $this->post($this->comment->getPostId(), $message);
+            }else{
+                echo 'error';
+            }
+        }else{
+            echo 'error';
         }
     }
 
@@ -118,19 +135,25 @@ class BlogController
      */
     public function sendMail()
     {
-        if (isset($_POST['name'], $_POST['userEmail'], $_POST['message'])) {
-            
-            $name = $_POST['name'];
-            $userEmail = $_POST['userEmail'];
-            $message = $_POST['message'];
-            
-            if($this->mailer->sendmail($name, $userEmail, $message)){
-                                
-                $this->home('mailOk');
-            }else{
-                $this->home('mailNok');
+        if (isset($_POST['name'], $_POST['userEmail'], $_POST['message'], $_SESSION['token'], $_POST['token'])) {
+
+            //checks if token matches for csrf
+            if ($_SESSION['token'] == $_POST['token']) {
+
+                $name = $_POST['name'];
+                $userEmail = $_POST['userEmail'];
+                $message = $_POST['message'];
+
+                if ($this->mailer->sendmail($name, $userEmail, $message)) {
+
+                    $this->home('mailOk');
+                } else {
+                    $this->home('mailNok');
+                }
+            } else {
+                echo 'erreur token';
             }
-        }else{
+        } else {
             echo 'erreur';
         }
     }

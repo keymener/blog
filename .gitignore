@@ -3,3 +3,4 @@ phpcs.xml
 squizlabs/
 email.ini
 /vendor
+database.ini

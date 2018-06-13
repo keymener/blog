@@ -55,7 +55,11 @@
                                 {{ comment.dateTime }}
                                 {{ comment.content }}
                                 {% if comment.published == false %}
-                                    <a href="/comment/commentValidate/{{ comment.id }}"><button type="button" class="btn btn-warning btn-sm">Valider</button></a>
+                                    <form method="post" action="/comment/commentValidate/{{ comment.id }}">
+                                        <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                        <button type="submit" class="btn btn-warning btn-sm">Valider</button>
+                                    </form>
+
                                 {% endif %}
                             </div>
                         {% endfor %}

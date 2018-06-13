@@ -21,8 +21,11 @@ class ErrorController
         $this->codes = parse_ini_file('../config/errors.ini');
     }
 
-
-    public function error($code)
+/**
+ * 
+ * @param int $code
+ */
+    public function error(int $code)
     {
         $parameter = 'code'.$code;
 
@@ -39,7 +42,7 @@ class ErrorController
          ]);
      }else{
         
-        echo $twig->render('errorPage.twig', ['hide' => true]);
+        echo 'error 500';
     }
 }
 

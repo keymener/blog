@@ -11,11 +11,11 @@
                 <div class="alert alert-danger" role="alert">
                     Login ou mot de passe incorrect.
                 </div>
-                {% elseif message == 'empty' %}
-                      <div class="alert alert-warning" role="alert">
+            {% elseif message == 'empty' %}
+                <div class="alert alert-warning" role="alert">
                     Veuillez rentrer le login et le mot de passe.
                 </div> 
-                
+
             {% endif %}
             <div class="card card-login mx-auto mt-5">
                 <div class="card-header">Authentification</div>
@@ -30,7 +30,7 @@
                             <label for="exampleInputPassword1">Mot de passe</label>
                             <input class="form-control" name="password"  type="password" placeholder="Mot de passe">
                         </div>
-
+                        <input type="hidden" name="token" id="token" value="{{ token }}" />
                         <input class=" btn" type="submit" value="Valider">
                     </form>
 

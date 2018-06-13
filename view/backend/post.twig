@@ -71,13 +71,26 @@
                                                 <td>{{ post.firstname }}</td>
                                                 <td>{{ post.published }}</td>
                                                 <td>
-                                                    <a href="/post/modifypost/{{ post.id }}"><button type="button" class="btn btn-primary btn-sm">Modifier</button></a>
+                                                    <form method="post" action="/post/modifypost/{{ post.id }}">
+                                                      
+                                                        <button type="submit" class="btn btn-primary btn-sm">Modifier</button>
+                                                    </form>
                                                     {% if post.published != 1 %}
-                                                        <a href="/post/publishpost/{{ post.id }}"><button type="button" class="btn btn-success btn-sm">Publier</button></a>
+                                                        <form method="post" action="/post/publishpost/{{ post.id }}">
+                                                            <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                                            <button type="submit" class="btn btn-success btn-sm">Publier</button>
+                                                        </form>
                                                     {% else %}
-                                                        <a href="/post/unpublishpost/{{ post.id }}"><button type="button" class="btn btn-warning btn-sm">Dé Publier</button></a>
+                                                        <form method="post" action="/post/unpublishpost/{{ post.id }}">
+                                                            <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                                            <button type="submit" class="btn btn-warning btn-sm">Dé Publier</button>
+                                                        </form>
                                                     {% endif %}
-                                                    <a href="/post/deletepost/{{ post.id }}"><button type="button" class="btn btn-danger btn-sm">Supprimer</button></a>
+                                                    <form method="post" action="/post/deletepost/{{ post.id }}">
+                                                        <input type="hidden" name="token" id="token" value="{{ token }}" />
+                                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                                    </form>
+
                                                 </td>
                                             </tr>
                                         {% endfor %}

@@ -19,29 +19,35 @@ class UserController
     private $userManager;
     private $twig;
     private $auth;
+    private $csrf;
 
     public function __construct(
-    User $user, UserManager $userManager, TwigLaunch $twig, Authentication $auth
+    User $user, UserManager $userManager, TwigLaunch $twig, Authentication $auth, \keymener\myblog\core\Csrf $csrf
     )
     {
         $this->user = $user;
         $this->userManager = $userManager;
         $this->twig = $twig;
         $this->auth = $auth;
+        $this->csrf = $csrf;
     }
-
 
     /**
      * user managment page
      */
     public function home()
     {
+        //csrf protection
+        $token = $this->csrf->sessionRandom(5);
 
         $users = $this->userManager->getAllUsers();
 
 
         $twig = $this->twig->twigLoad();
-        echo $twig->render('backend/user.twig', array('users' => $users,));
+        echo $twig->render('backend/user.twig', array(
+            'users' => $users,
+            'token' => $token
+        ));
     }
 
     /**
@@ -60,11 +66,14 @@ class UserController
      */
     public function addForm()
     {
+        //csrf protection
+        $token = $this->csrf->sessionRandom(5);
 
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/addForm.twig', array(
             'action' => '/user/adduser',
-            'button' => 'add'
+            'button' => 'add',
+            'token' => $token
         ));
     }
 
@@ -73,31 +82,38 @@ class UserController
      */
     public function addUser()
     {
+        if (isset($_SESSION['token'], $_POST['token'], $_POST['firstname'], $_POST['lastname'], $_POST['login'])) {
 
-        if (isset($_POST)) {
-            //checks if the login already exists, if yes return error
-            if ($this->userManager->userExists($_POST['login'])) {
-                $twig = $this->twig->twigLoad();
-                echo $twig->render('backend/addForm.twig', array(
-                    'alert' => 1,
-                    'action' => '/user/adduser',
-                    'button' => 'add'
-                ));
+            if ($_SESSION['token'] == $_POST['token']) {
+
+                //checks if the login already exists, if yes return error
+                if ($this->userManager->userExists($_POST['login'])) {
+                    $twig = $this->twig->twigLoad();
+                    echo $twig->render('backend/addForm.twig', array(
+                        'alert' => 1,
+                        'action' => '/user/adduser',
+                        'button' => 'add'
+                    ));
+                } else {
+
+
+                    //encrypt the password from post variable
+                    $password = $this->auth->encrypt($_POST['password']);
+
+                    // hydrate user entity
+                    $this->user->hydrate($_POST);
+                    $this->user->setPassword($password);
+
+                    //add user into database
+                    $this->userManager->addUser($this->user);
+
+                    header("Location: /back/users");
+                }
             } else {
-                
-
-                //encrypt the password from post variable
-                $password = $this->auth->encrypt($_POST['password']);
-
-                // hydrate user entity
-                $this->user->hydrate($_POST);
-                $this->user->setPassword($password);
-
-                //add user into database
-                $this->userManager->addUser($this->user);
-
-                header("Location: /back/users");
+                echo 'token ne match pas';
             }
+        } else {
+            echo 'il manque un paramètre post';
         }
     }
 
@@ -107,6 +123,8 @@ class UserController
      */
     public function updateForm($id)
     {
+        //csrf protection
+        $token = $this->csrf->sessionRandom(5);
 
         $data = $this->userManager->getUserById($id);
         $this->user->hydrate($data);
@@ -115,7 +133,8 @@ class UserController
         echo $twig->render('backend/addForm.twig', array(
             'user' => $this->user,
             'action' => '/user/update',
-            'button' => 'modify'
+            'button' => 'modify',
+            'token' => $token
         ));
     }
 
@@ -125,25 +144,30 @@ class UserController
      */
     public function update()
     {
+        if (isset($_SESSION['token'], $_POST['token']) && !empty($_POST['id'])) {
 
-        if (isset($_POST['id'])) {
-            $this->user->hydrate($_POST);
+            if ($_SESSION['token'] == $_POST['token']) {
 
+                $this->user->hydrate($_POST);
 
+                // check if the user changes the password
+                if (empty($_POST['password'])) {
+                    //this will change all but not the password
+                    $this->userManager->updateUser($this->user);
+                } else {
+                    // this will change all including password
+                    $this->userManager->updateUser($this->user);
 
-// check if the user changes the password
-            if (empty($_POST['password'])) {
-                //this will change all but not the password
-                $this->userManager->updateUser($this->user);
+                    $this->user->setPassword($this->auth->encrypt($_POST['password']));
+                    $this->userManager->updatePassword($this->user);
+                }
+
+                header("Location: /back/users");
             } else {
-                // this will change all including password
-                $this->userManager->updateUser($this->user);
-
-                $this->user->setPassword($this->auth->encrypt($_POST['password']));
-                $this->userManager->updatePassword($this->user);
+                echo 'token ne match pas';
             }
-
-            header("Location: /back/users");
+        } else {
+            echo 'pas de token';
         }
     }
 
