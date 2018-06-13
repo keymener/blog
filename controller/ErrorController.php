@@ -22,17 +22,20 @@ class ErrorController
     }
 
 /**
- * 
+ * generate a error page
  * @param int $code
  */
-    public function error(int $code)
+    public function error($code)
     {
-        $parameter = 'code'.$code;
 
-        if(isset($this->codes[$parameter]))
+        //set the http status code
+        http_response_code($code);
+        
+               
+        if(!empty($this->codes[$code]))
         {
 
-         $description = $this->codes['$code'];  
+         $description = $this->codes[$code];  
 
          $twig = $this->twig->twigLoad();
          echo $twig->render('errorPage.twig', [''
@@ -42,7 +45,8 @@ class ErrorController
          ]);
      }else{
         
-        echo 'error 500';
+        $this->error(500);
+        die();
     }
 }
 

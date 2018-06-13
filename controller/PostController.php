@@ -71,10 +71,10 @@ class PostController
 
                 header("location: /post/home");
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-            'pas de token';
+            header('Location: /error/error/500');
         }
     }
 
@@ -111,10 +111,10 @@ class PostController
 
                 header("Location: /post/home");
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-           echo 'pas de token';
+            header('Location: /error/error/500');
         }
     }
 
@@ -168,10 +168,10 @@ class PostController
                 // return to home view
                 header("Location: /post/home");
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-            echo 'pas de token';
+            header('Location: /error/error/500');
         }
     }
 
@@ -199,10 +199,10 @@ class PostController
                 // return to home view
                 header("Location: /post/home");
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-           echo 'pas de token';
+            header('Location: /error/error/500');
         }
     }
 
@@ -225,10 +225,10 @@ class PostController
 
                 header("Location: /post/home");
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-           echo 'pas de token';
+            header('Location: /error/error/500');
         }
     }
 

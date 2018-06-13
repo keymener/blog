@@ -81,10 +81,10 @@ class CommentController
                     'token' => $token
                 ]);
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-            'pas de token';
+            header('Location: /error/error/500');
         }
     }
 
@@ -108,10 +108,10 @@ class CommentController
 
                 $this->validate($this->comment->getPostId(), $message);
             } else {
-                echo 'token ne match pas';
+                header('Location: /error/error/500');
             }
         } else {
-            'pas de token';
+            header('Location: /error/error/500');
         }
     }
 

@@ -66,7 +66,7 @@ class BackController
                 }
             } else {
 
-                echo 'wrong token';
+               header('Location: /error/error/500');
             }
         } else {
             //generate token csrf
