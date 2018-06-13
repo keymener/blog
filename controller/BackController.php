@@ -18,17 +18,14 @@ class BackController
 
     private $twig;
     private $auth;
-   
     private $userManager;
-   
 
     public function __construct(TwigLaunch $twig, Authentication $auth, UserManager $userManager)
     {
         $this->twig = $twig;
         $this->auth = $auth;
-        
+
         $this->userManager = $userManager;
-        
     }
 
 //
@@ -37,7 +34,6 @@ class BackController
      */
     public function home()
     {
-
         $twig = $this->twig->twigLoad();
         echo $twig->render('backend/home.twig', array(
             'message' => false));
