@@ -32,7 +32,7 @@
                                             <option value="{{ user.id }}">{{ user.firstname }} {{user.lastname }}</option>
                                         {% endfor %}
                                     </select>
-
+                                    <input type="hidden" name="token" id="token" value="{{ token }}" />
                                     <button type="submit" class="btn btn-primary">{% if button == 'add' %}Ajouter{% else %}Modifier{% endif %}</button>
                                 </div>
                             </form>

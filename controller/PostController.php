@@ -211,7 +211,8 @@ class PostController
      */
     public function updatePost()
     {
-        if (isset($_SESSION['token'], $_POST['token'], $_POST_['id'])) {
+
+        if (isset($_SESSION['token'], $_POST['token']) && !empty($_POST['id'])) {
 
             if ($_SESSION['token'] == $_POST['token']) {
 
@@ -227,7 +228,7 @@ class PostController
                 echo 'token ne match pas';
             }
         } else {
-            'pas de token';
+           echo 'pas de token';
         }
     }
 
