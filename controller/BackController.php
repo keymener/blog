@@ -3,6 +3,7 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
+use keymener\myblog\core\Csrf;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
@@ -19,14 +20,15 @@ class BackController
     private $auth;
     private $user;
     private $userManager;
+    private $csrf;
 
-    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager)
+    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, Csrf $csrf)
     {
         $this->twig = $twig;
         $this->auth = $auth;
         $this->user = $user;
         $this->userManager = $userManager;
-       
+        $this->csrf = $csrf;
     }
 
     /**
@@ -34,34 +36,46 @@ class BackController
      */
     public function login()
     {
-        if (isset($_POST['username'], $_POST['password']) && $this->userManager->userExists($_POST['username'])) {
+        if (isset($_POST['username'], $_POST['password'], $_SESSION['token'], $_POST['token']) && $this->userManager->userExists($_POST['username'])) {
 
-            $pwd = $_POST['password'];
+            if ($_SESSION['token'] == $_POST['token']) {
+                $pwd = $_POST['password'];
+
+                // get all info from user
+                $dataUser = $this->userManager->getUser($_POST['username']);
+
+                // hydrate the instance user with all info
+                $this->user->hydrate($dataUser);
 
 
-            // get all info from user
-            $dataUser = $this->userManager->getUser($_POST['username']);
+                //compare password
+                if ($this->auth->checkPassword($pwd, $this->user->getPassword())) {
+                    $_SESSION['userId'] = $this->user->getId();
+                    $_SESSION['username'] = $this->user->getFirstname();
 
-            // hydrate the instance user with all info
-            $this->user->hydrate($dataUser);
+                    $this->home();
+                } else {
+                    //generate token csrf
+                    $token = $this->csrf->sessionRandom(5);
 
-
-            //compare password
-            if ($this->auth->checkPassword($pwd, $this->user->getPassword())) {
-                $_SESSION['userId'] = $this->user->getId();
-                $_SESSION['username'] = $this->user->getFirstname();
-
-                $this->home();
+                    $twig = $this->twig->twigLoad();
+                    echo $twig->render('backend/login.twig', array(
+                        'message' => 'error',
+                        'token' => $token
+                    ));
+                }
             } else {
-                $twig = $this->twig->twigLoad();
-                echo $twig->render('backend/login.twig', array(
-                    'message' => 'error'
-                ));
+
+                echo 'wrong token';
             }
         } else {
+            //generate token csrf
+            $token = $this->csrf->sessionRandom(5);
+
             $twig = $this->twig->twigLoad();
             echo $twig->render('backend/login.twig', array(
-                'message' => 'empty'
+                'message' => 'empty',
+                'token' => $token
             ));
         }
     }
