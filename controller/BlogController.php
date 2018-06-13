@@ -22,7 +22,7 @@ class BlogController
 
     private $twig;
     private $mailer;
-    private $post;
+    private $myPost;
     private $comment;
     private $user;
     private $postManager;
@@ -31,12 +31,12 @@ class BlogController
     private $csrf;
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $post, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf
+    TwigLaunch $twig, PostManager $postManager, Post $myPost, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf
     )
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
-        $this->post = $post;
+        $this->myPost = $myPost;
         $this->comment = $comment;
         $this->postManager = $postManager;
         $this->commentManager = $commentManager;
@@ -84,10 +84,10 @@ class BlogController
 
         //post instance
         $data = $this->postManager->getPost($id);
-        $this->post->hydrate($data);
+        $this->myPost->hydrate($data);
 
         //user instance
-        $dataUser = $this->userManager->getUserById($this->post->getUserId());
+        $dataUser = $this->userManager->getUserById($this->myPost->getUserId());
         $this->user->hydrate($dataUser);
 
 
@@ -96,7 +96,7 @@ class BlogController
         $comments = $this->commentManager->getOkComments($id);
         echo $this->twig->twigLoad()->render(
                 'frontend/post.twig', [
-            'post' => $this->post,
+            'post' => $this->myPost,
             'comments' => $comments,
             'message' => $message,
             'user' => $this->user,
@@ -122,11 +122,11 @@ class BlogController
 
                 $message = 'commentAdd';
                 $this->post($this->comment->getPostId(), $message);
-            }else{
-                echo 'error';
+            } else {
+                header('Location: /error/error/500');
             }
-        }else{
-            echo 'error';
+        } else {
+            header('Location: /error/error/500');
         }
     }
 
@@ -151,10 +151,10 @@ class BlogController
                     $this->home('mailNok');
                 }
             } else {
-                echo 'erreur token';
+                header('Location: /error/error/500');
             }
         } else {
-            echo 'erreur';
+            header('Location: /error/error/500');
         }
     }
 

@@ -14,6 +14,7 @@ class Router
     private $action;
     private $variable;
     private $urlArray;
+    private $error;
 
     const CONTROLLER_POSITION = 0;
     const ACTION_POSITION = 1;
@@ -86,9 +87,7 @@ class Router
         if (class_exists($controllerName)) {
             $this->controller = $controllerName;
         } else {
-             $this->controller = 'keymener\\myblog\\controller\\ErrorController';
-             $this->action = 'error';
-             $this->variable = 404;
+            header('Location: /error/error/404');
         }
     }
 
@@ -101,9 +100,7 @@ class Router
             if (method_exists($this->controller, $method)) {
                 $this->action = $method;
             } else {
-                $this->controller = 'keymener\\myblog\\controller\\ErrorController';
-                $this->action = 'error';
-                $this->variable = 404;
+                header('Location: /error/error/404');
             }
         }
     }
@@ -113,4 +110,5 @@ class Router
         $var = (int) $variable;
         $this->variable = $var;
     }
+
 }
