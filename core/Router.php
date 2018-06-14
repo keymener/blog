@@ -14,7 +14,6 @@ class Router
     private $action;
     private $variable;
     private $urlArray;
-    private $error;
 
     const CONTROLLER_POSITION = 0;
     const ACTION_POSITION = 1;

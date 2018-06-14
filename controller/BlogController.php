@@ -2,6 +2,7 @@
 
 namespace keymener\myblog\controller;
 
+use keymener\myblog\core\CheckInput;
 use keymener\myblog\core\Csrf;
 use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
@@ -29,9 +30,10 @@ class BlogController
     private $commentManager;
     private $userManager;
     private $csrf;
+    private $check;
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $myPost, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf
+    TwigLaunch $twig, PostManager $postManager, Post $myPost, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf, CheckInput $check
     )
     {
         $this->twig = $twig;
@@ -43,6 +45,7 @@ class BlogController
         $this->userManager = $userManager;
         $this->user = $user;
         $this->csrf = $csrf;
+        $this->check = $check;
     }
 
     /**
@@ -135,26 +138,45 @@ class BlogController
      */
     public function sendMail()
     {
-        if (isset($_POST['name'], $_POST['userEmail'], $_POST['message'], $_SESSION['token'], $_POST['token'])) {
+        if (!empty($_POST['name']) && !empty($_POST['userEmail']) && !empty($_POST['message']) && !empty($_SESSION['token']) && !empty($_POST['token'])) {
 
             //checks if token matches for csrf
             if ($_SESSION['token'] == $_POST['token']) {
 
-                $name = $_POST['name'];
-                $userEmail = $_POST['userEmail'];
-                $message = $_POST['message'];
+                //check size of name input
+                if ($this->check->checkLenth($_POST['name'], 200)) {
+                    $name = $_POST['name'];
+                } else {
+                    $this->home('nameLong');
+                }
+
+                //check input email
+                if ($this->check->checkEmail($_POST['userEmail'])) {
+                    $userEmail = $_POST['userEmail'];
+                } else {
+                    $this->home('formNok');
+                }
+                if ($this->check->checkLenth($_POST['message'], 500)) {
+                    $message = $_POST['message'];
+                } else {
+                    $this->home('textLong');
+                }
 
                 if ($this->mailer->sendmail($name, $userEmail, $message)) {
 
-                    $this->home('mailOk');
+                    echo $this->twig->twigLoad()->render('frontend/home.twig', [
+                        'message' => 'mailOk'
+                    ]);
                 } else {
-                    $this->home('mailNok');
+                    echo $this->twig->twigLoad()->render('frontend/home.twig', [
+                        'message' => 'mailNok'
+                    ]);
                 }
             } else {
                 header('Location: /error/error/500');
             }
         } else {
-            header('Location: /error/error/500');
+            $this->home('emptyForm');
         }
     }
 

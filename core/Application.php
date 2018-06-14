@@ -53,7 +53,7 @@ class Application
             $instance->$method($var);
         }else{
             $backController = $this->container->get('keymener\myblog\controller\BackController');
-            $backController->login();
+            $backController->logMe();
         }
     }
     

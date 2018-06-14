@@ -43,11 +43,7 @@ class ErrorController
              'code' => $code,
              'description' =>$description
          ]);
-     }else{
-        
-        $this->error(500);
-        die();
-    }
+     }
 }
 
 }
