@@ -82,61 +82,46 @@
                 <div class='col-md-3'>
                 </div>
                 <div class="my-3 col-md-6 text-center">
-                    {% if message == 'mailOk' %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {% if message == null %}{% else %}
+                    <div class="alert {% if message == 'mailOk' %}alert-success {% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                        {% if message == 'mailOk' %}
                             Message envoyé.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% elseif message == 'mailNok' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% elseif message == 'mailNok' %}
                             Problème lors de l'envoi du message, veuillez essayer ulterieurment.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% elseif message == 'formNok' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% elseif message == 'formNok' %}
                             Veuillez remplir convenablement l'email.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% elseif message == 'textLong' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% elseif message == 'textLong' %}
                             Le message doit contenir de 2 à 500 carractères max.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% elseif message == 'nameLong' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% elseif message == 'nameLong' %}
                             Le champ nom et prénom doit contenir de 2 à 200 carractères max.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endif %}
-                    <h2>Pour me contacter</h2>
-                    <form action="/blog/sendmail" method="post" novalidate>
-                        <div class="form-group">  
-                            <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Votre nom et prénom" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="Votre adresse mail" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" placeholder="Votre message" required></textarea>
-                        </div>
-                        <input type="hidden" name="token" id="token" value="{{ token }}" />
-                        <button type="submit" class="btn btn-primary rounded-pill">Envoyer</button>
-                    </form>
-                </div>
-                <div class='col-md-3'>
-                </div>
+                          {% elseif message == 'emptyForm' %}
+                            Vous devez remplir tous les champs du formulaire
+                        {% endif %}
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+                <h2>Pour me contacter</h2>
+                <form action="/blog/sendmail" method="post" novalidate>
+                    <div class="form-group">  
+                        <input type="text" name="name" class="form-control" id="formGroupExampleInput" placeholder="Votre nom et prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="userEmail" class="form-control" id="exampleFormControlInput1" placeholder="Votre adresse mail" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3" placeholder="Votre message" required></textarea>
+                    </div>
+                    <input type="hidden" name="token" id="token" value="{{ token }}" />
+                    <button type="submit" class="btn btn-primary rounded-pill">Envoyer</button>
+                </form>
+            </div>
+            <div class='col-md-3'>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 {% endblock %}

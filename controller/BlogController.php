@@ -138,7 +138,7 @@ class BlogController
      */
     public function sendMail()
     {
-        if (isset($_POST['name'], $_POST['userEmail'], $_POST['message'], $_SESSION['token'], $_POST['token'])) {
+        if (!empty($_POST['name']) && !empty($_POST['userEmail']) && !empty($_POST['message']) && !empty($_SESSION['token']) && !empty($_POST['token'])) {
 
             //checks if token matches for csrf
             if ($_SESSION['token'] == $_POST['token']) {
@@ -149,6 +149,7 @@ class BlogController
                 } else {
                     $this->home('nameLong');
                 }
+
                 //check input email
                 if ($this->check->checkEmail($_POST['userEmail'])) {
                     $userEmail = $_POST['userEmail'];
@@ -172,10 +173,10 @@ class BlogController
                     ]);
                 }
             } else {
-                $this->home('formNok');
+                header('Location: /error/error/500');
             }
         } else {
-            $this->home('formNok');
+            $this->home('emptyForm');
         }
     }
 

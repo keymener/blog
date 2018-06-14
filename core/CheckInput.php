@@ -20,8 +20,10 @@ class CheckInput
         $pattern = '#^[^@\s]+@[^@\s]+\.[^@\s]+$#';
 
         if (preg_match($pattern, $subject)) {
+
             return true;
         } else {
+
             return false;
         }
     }
