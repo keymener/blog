@@ -45,8 +45,7 @@ class BackController
     public function logout()
     {
         $this->auth->logout();
-        $twig = $this->twig->twigLoad();
-
+    
         header('Location:/auth/logme');
     }
 

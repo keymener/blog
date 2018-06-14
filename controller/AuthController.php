@@ -22,16 +22,16 @@ class AuthController
     private $user;
     private $userManager;
     private $csrf;
-    private $check;
+  
 
-    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, Csrf $csrf, CheckInput $check)
+    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, Csrf $csrf)
     {
         $this->twig = $twig;
         $this->auth = $auth;
         $this->user = $user;
         $this->userManager = $userManager;
         $this->csrf = $csrf;
-        $this->check = $check;
+       
     }
 
     public function logMe($message = null)
@@ -51,9 +51,7 @@ class AuthController
     {
         if (isset($_POST['username'], $_POST['password'], $_SESSION['token'], $_POST['token']) && $this->userManager->userExists($_POST['username'])) {
 
-            // 1 second to prevent bruteforce
-            sleep(1);
-
+     
             if ($_SESSION['token'] == $_POST['token']) {
 
                 $pwd = $_POST['password'];
