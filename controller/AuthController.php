@@ -1,10 +1,9 @@
 <?php
 
-
-
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
+use keymener\myblog\core\CheckInput;
 use keymener\myblog\core\Csrf;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\User;
@@ -23,14 +22,16 @@ class AuthController
     private $user;
     private $userManager;
     private $csrf;
+    private $check;
 
-    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, Csrf $csrf)
+    public function __construct(TwigLaunch $twig, Authentication $auth, User $user, UserManager $userManager, Csrf $csrf, CheckInput $check)
     {
         $this->twig = $twig;
         $this->auth = $auth;
         $this->user = $user;
         $this->userManager = $userManager;
         $this->csrf = $csrf;
+        $this->check = $check;
     }
 
     public function logMe($message = null)
@@ -50,11 +51,16 @@ class AuthController
     {
         if (isset($_POST['username'], $_POST['password'], $_SESSION['token'], $_POST['token']) && $this->userManager->userExists($_POST['username'])) {
 
+            // 1 second to prevent bruteforce
+            sleep(1);
+
             if ($_SESSION['token'] == $_POST['token']) {
+
                 $pwd = $_POST['password'];
+                $login = $_POST['username'];
 
                 // get all info from user
-                $dataUser = $this->userManager->getUser($_POST['username']);
+                $dataUser = $this->userManager->getUser($login);
 
                 // hydrate the instance user with all info
                 $this->user->hydrate($dataUser);
@@ -64,8 +70,8 @@ class AuthController
                 if ($this->auth->checkPassword($pwd, $this->user->getPassword())) {
                     $_SESSION['userId'] = $this->user->getId();
                     $_SESSION['username'] = $this->user->getFirstname();
-                     //generate token csrf
-       
+                    //generate token csrf
+
 
                     header('Location:/back/home');
                 } else {
