@@ -12,6 +12,8 @@ use keymener\myblog\entity\User;
 use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
 use keymener\myblog\model\UserManager;
+use keymener\myblog\core\Recaptcha;
+use keymener\myblog\controller\ErrorController;
 
 /**
  * post controller
@@ -31,11 +33,23 @@ class BlogController
     private $userManager;
     private $csrf;
     private $check;
+    private $recaptcha;
+    private $errorsHandler;
 
     public function __construct(
-    TwigLaunch $twig, PostManager $postManager, Post $myPost, Comment $comment, CommentManager $commentManager, Mailer $mailer, UserManager $userManager, User $user, Csrf $csrf, CheckInput $check
-    )
-    {
+        TwigLaunch $twig,
+        PostManager $postManager,
+        Post $myPost,
+        Comment $comment,
+        CommentManager $commentManager,
+        Mailer $mailer,
+        UserManager $userManager,
+        User $user,
+        Csrf $csrf,
+        CheckInput $check,
+        Recaptcha $recaptcha,
+        ErrorController $errorsHandler
+    ) {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->myPost = $myPost;
@@ -46,138 +60,179 @@ class BlogController
         $this->user = $user;
         $this->csrf = $csrf;
         $this->check = $check;
+        $this->recaptcha = $recaptcha;
+        $this->errorsHandler = $errorsHandler;
     }
 
-    /**
-     * home page
-     * @param string $message
-     */
-    public function home($message = null)
-    {
-        //put the random into session for csrf
-        $token = $this->csrf->sessionRandom(5);
+/**
+ * home page
+ *
+ * @param string $message
+ */
+public
+function home($message = null)
+{
+    //put the random into session for csrf
+    $token = $this->csrf->sessionRandom(5);
 
-        echo $this->twig->twigLoad()->render('frontend/home.twig', [
+    echo $this->twig->twigLoad()->render('frontend/home.twig', [
             'message' => $message,
             'token' => $token
-                ]
-        );
+        ]
+    );
+}
+
+/**
+ * get the posts page
+ */
+public
+function posts()
+{
+    $posts = $this->postManager->getAllPublished();
+
+
+    echo $this->twig->twigLoad()
+        ->render('frontend/posts.twig', array('posts' => $posts));
+}
+
+/**
+ * get the single post page
+ *
+ * @param ing    $id
+ * @param string $message
+ */
+public
+function post($id, $message = null)
+{
+    //put the random token into session for csrf
+    $token = $this->csrf->sessionRandom(5);
+
+    //post instance
+    $data = $this->postManager->getPost($id);
+    $this->myPost->hydrate($data);
+
+    //user instance
+    $dataUser = $this->userManager->getUserById($this->myPost->getUserId());
+    $this->user->hydrate($dataUser);
+
+
+    //comments of this post
+    $comments = $this->commentManager->getOkComments($id);
+    echo $this->twig->twigLoad()->render(
+        'frontend/post.twig', [
+        'post' => $this->myPost,
+        'comments' => $comments,
+        'message' => $message,
+        'user' => $this->user,
+        'token' => $token
+    ]);
+}
+
+/**
+ * add comment
+ */
+public
+function add()
+{
+    if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
+
+        //checks if token matches for csrf
+        if ($_SESSION['token'] == $_POST['token']) {
+
+
+            $this->comment->hydrate($_POST);
+            $this->comment->setDateTime(date("Y-m-d H:i:s"));
+
+            $this->commentManager->add($this->comment);
+
+            $message = 'commentAdd';
+            $this->post($this->comment->getPostId(), $message);
+        } else {
+            header('Location: /error/error/500');
+        }
+    } else {
+        header('Location: /error/error/500');
     }
+}
 
-    /**
-     * get the posts page
-     */
-    public function posts()
-    {
-        $posts = $this->postManager->getAllPublished();
-
-
-        echo $this->twig->twigLoad()->render('frontend/posts.twig', array('posts' => $posts));
-    }
-
-    /**
-     * get the single post page
-     * @param ing $id
-     * @param string $message
-     */
-    public function post($id, $message = null)
-    {
-        //put the random token into session for csrf
-        $token = $this->csrf->sessionRandom(5);
-
-        //post instance
-        $data = $this->postManager->getPost($id);
-        $this->myPost->hydrate($data);
-
-        //user instance
-        $dataUser = $this->userManager->getUserById($this->myPost->getUserId());
-        $this->user->hydrate($dataUser);
+/**
+ * send email
+ */
+public
+function sendMail()
+{
 
 
-
-        //comments of this post
-        $comments = $this->commentManager->getOkComments($id);
-        echo $this->twig->twigLoad()->render(
-                'frontend/post.twig', [
-            'post' => $this->myPost,
-            'comments' => $comments,
-            'message' => $message,
-            'user' => $this->user,
-            'token' => $token
-        ]);
-    }
-
-    /**
-     * add comment
-     */
-    public function add()
-    {
-        if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
-
-            //checks if token matches for csrf
-            if ($_SESSION['token'] == $_POST['token']) {
+    if (!empty($_POST['name']) && !empty($_POST['userEmail'])
+        && !empty($_POST['message'])
+        && !empty($_SESSION['token'])
+        && !empty($_POST['token'])
+        && !empty($_POST['g-recaptcha-response'])
+    ) {
 
 
-                $this->comment->hydrate($_POST);
-                $this->comment->setDateTime(date("Y-m-d H:i:s"));
+        $response = $_POST['g-recaptcha-response'];
 
-                $this->commentManager->add($this->comment);
+        $remoteip = $_SERVER['REMOTE_ADDR'];
 
-                $message = 'commentAdd';
-                $this->post($this->comment->getPostId(), $message);
+        //try to run recaptcha function. catch errors when occurs
+        try {
+
+            $result = $this->recaptcha->recaptcha($response, $remoteip);
+
+        } catch (\Exception $e) {
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $this->errorsHandler->error($code, $message);
+            die();
+        }
+
+
+
+
+        //checks if token matches for csrf
+        if ($_SESSION['token'] == $_POST['token']) {
+
+            //check result of recaptcha
+            if(!$result){
+                $this->home('reCaptcha');
+            }
+
+            //check size of name input
+            if ($this->check->checkLenth($_POST['name'], 200)) {
+                $name = $_POST['name'];
             } else {
-                header('Location: /error/error/500');
+                $this->home('nameLong');
+            }
+
+            //check input email
+            if ($this->check->checkEmail($_POST['userEmail'])) {
+                $userEmail = $_POST['userEmail'];
+            } else {
+                $this->home('formNok');
+            }
+            if ($this->check->checkLenth($_POST['message'], 500)) {
+                $message = $_POST['message'];
+            } else {
+                $this->home('textLong');
+            }
+
+            if ($this->mailer->sendmail($name, $userEmail, $message)) {
+
+                echo $this->twig->twigLoad()->render('frontend/home.twig', [
+                    'message' => 'mailOk'
+                ]);
+            } else {
+                echo $this->twig->twigLoad()->render('frontend/home.twig', [
+                    'message' => 'mailNok'
+                ]);
             }
         } else {
             header('Location: /error/error/500');
         }
+    } else {
+        $this->home('emptyForm');
     }
-
-    /**
-     * send email
-     */
-    public function sendMail()
-    {
-        if (!empty($_POST['name']) && !empty($_POST['userEmail']) && !empty($_POST['message']) && !empty($_SESSION['token']) && !empty($_POST['token'])) {
-
-            //checks if token matches for csrf
-            if ($_SESSION['token'] == $_POST['token']) {
-
-                //check size of name input
-                if ($this->check->checkLenth($_POST['name'], 200)) {
-                    $name = $_POST['name'];
-                } else {
-                    $this->home('nameLong');
-                }
-
-                //check input email
-                if ($this->check->checkEmail($_POST['userEmail'])) {
-                    $userEmail = $_POST['userEmail'];
-                } else {
-                    $this->home('formNok');
-                }
-                if ($this->check->checkLenth($_POST['message'], 500)) {
-                    $message = $_POST['message'];
-                } else {
-                    $this->home('textLong');
-                }
-
-                if ($this->mailer->sendmail($name, $userEmail, $message)) {
-
-                    echo $this->twig->twigLoad()->render('frontend/home.twig', [
-                        'message' => 'mailOk'
-                    ]);
-                } else {
-                    echo $this->twig->twigLoad()->render('frontend/home.twig', [
-                        'message' => 'mailNok'
-                    ]);
-                }
-            } else {
-                header('Location: /error/error/500');
-            }
-        } else {
-            $this->home('emptyForm');
-        }
-    }
+}
 
 }

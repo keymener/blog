@@ -25,7 +25,7 @@ class ErrorController
  * generate a error page
  * @param int $code
  */
-    public function error($code)
+    public function error(int $code, string $message = null)
     {
 
         //set the http status code
@@ -41,7 +41,8 @@ class ErrorController
          echo $twig->render('errorPage.twig', [''
              . 'hide' => true,
              'code' => $code,
-             'description' =>$description
+             'description' =>$description,
+             'message' => $message ?? 'Pas de description'
          ]);
      }
 }

@@ -4,3 +4,4 @@ squizlabs/
 email.ini
 /vendor
 database.ini
+recaptcha.ini
