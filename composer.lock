@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4caa407e7e1bf977daa71c0d2ad1d675",
+    "content-hash": "e5a539abc6bfc95b685d4b52b65d2bbf",
     "packages": [
         {
             "name": "jeremeamia/SuperClosure",
@@ -615,6 +615,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "^1.5"
+    },
     "platform-dev": []
 }
