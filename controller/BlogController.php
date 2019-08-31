@@ -64,106 +64,110 @@ class BlogController
         $this->errorsHandler = $errorsHandler;
     }
 
-/**
- * home page
- *
- * @param string $message
- */
-public
-function home($message = null)
-{
-    //put the random into session for csrf
-    $token = $this->csrf->sessionRandom(5);
+    /**
+     * home page
+     *
+     * @param string $message
+     */
+    public
+    function home(
+        $message = null
+    ) {
+        //put the random into session for csrf
+        $token = $this->csrf->sessionRandom(5);
 
-    echo $this->twig->twigLoad()->render('frontend/home.twig', [
+        echo $this->twig->twigLoad()->render('frontend/home.twig', [
+                'message' => $message,
+                'token' => $token
+            ]
+        );
+    }
+
+    /**
+     * get the posts page
+     */
+    public
+    function posts()
+    {
+        $posts = $this->postManager->getAllPublished();
+
+
+        echo $this->twig->twigLoad()
+            ->render('frontend/posts.twig', array('posts' => $posts));
+    }
+
+    /**
+     * get the single post page
+     *
+     * @param ing    $id
+     * @param string $message
+     */
+    public
+    function post(
+        $id,
+        $message = null
+    ) {
+        //put the random token into session for csrf
+        $token = $this->csrf->sessionRandom(5);
+
+        //post instance
+        $data = $this->postManager->getPost($id);
+        $this->myPost->hydrate($data);
+
+        //user instance
+        $dataUser = $this->userManager->getUserById($this->myPost->getUserId());
+        $this->user->hydrate($dataUser);
+
+
+        //comments of this post
+        $comments = $this->commentManager->getOkComments($id);
+        echo $this->twig->twigLoad()->render(
+            'frontend/post.twig', [
+            'post' => $this->myPost,
+            'comments' => $comments,
             'message' => $message,
+            'user' => $this->user,
             'token' => $token
-        ]
-    );
-}
+        ]);
+    }
 
-/**
- * get the posts page
- */
-public
-function posts()
-{
-    $posts = $this->postManager->getAllPublished();
+    /**
+     * add comment
+     */
+    public
+    function add()
+    {
+        if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
 
-
-    echo $this->twig->twigLoad()
-        ->render('frontend/posts.twig', array('posts' => $posts));
-}
-
-/**
- * get the single post page
- *
- * @param ing    $id
- * @param string $message
- */
-public
-function post($id, $message = null)
-{
-    //put the random token into session for csrf
-    $token = $this->csrf->sessionRandom(5);
-
-    //post instance
-    $data = $this->postManager->getPost($id);
-    $this->myPost->hydrate($data);
-
-    //user instance
-    $dataUser = $this->userManager->getUserById($this->myPost->getUserId());
-    $this->user->hydrate($dataUser);
+            //checks if token matches for csrf
+            if ($_SESSION['token'] == $_POST['token']) {
 
 
-    //comments of this post
-    $comments = $this->commentManager->getOkComments($id);
-    echo $this->twig->twigLoad()->render(
-        'frontend/post.twig', [
-        'post' => $this->myPost,
-        'comments' => $comments,
-        'message' => $message,
-        'user' => $this->user,
-        'token' => $token
-    ]);
-}
+                $this->comment->hydrate($_POST);
+                $this->comment->setDateTime(date("Y-m-d H:i:s"));
 
-/**
- * add comment
- */
-public
-function add()
-{
-    if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
+                $this->commentManager->add($this->comment);
 
-        //checks if token matches for csrf
-        if ($_SESSION['token'] == $_POST['token']) {
-
-
-            $this->comment->hydrate($_POST);
-            $this->comment->setDateTime(date("Y-m-d H:i:s"));
-
-            $this->commentManager->add($this->comment);
-
-            $message = 'commentAdd';
-            $this->post($this->comment->getPostId(), $message);
+                $message = 'commentAdd';
+                $this->post($this->comment->getPostId(), $message);
+            } else {
+                header('Location: /error/error/500');
+            }
         } else {
             header('Location: /error/error/500');
         }
-    } else {
-        header('Location: /error/error/500');
     }
-}
 
-/**
- * send email
- */
+      /**
+     * send email
+     */
 public
 function sendMail()
 {
 
 
-    if (!empty($_POST['name']) && !empty($_POST['userEmail'])
+    if (!empty($_POST['name'])
+        && !empty($_POST['userEmail'])
         && !empty($_POST['message'])
         && !empty($_SESSION['token'])
         && !empty($_POST['token'])
@@ -219,19 +223,22 @@ function sendMail()
 
             if ($this->mailer->sendmail($name, $userEmail, $message)) {
 
-                echo $this->twig->twigLoad()->render('frontend/home.twig', [
-                    'message' => 'mailOk'
-                ]);
+
+
+
             } else {
-                echo $this->twig->twigLoad()->render('frontend/home.twig', [
-                    'message' => 'mailNok'
-                ]);
+
+
             }
         } else {
-            header('Location: /error/error/500');
+
         }
     } else {
-        $this->home('emptyForm');
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status'=> 'error',
+            'message'=> 'Veuillez valider tous les champs'
+        ]);
     }
 }
 

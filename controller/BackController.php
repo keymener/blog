@@ -3,9 +3,7 @@
 namespace keymener\myblog\controller;
 
 use keymener\myblog\core\Authentication;
-use keymener\myblog\core\Csrf;
 use keymener\myblog\core\TwigLaunch;
-use keymener\myblog\entity\User;
 use keymener\myblog\model\UserManager;
 
 /**
