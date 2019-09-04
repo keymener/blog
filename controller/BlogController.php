@@ -75,8 +75,7 @@ class BlogController
      *
      * @param string $message
      */
-    public
-    function home(
+    public function home(
         $message = null
     ) {
         //put the random into session for csrf
@@ -92,8 +91,7 @@ class BlogController
     /**
      * get the posts page
      */
-    public
-    function posts()
+    public function posts()
     {
         $posts = $this->postManager->getAllPublished();
 
@@ -108,11 +106,8 @@ class BlogController
      * @param ing    $id
      * @param string $message
      */
-    public
-    function post(
-        $id,
-        $message = null
-    ) {
+    public function post($id, $message = null)
+    {
         //put the random token into session for csrf
         $token = $this->csrf->sessionRandom(5);
 
@@ -140,8 +135,7 @@ class BlogController
     /**
      * add comment
      */
-    public
-    function add()
+    public function add()
     {
         if (isset($_POST['content'], $_POST['postId'], $_SESSION['token'], $_POST['token'])) {
 
@@ -167,16 +161,15 @@ class BlogController
     /**
      * send email
      */
-    public
-    function sendMail()
+    public function sendMail()
     {
 
 
-        if (!empty($_REQUEST['name'])
-            && !empty($_REQUEST['userEmail'])
-            && !empty($_REQUEST['message'])
-            && !empty($_SESSION['token'])
-            && !empty($_REQUEST['token'])
+        if (empty($_REQUEST['name'])
+            || empty($_REQUEST['email'])
+            || empty($_REQUEST['message'])
+            || empty($_SESSION['token'])
+            || empty($_REQUEST['token'])
 //            && !empty($data['g-recaptcha-response'])
         ) {
             $this->jsonFlashResponse->getResponse('warning',
@@ -185,6 +178,7 @@ class BlogController
 
         $name = $_REQUEST['name'];
         $message = $_REQUEST['message'];
+        $email = $_REQUEST['email'];
         $sessionToken = $_SESSION['token'];
         $clientToken = $_REQUEST['token'];
 
@@ -231,7 +225,7 @@ class BlogController
             $this->jsonFlashResponse->getResponse('warning',
                 'l\'email est mal saisie');
         }
-        if (!$this->check->checkLenth($message, 500)) {
+        if (!$this->check->checkLenth($message, 5)) {
 
             $this->jsonFlashResponse->getResponse('warning',
                 'Le texte ne doit pas dépasser 500 carractères');
