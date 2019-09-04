@@ -159,20 +159,48 @@
 <script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    $(".alert").hide();
-    $(".jsButton").click(function (event) {
-        event.preventDefault();
-        $.post(
-            "/blog/sendmail",
-            function (data) {
-                if (data.status == 'error') {
-                    $(".alert").text(data.message).show();
-                }
+    $(document).ready(function () {
+        //hide the alert diV
+        $("#jsAlert").hide();
+
+        //on submit form
+        $("form").submit(function (event) {
+
+            //kill the submit form
+            event.preventDefault();
+
+            // ajax call with form inputs
+            $.post(
+                "/blog/sendmail",
+                {
+                    name: $("#name").val(),
+                    email: $("#email").val(),
+                    message: $("#message").val(),
+                    token: $('#token').val(),
+                    "g-recaptcha-response": $('g-recaptcha').val()
+
+                },
+                jsonReturn,
+            );
+
+            //show alert on warning status
+            function jsonReturn(json) {
+
+                console.log(json);
+
+                //
+                // if (json.status == "warning") {
+                //     $("#jsAlert").show().addClass('alert-warning').text(json.message);
+                // }
             }
-        );
 
 
-    });
+        });
+
+
+
+    })
+
 </script>
 < /body>
 

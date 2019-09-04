@@ -2,8 +2,10 @@
 
 namespace keymener\myblog\controller;
 
+use DI\Annotation\Inject;
 use keymener\myblog\core\CheckInput;
 use keymener\myblog\core\Csrf;
+use keymener\myblog\core\JsonFlashResponse;
 use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Comment;
@@ -35,6 +37,7 @@ class BlogController
     private $check;
     private $recaptcha;
     private $errorsHandler;
+    private $jsonFlashResponse;
 
     public function __construct(
         TwigLaunch $twig,
@@ -48,7 +51,9 @@ class BlogController
         Csrf $csrf,
         CheckInput $check,
         Recaptcha $recaptcha,
-        ErrorController $errorsHandler
+        ErrorController $errorsHandler,
+        JsonFlashResponse $jsonFlashResponse
+
     ) {
         $this->twig = $twig;
         $this->mailer = $mailer;
@@ -62,6 +67,7 @@ class BlogController
         $this->check = $check;
         $this->recaptcha = $recaptcha;
         $this->errorsHandler = $errorsHandler;
+        $this->jsonFlashResponse = $jsonFlashResponse;
     }
 
     /**
@@ -158,88 +164,90 @@ class BlogController
         }
     }
 
-      /**
+    /**
      * send email
      */
-public
-function sendMail()
-{
+    public
+    function sendMail()
+    {
 
 
-    if (!empty($_POST['name'])
-        && !empty($_POST['userEmail'])
-        && !empty($_POST['message'])
-        && !empty($_SESSION['token'])
-        && !empty($_POST['token'])
-        && !empty($_POST['g-recaptcha-response'])
-    ) {
-
-
-        $response = $_POST['g-recaptcha-response'];
-
-        $remoteip = $_SERVER['REMOTE_ADDR'];
-
-        //try to run recaptcha function. catch errors when occurs
-        try {
-
-            $result = $this->recaptcha->recaptcha($response, $remoteip);
-
-        } catch (\Exception $e) {
-            $code = $e->getCode();
-            $message = $e->getMessage();
-            $this->errorsHandler->error($code, $message);
-            die();
+        if (!empty($_REQUEST['name'])
+            && !empty($_REQUEST['userEmail'])
+            && !empty($_REQUEST['message'])
+            && !empty($_SESSION['token'])
+            && !empty($_REQUEST['token'])
+//            && !empty($data['g-recaptcha-response'])
+        ) {
+            $this->jsonFlashResponse->getResponse('warning',
+                'Veuillez remplir tous les champs du formulaire');
         }
 
+        $name = $_REQUEST['name'];
+        $message = $_REQUEST['message'];
+        $sessionToken = $_SESSION['token'];
+        $clientToken = $_REQUEST['token'];
 
+
+//            $response = $_POST['g-recaptcha-response'];
+//
+//            $remoteip = $_SERVER['REMOTE_ADDR'];
+//
+//            //try to run recaptcha function. catch errors when occurs
+//            try {
+//
+//                $result = $this->recaptcha->recaptcha($response, $remoteip);
+//
+//            } catch (\Exception $e) {
+//                $code = $e->getCode();
+//                $message = $e->getMessage();
+//                $this->errorsHandler->error($code, $message);
+//                die();
+//            }
 
 
         //checks if token matches for csrf
-        if ($_SESSION['token'] == $_POST['token']) {
+        if ($sessionToken !== $clientToken) {
+            $this->jsonFlashResponse->getResponse('danger',
+                'Il y a un problème avec le forumlaire');
+        }
 
-            //check result of recaptcha
-            if(!$result){
-                $this->home('reCaptcha');
-            }
+        //check result of recaptcha
+//                if (!$result) {
+//                    $this->jsonFlashResponse->getResponse('warning',
+//                        'Problème avec le captcha');
+//                }
 
-            //check size of name input
-            if ($this->check->checkLenth($_POST['name'], 200)) {
-                $name = $_POST['name'];
-            } else {
-                $this->home('nameLong');
-            }
+        //check size of name input
+        if (!$this->check->checkLenth($name, 200)) {
 
-            //check input email
-            if ($this->check->checkEmail($_POST['userEmail'])) {
-                $userEmail = $_POST['userEmail'];
-            } else {
-                $this->home('formNok');
-            }
-            if ($this->check->checkLenth($_POST['message'], 500)) {
-                $message = $_POST['message'];
-            } else {
-                $this->home('textLong');
-            }
+            $this->jsonFlashResponse->getResponse('warning',
+                'Le nom est trop long');
+        }
 
-            if ($this->mailer->sendmail($name, $userEmail, $message)) {
+        //check input email
+        if (!$this->check->checkEmail($email)) {
 
+            $this->jsonFlashResponse->getResponse('warning',
+                'l\'email est mal saisie');
+        }
+        if (!$this->check->checkLenth($message, 500)) {
 
+            $this->jsonFlashResponse->getResponse('warning',
+                'Le texte ne doit pas dépasser 500 carractères');
+        }
 
+        if ($this->mailer->sendmail($name, $email, $message)) {
+            $this->jsonFlashResponse->getResponse('success',
+                'Le message a bien été envoyé');
 
-            } else {
-
-
-            }
         } else {
+            $this->jsonFlashResponse->getResponse('danger',
+                'Il y a eu un probmèe lors de l\' envoi du message, veuillez reesayer ulterieurment');
 
         }
-    } else {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'status'=> 'error',
-            'message'=> 'Veuillez valider tous les champs'
-        ]);
+
+
     }
-}
 
 }

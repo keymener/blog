@@ -89,27 +89,23 @@
                     </div>
                     <div class="my-3 col-md-6 text-center">
 
-                        <div class="alert alert-dismissible fade show"
+                        <div id="jsAlert" class="alert alert-dismissible fade show"
                              role="alert">
 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
                         <h2>Pour me contacter</h2>
-                        <form id="jsContactForm">
-
+                        <form action="/blog/sendmail" method="POST">
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="formGroupExampleInput"
+                                <input type="text" name="name" class="form-control" id="name"
                                        placeholder="Votre nom et prénom" required>
                             </div>
                             <div class="form-group">
                                 <input type="email" name="userEmail" class="form-control"
-                                       id="exampleFormControlInput1"
+                                       id="email"
                                        placeholder="Votre adresse mail" required>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3"
+                                <textarea class="form-control" name="message" id="message" rows="3"
                                           placeholder="Votre message" required></textarea>
                             </div>
                             <input type="hidden" name="token" id="token" value="{{ token }}"/>
@@ -117,7 +113,7 @@
                             <div class="g-recaptcha form-group"
                                  data-sitekey="6Lddd7EUAAAAAFOr1qC4a1V-DCMSmwV1ruj5uOjl"></div>
 
-                            <button type="submit" class="btn btn-primary rounded-pill jsButton">Envoyer</button>
+                            <button type="submit" class="btn btn-primary rounded-pill" id="jsButton">Envoyer</button>
 
                         </form>
                     </div>
