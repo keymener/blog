@@ -160,14 +160,22 @@
 
 <script>
     $(document).ready(function () {
+
+        var flashAlert = $("#jsAlert");
+
         //hide the alert diV
-        $("#jsAlert").hide();
+        flashAlert.hide();
 
         //on submit form
         $("form").submit(function (event) {
 
+
             //kill the submit form
             event.preventDefault();
+
+            //remove alert content
+            flashAlert.empty();
+
 
             // ajax call with form inputs
             $.post(
@@ -177,7 +185,7 @@
                     email: $("#email").val(),
                     message: $("#message").val(),
                     token: $('#token').val(),
-                    "g-recaptcha-response": $('g-recaptcha').val()
+                    recaptcha: grecaptcha.getResponse()
 
                 },
                 jsonReturn,
@@ -186,17 +194,14 @@
             //show alert on warning status
             function jsonReturn(json) {
 
-                console.log(json);
 
-                //
-                // if (json.status == "warning") {
-                //     $("#jsAlert").show().addClass('alert-warning').text(json.message);
-                // }
+                flashAlert.show().addClass('alert-' + json.status).prepend(json.message);
+
+
             }
 
 
         });
-
 
 
     })

@@ -2,10 +2,10 @@
 
 namespace keymener\myblog\controller;
 
-use DI\Annotation\Inject;
+
 use keymener\myblog\core\CheckInput;
 use keymener\myblog\core\Csrf;
-use keymener\myblog\core\JsonFlashResponse;
+use keymener\myblog\core\JsonResponse;
 use keymener\myblog\core\Mailer;
 use keymener\myblog\core\TwigLaunch;
 use keymener\myblog\entity\Comment;
@@ -15,7 +15,7 @@ use keymener\myblog\model\CommentManager;
 use keymener\myblog\model\PostManager;
 use keymener\myblog\model\UserManager;
 use keymener\myblog\core\Recaptcha;
-use keymener\myblog\controller\ErrorController;
+
 
 /**
  * post controller
@@ -24,6 +24,11 @@ use keymener\myblog\controller\ErrorController;
  */
 class BlogController
 {
+
+    const STATUS_WARNING = 'warning';
+    const STATUS_DANGER = 'danger';
+    const STATUS_SUCCESS = 'success';
+
 
     private $twig;
     private $mailer;
@@ -52,7 +57,7 @@ class BlogController
         CheckInput $check,
         Recaptcha $recaptcha,
         ErrorController $errorsHandler,
-        JsonFlashResponse $jsonFlashResponse
+        JsonResponse $jsonFlashResponse
 
     ) {
         $this->twig = $twig;
@@ -165,79 +170,105 @@ class BlogController
     {
 
 
-        if (empty($_REQUEST['name'])
-            || empty($_REQUEST['email'])
-            || empty($_REQUEST['message'])
+        if (empty($_POST['name'])
+            || empty($_POST['email'])
+            || empty($_POST['message'])
             || empty($_SESSION['token'])
-            || empty($_REQUEST['token'])
-//            && !empty($data['g-recaptcha-response'])
+            || empty($_POST['token'])
+            || empty($_POST['recaptcha'])
         ) {
-            $this->jsonFlashResponse->getResponse('warning',
-                'Veuillez remplir tous les champs du formulaire');
+
+
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_WARNING,
+                'message' => 'Veuillez remplir tous les champs du formulaire'
+            ]);
         }
 
-        $name = $_REQUEST['name'];
-        $message = $_REQUEST['message'];
-        $email = $_REQUEST['email'];
+        $name = $_POST['name'];
+        $message = $_POST['message'];
+        $email = $_POST['email'];
         $sessionToken = $_SESSION['token'];
-        $clientToken = $_REQUEST['token'];
+        $clientToken = $_POST['token'];
 
 
-//            $response = $_POST['g-recaptcha-response'];
-//
-//            $remoteip = $_SERVER['REMOTE_ADDR'];
-//
-//            //try to run recaptcha function. catch errors when occurs
-//            try {
-//
-//                $result = $this->recaptcha->recaptcha($response, $remoteip);
-//
-//            } catch (\Exception $e) {
-//                $code = $e->getCode();
-//                $message = $e->getMessage();
-//                $this->errorsHandler->error($code, $message);
-//                die();
-//            }
+        $response = $_POST['recaptcha'];
 
+        $remoteip = $_SERVER['REMOTE_ADDR'];
+
+        //try to run recaptcha function. catch errors when occurs
+        try {
+
+            $result = $this->recaptcha->recaptcha($response, $remoteip);
+
+        } catch (\Exception $e) {
+
+            $this->jsonFlashResponse->getResponse([
+
+                    'status' => self::STATUS_DANGER,
+                    'message' => $e->getMessage()
+                ]
+            );
+
+        }
+
+//        check result of recaptcha
+        if (!$result) {
+            $this->jsonFlashResponse->getResponse([
+
+                    'status' => self::STATUS_WARNING,
+                    'message' => "Problème avec le captcha"
+                ]
+            );
+        }
 
         //checks if token matches for csrf
         if ($sessionToken !== $clientToken) {
-            $this->jsonFlashResponse->getResponse('danger',
-                'Il y a un problème avec le forumlaire');
+            $this->jsonFlashResponse->getResponse([
+                    'status' => self::STATUS_WARNING,
+                    'message' => "il y a un problème csrf avec le formulaire"
+                ]
+            );
         }
 
-        //check result of recaptcha
-//                if (!$result) {
-//                    $this->jsonFlashResponse->getResponse('warning',
-//                        'Problème avec le captcha');
-//                }
 
         //check size of name input
         if (!$this->check->checkLenth($name, 200)) {
 
-            $this->jsonFlashResponse->getResponse('warning',
-                'Le nom est trop long');
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_WARNING,
+                'message' => 'Le nom est trop long'
+            ]);
         }
 
         //check input email
-        if (!$this->check->checkEmail($email)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $this->jsonFlashResponse->getResponse('warning',
-                'l\'email est mal saisie');
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_WARNING,
+                'message' => "Mauvais format d'email"
+            ]);
         }
-        if (!$this->check->checkLenth($message, 5)) {
 
-            $this->jsonFlashResponse->getResponse('warning',
-                'Le texte ne doit pas dépasser 500 carractères');
+        if (!$this->check->checkLenth($message, 500)) {
+
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_WARNING,
+                'message' => "Le texte ne doit pas dépasser 500 caractères"
+            ]);
         }
 
         if ($this->mailer->sendmail($name, $email, $message)) {
-            $this->jsonFlashResponse->getResponse('success',
-                'Le message a bien été envoyé');
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_SUCCESS,
+                'message' => 'Le message a bien été envoyé'
+            ]);
 
         } else {
-            $this->jsonFlashResponse->getResponse('danger',
-                'Il y a eu un probmèe lors de l\' envoi du message, veuillez reesayer ulterieurment');
+            $this->jsonFlashResponse->getResponse([
+                'status' => self::STATUS_DANGER,
+                'message' => "Il y a eu un probmèe lors de l' envoi du message, veuillez réessayer ulterieurment"
+            ]);
 
         }
 
