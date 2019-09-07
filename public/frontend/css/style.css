@@ -8,63 +8,86 @@ and open the template in the editor.
     Author     : keyme
 */
 
-header.masthead .masthead-content .masthead-heading{
+header.masthead .masthead-content .masthead-heading {
 
     font-size: 3rem;
 
 }
 
-header.masthead .masthead-content .masthead-subheading{
+header.masthead .masthead-content .masthead-subheading {
 
     font-size: 1.5rem;
 
 }
 
-.navbar-custom .navbar-brand{
+
+.navbar-custom .navbar-brand {
 
     font-size: 0.8rem;
     letter-spacing: 0.5rem;
 
 }
 
-.chapeau{
+
+.chapeau {
 
     font-size: 1rem;
 
 }
 
-.post{
+.post {
 
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 
 }
 
-.blogcontent{
+.blogcontent {
 
     padding-top: 110px;
 }
 
-header.masthead{
-    background: url('../img/banner.jpg') no-repeat;
-    background-size: cover;
-    
+.masthead {
+    position: relative;
+    width: 100%;
+
+
+
 }
 
-header.masthead .bg-circle{
+.background{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: url('../img/banner.jpg') no-repeat;
+    background-size: cover;
+    opacity: 0.5
+}
+
+.masthead-content{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+header.masthead .bg-circle {
     opacity: 0.5;
 }
 
-img.logo{
+img.logo {
     width: 50px;
 }
 
-img.footerlogo{
+img.footerlogo {
     width: 30px;
-   
+
 }
 
-footer{
-    color : #6c757d;
+footer {
+    color: #6c757d;
 }
 
 

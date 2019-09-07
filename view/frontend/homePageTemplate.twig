@@ -35,7 +35,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+<nav id="topNav" class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
         <a class="navbar-brand" href="/blog/home"><img src="/frontend/img/biglogo.png" class="logo" alt="logo"/>
             Keigo Matsunaga</a>
@@ -154,59 +154,33 @@
 </footer>
 <!-- Footer -->
 
-
 <script src="/frontend/vendor/jquery/jquery.js"></script>
 <script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <script>
     $(document).ready(function () {
 
-        var flashAlert = $("#jsAlert");
+        var document = $(this);
+        var nav = $('#topNav');
+        var background = $('.background');
+        document.scroll(function () {
 
-        //hide the alert diV
-        flashAlert.hide();
+            var scrollPosition = document.scrollTop();
 
-        //on submit form
-        $("form").submit(function (event) {
+            if (scrollPosition > 150) {
+                nav.fadeOut(200);
+                background.animate({
+                    opacity: 1,
 
-
-            //kill the submit form
-            event.preventDefault();
-
-            //remove alert content
-            flashAlert.empty();
-
-
-            // ajax call with form inputs
-            $.post(
-                "/blog/sendmail",
-                {
-                    name: $("#name").val(),
-                    email: $("#email").val(),
-                    message: $("#message").val(),
-                    token: $('#token').val(),
-                    recaptcha: grecaptcha.getResponse()
-
-                },
-                jsonReturn,
-            );
-
-            //show alert on warning status
-            function jsonReturn(json) {
-
-
-                flashAlert.show().addClass('alert-' + json.status).prepend(json.message);
-
-
+                });
             }
 
 
-        });
+        })
 
 
     })
-
 </script>
+{% block javascript %}{% endblock %}
 </body>
 
 </html>
