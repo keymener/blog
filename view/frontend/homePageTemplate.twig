@@ -157,23 +157,41 @@
 <script src="/frontend/vendor/jquery/jquery.js"></script>
 <script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(window).ready(function () {
 
-        var document = $(this);
+        var window = $(this);
         var nav = $('#topNav');
-        var background = $('.background');
-        document.scroll(function () {
+        var lastScrollTop = 0;
+        var navbarHeight = nav.outerHeight();
+        var delta = 5;
 
-            var scrollPosition = document.scrollTop();
+        //animate navbar on scroll
+        window.scroll(function () {
 
-            if (scrollPosition > 150) {
-                nav.fadeOut(200);
-                background.animate({
-                    opacity: 1,
+            var scrollPosition = window.scrollTop();
 
+            if (Math.abs(scrollPosition - lastScrollTop) < delta) {
+                return;
+            }
+
+            console.log("position: " + scrollPosition + ", lastScroll: " + lastScrollTop);
+
+            if (scrollPosition > lastScrollTop) {
+
+                nav.stop().animate({
+                        top: -navbarHeight
+                    },
+                    500
+                );
+            } else {
+
+                nav.stop().animate({
+                    top: 0
                 });
             }
 
+
+            lastScrollTop = scrollPosition;
 
         })
 
