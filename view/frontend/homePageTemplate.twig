@@ -1,155 +1,212 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 
-        <!-- Bootstrap core CSS -->
-        <link href="/frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="/frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Custom fonts for this template -->
-        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+          rel="stylesheet">
 
-        <!-- Custom styles for this template -->
-        <link href="/frontend/css/one-page-wonder.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/frontend/css/one-page-wonder.css" rel="stylesheet">
 
-        <!-- my custom files -->
-        <link href="/frontend/css/style.css" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/c38126a589.js"></script>
+    <!-- my custom files -->
+    <link href="/frontend/css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c38126a589.js"></script>
 
-        <!-- favicon -->
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-        <!-- google recaptcha -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- google recaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    </head>
+</head>
 
-    <body>
-        {% if hide != true %} 
-            <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-                <div class="container">
-                    <a class="navbar-brand" href="/blog/home"><img src="/frontend/img/biglogo.png" class="logo" alt="logo" /> Keigo Matsunaga</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarResponsive">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item nav-link">
-                                <a class="nav-link" href="/blog/home">{% block home %}Accueil{% endblock %}</a>
-                            </li>
-                            <li class="nav-item nav-link">
-                                <a class="nav-link" href="/blog/posts">{% block blog %}Blog{% endblock %}</a>
-                            </li>
-                            <li>
-                            <a class="nav-item nav-link" href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i class="fab fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                            <a class="nav-item nav-link" href="https://github.com/keymener/"><i class="fab fa-github-square"></i></a>
-                        </li>
+<body>
 
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        {% endif %}
-        <!-- Content -->
-        <div class="content">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/blog/home"><img src="/frontend/img/biglogo.png" class="logo" alt="logo"/>
+            Keigo Matsunaga</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item nav-link">
+                    <a class="nav-link" href="/blog/home">{% block home %}Accueil{% endblock %}</a>
+                </li>
+                <li class="nav-item nav-link">
+                    <a class="nav-link" href="/blog/posts">{% block blog %}Blog{% endblock %}</a>
+                </li>
+                <li>
+                    <a class="nav-item nav-link" href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i
+                                class="fab fa-linkedin"></i></a>
+                </li>
+                <li>
+                    <a class="nav-item nav-link" href="https://github.com/keymener/"><i
+                                class="fab fa-github-square"></i></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="content">
 
 
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
+
+</div>
+
+
+<footer class="page-footer font-small mdb-color pt-4 mt-4 bg-dark">
+
+    <!-- Footer Links -->
+    <div class="container text-md-left">
+
+        <!-- Footer links -->
+        <div class="row text-md-left mt-3 pb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h6 class="text-uppercase mb-4 font-weight-bold"><img src="/frontend/img/biglogo.png"
+                                                                      class="footerlogo" alt="logo"/> Keigo
+                    Matsunaga</h6>
+
+                <p>Autodidacte et curieux, je suis passioné par les nouvelles technologies et l'innovation. Je veux
+                    mettre a profit mon experience en entreprise afin de proposer des outils adaptés au monde du
+                    travail.</p>
+
+
+            </div>
+
+            <hr class="w-100 clearfix d-md-none">
+
+
+            <!-- Grid column -->
+
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+
+                <h6 class="text-uppercase mb-4 font-weight-bold">Raccourcis</h6>
+                <p><a class="footer-link text-secondary" href="/frontend/pdf/cv_dev.pdf">Mon CV</a></p>
+                <p><a class="footer-link text-secondary" href="/blog/posts">Blog</a></p>
+                <p><a class="footer-link text-secondary" href="/blog/home">Présentation</a></p>
+                <p><a class="footer-link text-secondary" href="/auth/logme"><i
+                                class="fas fa-unlock-alt"></i>{% block login %} Admin{% endblock %}</a></p>
+            </div>
+
 
         </div>
-
-    {% if hide != true %}
-
-        <footer class="page-footer font-small mdb-color pt-4 mt-4 bg-dark">
-
-            <!-- Footer Links -->
-            <div class="container text-md-left">
-
-                <!-- Footer links -->
-                <div class="row text-md-left mt-3 pb-3">
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                        <h6 class="text-uppercase mb-4 font-weight-bold"><img src="/frontend/img/biglogo.png" class="footerlogo" alt="logo" /> Keigo Matsunaga</h6>
-
-                        <p>Autodidacte et curieux, je suis passioné par les nouvelles technologies et l'innovation. Je veux mettre a profit mon experience en entreprise afin de proposer des outils adaptés au monde du travail.</p>
+        <!-- Footer links -->
+        <hr>
 
 
-                    </div>
+        <!-- Grid row -->
+        <div class="row">
 
-                    <hr class="w-100 clearfix d-md-none">
-
-
-                    <!-- Grid column -->
-
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-
-                        <h6 class="text-uppercase mb-4 font-weight-bold">Raccourcis</h6>
-                        <p><a class ="footer-link text-secondary" href="/frontend/pdf/cv_dev.pdf">Mon CV</a></p>
-                        <p><a class ="footer-link text-secondary" href="/blog/posts">Blog</a></p>
-                        <p><a class ="footer-link text-secondary" href="/blog/home">Présentation</a></p>
-                        <p><a class ="footer-link text-secondary" href="/auth/logme"><i class="fas fa-unlock-alt"></i>{% block login %} Admin{% endblock %}</a></p>
-                    </div>
-
-
-
-
-                </div>
-                <!-- Footer links -->
-                <hr>
-
-
-                <!-- Grid row -->
-                <div class="row">
-
-                    <!-- Grid column -->
-                    <div class="col-md-6 col-lg-6 text-left">
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-6 text-left">
 
                 <!--Copyright-->
-                        <p >© 2018 Copyright: <strong> Keigo Matsunaga</strong></p>
+                <p>© 2019 Copyright: <strong> Keigo Matsunaga</strong></p>
 
-                    </div>
-                    
-                    <!-- Grid column -->
-               
-
-                    <!-- Grid column -->
-                    <div class="col-md-6 col-lg-6 text-right">
-
-                  
-                            <ul class="list-unstyled list-inline">
-                                <li class="list-inline-item"><a class="btn-floating" href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i class="fab fa-linkedin fa-2x text-secondary"></i></a>	</li>						
-                                <li class="list-inline-item"><a class="btn-floating" href="https://github.com/keymener/"><i class="fab fa-github-square fa-2x text-secondary"></i></a></li>
-                            </ul>
-                     
-
-                    </div>
-                  
-
-
-
-                </div>
-                <!-- Grid row -->
             </div>
-            <!-- Footer Links -->
 
-        </footer>
-        <!-- Footer -->
+            <!-- Grid column -->
 
-        <!-- Bootstrap core JavaScript -->
-        <script src="/frontend/vendor/jquery/jquery.min.js"></script>
-        <script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    {% endif %}
+
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-6 text-right">
+
+
+                <ul class="list-unstyled list-inline">
+                    <li class="list-inline-item"><a class="btn-floating"
+                                                    href="https://www.linkedin.com/in/keigo-matsunaga-41386b131/"><i
+                                    class="fab fa-linkedin fa-2x text-secondary"></i></a></li>
+                    <li class="list-inline-item"><a class="btn-floating" href="https://github.com/keymener/"><i
+                                    class="fab fa-github-square fa-2x text-secondary"></i></a></li>
+                </ul>
+
+
+            </div>
+
+
+        </div>
+        <!-- Grid row -->
+    </div>
+    <!-- Footer Links -->
+
+</footer>
+<!-- Footer -->
+
+
+<script src="/frontend/vendor/jquery/jquery.js"></script>
+<script src="/frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var flashAlert = $("#jsAlert");
+
+        //hide the alert diV
+        flashAlert.hide();
+
+        //on submit form
+        $("form").submit(function (event) {
+
+
+            //kill the submit form
+            event.preventDefault();
+
+            //remove alert content
+            flashAlert.empty();
+
+
+            // ajax call with form inputs
+            $.post(
+                "/blog/sendmail",
+                {
+                    name: $("#name").val(),
+                    email: $("#email").val(),
+                    message: $("#message").val(),
+                    token: $('#token').val(),
+                    recaptcha: grecaptcha.getResponse()
+
+                },
+                jsonReturn,
+            );
+
+            //show alert on warning status
+            function jsonReturn(json) {
+
+
+                flashAlert.show().addClass('alert-' + json.status).prepend(json.message);
+
+
+            }
+
+
+        });
+
+
+    })
+
+</script>
 </body>
 
 </html>

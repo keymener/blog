@@ -43,7 +43,7 @@
             <div class="container">
                 <div class="row align-items-center text-center  mt-3">
                     <div class="col mt-3">
-                        <h2>Mes outils</h2>
+                        <h2>Mes compétences</h2>
                     </div>
                 </div>
                 <div class="row align-items-center text-center ">
@@ -88,44 +88,26 @@
                     <div class='col-md-3'>
                     </div>
                     <div class="my-3 col-md-6 text-center">
-                        {% if message == null %}{% else %}
-                            <div class="alert {% if message == 'mailOk' %}alert-success {% else %}alert-danger{% endif %} alert-dismissible fade show"
-                                 role="alert">
-                                {% if message == 'mailOk' %}
-                                    Message envoyé.
-                                {% elseif message == 'mailNok' %}
-                                    Problème lors de l'envoi du message, veuillez essayer ulterieurment.
-                                {% elseif message == 'reCaptcha' %}
-                                    Veuillez valider le recaptcha.
-                                {% elseif message == 'formNok' %}
-                                    Veuillez remplir convenablement l'email.
-                                {% elseif message == 'textLong' %}
-                                    Le message doit contenir de 2 à 500 carractères max.
-                                {% elseif message == 'nameLong' %}
-                                    Le champ nom et prénom doit contenir de 2 à 200 carractères max.
-                                {% elseif message == 'emptyForm' %}
-                                    Vous devez remplir tous les champs du formulaire
-                                {% endif %}
 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endif %}
+                        <div id="jsAlert" class="alert alert-dismissible fade show"
+                             role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <h2>Pour me contacter</h2>
-                        <form action="/blog/sendmail" method="post" novalidate>
-
+                        <form action="/blog/sendmail" method="POST">
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="formGroupExampleInput"
+                                <input type="text" name="name" class="form-control" id="name"
                                        placeholder="Votre nom et prénom" required>
                             </div>
                             <div class="form-group">
                                 <input type="email" name="userEmail" class="form-control"
-                                       id="exampleFormControlInput1"
+                                       id="email"
                                        placeholder="Votre adresse mail" required>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3"
+                                <textarea class="form-control" name="message" id="message" rows="3"
                                           placeholder="Votre message" required></textarea>
                             </div>
                             <input type="hidden" name="token" id="token" value="{{ token }}"/>
@@ -133,7 +115,7 @@
                             <div class="g-recaptcha form-group"
                                  data-sitekey="6Lddd7EUAAAAAFOr1qC4a1V-DCMSmwV1ruj5uOjl"></div>
 
-                            <button type="submit" class="btn btn-primary rounded-pill">Envoyer</button>
+                            <button type="submit" class="btn btn-primary rounded-pill" id="jsButton">Envoyer</button>
 
                         </form>
                     </div>
@@ -144,3 +126,7 @@
         </section>
 
     {% endblock %}
+
+
+
+
