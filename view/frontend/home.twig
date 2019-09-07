@@ -6,6 +6,7 @@
 {% endblock %}
     {% block content %}
         <header class="masthead text-center text-white">
+            <div class="background"></div>
             <div class="masthead-content">
                 <div class="container">
                     <h2 class="masthead-heading mb-0">Développeur PHP</h2>
@@ -17,7 +18,7 @@
             </div>
 
         </header>
-        <section>
+        <section id="presentation">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -126,6 +127,58 @@
         </section>
 
     {% endblock %}
+
+{% block javascript %}
+<script>
+$(document).ready(function () {
+
+    var flashAlert = $("#jsAlert");
+
+    //hide the alert diV
+    flashAlert.hide();
+
+    //on submit form
+    $("form").submit(function (event) {
+
+
+        //kill the submit form
+        event.preventDefault();
+
+        //remove alert content
+        flashAlert.empty();
+
+
+        // ajax call with form inputs
+        $.post(
+            "/blog/sendmail",
+            {
+                name: $("#name").val(),
+                email: $("#email").val(),
+                message: $("#message").val(),
+                token: $('#token').val(),
+                recaptcha: grecaptcha.getResponse()
+
+            },
+            jsonReturn,
+        );
+
+        //show alert on warning status
+        function jsonReturn(json) {
+
+
+            flashAlert.show().addClass('alert-' + json.status).prepend(json.message);
+
+
+        }
+
+
+    });
+
+
+})
+
+</script>
+{% endblock %}
 
 
 
